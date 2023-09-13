@@ -1,11 +1,11 @@
+import Navbar from "./Components/Common/Navbar"
+
 function App() {
 
   return (
     <>
 
-      <div>
-        <img src="" />
-      </div>
+      <Navbar />
 
     </>
   )
