@@ -1,10 +1,12 @@
-
-
 function App() {
 
   return (
     <>
-      Test
+
+      <div>
+        <img src="" />
+      </div>
+
     </>
   )
 }
