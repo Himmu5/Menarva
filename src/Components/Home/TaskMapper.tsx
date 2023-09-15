@@ -1,18 +1,22 @@
-import {FC} from 'react'
-import { BsFillCaretDownFill } from 'react-icons/bs'
+import { FC } from 'react'
+import Task from './Task';
+
 type P = {
-    dummyOptions : string[]
+    dummyOptions: {
+        Heading: string;
+        options: string[];
+    }[]
 }
-const TaskMapper:FC<P> =({ dummyOptions })=>{
-  return  <div className='w-full flex flex-col gap-3 my-3 p-2 text-black'>
-  {
-      dummyOptions.map((option)=>{
-          return <div className='flex items-center p-3 justify-between w-full border rounded-xl'>
-              <p>{option}</p>
-              <BsFillCaretDownFill size={20}/>
-          </div>
-      })
-  }
-</div>
+const TaskMapper: FC<P> = ({ dummyOptions }) => {
+
+
+
+    return <div className='w-full flex flex-col gap-3 my-3 p-2 text-black'>
+        {
+            dummyOptions.map((option) => {
+                return <Task key={option.Heading} option={option} />
+            })
+        }
+    </div>
 }
 export default TaskMapper;

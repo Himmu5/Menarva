@@ -6,6 +6,7 @@ import TaskMapper from './TaskMapper'
 type P = object
 
 const Home: FC<P> = () => {
+
     return <div className='max-w-7xl mx-auto flex flex-col'>
 
         <div className=' flex items-center gap-2 p-3 py-5'>
