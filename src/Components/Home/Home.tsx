@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { dummyOptions } from '../../Data/dummy'
-import { BsFillCaretDownFill } from 'react-icons/bs'
+import TaskMapper from './TaskMapper'
 
 type P = object
 
@@ -19,17 +19,7 @@ const Home: FC<P> = () => {
             <p className='text-green-500 '>COMPLETED</p>
         </div>
 
-        <div className='w-full flex flex-col gap-3 my-3 p-2 text-black'>
-            {
-                dummyOptions.map((option)=>{
-                    return <div className='flex items-center p-3 justify-between w-full border rounded-xl'>
-                        <p>{option}</p>
-                        <BsFillCaretDownFill size={20}/>
-                    </div>
-                })
-            }
-        </div>
-
+        <TaskMapper dummyOptions={dummyOptions} />
 
     </div>
 }
