@@ -1,5 +1,7 @@
+import { Route, Routes } from "react-router-dom"
 import Navbar from "./Components/Common/Navbar"
 import SignIn from "./Components/SignIn/SignIn"
+import Home from "./Components/Home/Home"
 
 function App() {
 
@@ -7,7 +9,11 @@ function App() {
     <div className="">
 
       <Navbar />
-      <SignIn />
+      <Routes>
+        <Route path="signin" element={<SignIn />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+
 
     </div>
   )
