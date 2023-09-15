@@ -1,5 +1,6 @@
 import { FC, useState } from 'react'
 import { BsFillCaretDownFill } from 'react-icons/bs';
+import { BiSolidUpArrow } from 'react-icons/bi'
 import UploadButton from '../UI-Components/UploadButton';
 
 type P = {
@@ -16,7 +17,9 @@ const Task: FC<P> = ({ option }) => {
     return <div key={option.Heading} className=' shadow-md flex flex-col p-3 justify-between w-full border rounded-xl'>
         <div className='flex items-center justify-between'>
             <p>{option.Heading}</p>
-            <BsFillCaretDownFill size={20} onClick={() => setShowOptions(!showOptions)} />
+
+            {showOptions === true ? <BiSolidUpArrow className="cursor-pointer" size={20} onClick={() => setShowOptions(!showOptions)} /> : <BsFillCaretDownFill size={20} onClick={() => setShowOptions(!showOptions)} className="cursor-pointer" />}
+
         </div>
 
         {showOptions && <div className=' w-full flex flex-col gap-1 text-xs p-2 border rounded-xl shadow-sm my-2 '>
