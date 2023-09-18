@@ -4,6 +4,7 @@ import SignIn from "./Components/SignIn/SignIn"
 import Home from "./Components/SOP/Home"
 import Stores from "./Components/Store/Stores"
 import StoreCalendar from "./Components/Store/Calendar"
+import Camera from "./Components/Camera/Camera"
 
 function App() {
 
@@ -16,8 +17,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/stores" element={<Stores />} />
         <Route path="/calendar" element={<StoreCalendar />} />
+        <Route path="/Camera" element={<Camera /> } />
       </Routes>
-
 
     </div>
   )

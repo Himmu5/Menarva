@@ -11,6 +11,9 @@ export default {
       },
       fontFamily : {
         "Inter" : ['Inter', "sans-serif"]
+      },
+      maxWidth : {
+        "3xl" : "45rem"
       }
     },
   },
