@@ -5,6 +5,7 @@ import Home from "./Components/SOP/Home"
 import Stores from "./Components/Store/Stores"
 import StoreCalendar from "./Components/Store/Calendar"
 import Camera from "./Components/Camera/Camera"
+import StoreOptions from "./Components/Store/StoreOptions"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/stores" element={<Stores />} />
         <Route path="/calendar" element={<StoreCalendar />} />
         <Route path="/Camera" element={<Camera /> } />
+        <Route path="/StoreOptions" element={<StoreOptions /> } />
       </Routes>
 
     </div>
