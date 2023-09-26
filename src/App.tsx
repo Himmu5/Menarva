@@ -9,29 +9,29 @@ import StoreOptions from "./Components/Store/StoreOptions"
 import UploadSales from "./Components/SaleReportUpload/UploadSales"
 import Mannager from "./Components/SaleReportUpload/Mannager"
 import AddEditManager from "./Components/SaleReportUpload/AddEditManager"
-import { UserContext } from "./Context/User"
-import { useState } from "react"
+import AuthRoute from "./Components/Routes/AuthRoute"
+import UserRoute from "./Components/Routes/UserRoute"
+import UserProvider from "./Components/Provider/UserProvider"
+
 
 function App() {
 
-  // const [user , setUser] = useState();
-
   return (
     <div className="">
-      <UserContext.Provider value={{  }} >
+      <UserProvider>
         <Navbar />
         <Routes>
-          <Route path="signin" element={<SignIn />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/stores" element={<Stores />} />
-          <Route path="/calendar" element={<StoreCalendar />} />
-          <Route path="/Camera" element={<Camera />} />
-          <Route path="/StoreOptions" element={<StoreOptions />} />
-          <Route path="/uploadsales" element={<UploadSales />} />
-          <Route path="/mannager" element={<Mannager />} />
-          <Route path="/mannager/edit" element={<AddEditManager />} />
+          <Route path="signin" element={<AuthRoute><SignIn /></AuthRoute>} />
+          <Route path="/" element={<UserRoute><Home /></UserRoute>} />
+          <Route path="/stores" element={<UserRoute><Stores /></UserRoute>} />
+          <Route path="/calendar" element={<UserRoute><StoreCalendar /></UserRoute>} />
+          <Route path="/Camera" element={<UserRoute><Camera /></UserRoute>} />
+          <Route path="/StoreOptions" element={<UserRoute><StoreOptions /></UserRoute>} />
+          <Route path="/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
+          <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
+          <Route path="/mannager/edit" element={<UserRoute><AddEditManager /></UserRoute>} />
         </Routes>
-      </UserContext.Provider>
+      </UserProvider>
     </div>
   )
 }
