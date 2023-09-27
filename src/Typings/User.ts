@@ -16,3 +16,19 @@ export interface UserClass {
     createdAt: number;
     updatedAt: number;
 }
+
+
+export interface UserConfig {
+    ACCOUNTING: Accounting;
+    SHOP:       Accounting;
+    MANAGER:    Accounting;
+    CONFIG:     Accounting;
+}
+
+export interface Accounting {
+    READ:          boolean;
+    WRITE:         boolean;
+    UPDATE:        boolean;
+    DELETE:        boolean;
+    IMAGE_UPLOAD?: boolean;
+}
