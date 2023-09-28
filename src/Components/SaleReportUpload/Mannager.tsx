@@ -15,7 +15,7 @@ const Mannager: FC<P> = () => {
         <div className='flex flex-col gap-3 my-5'>
             {
                 [...Array(3).keys()].map((i) => {
-                    return <ManagerCard key={i} />
+                    return <ManagerCard index={i} />
                 })
             }
         </div>

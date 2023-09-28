@@ -12,25 +12,37 @@ import AddEditManager from "./Components/SaleReportUpload/AddEditManager"
 import AuthRoute from "./Components/Routes/AuthRoute"
 import UserRoute from "./Components/Routes/UserRoute"
 import UserProvider from "./Components/Provider/UserProvider"
+import Options from "./Components/Store/Options"
+import Ministores from "./Components/Ministores/Ministores"
+import Error from "./Components/Error/404Page"
+import MiniOptions from "./Components/Ministores/Options"
+import ShopProvider from "./Components/Provider/ShopProvider"
 
 
 function App() {
 
+
   return (
     <div >
       <UserProvider>
-        <Navbar />
-        <Routes>
-          <Route path="signin" element={<AuthRoute><SignIn /></AuthRoute>} />
-          <Route path="/SOP" element={<UserRoute><Home /></UserRoute>} />
-          <Route path="/stores" element={<UserRoute><Stores /></UserRoute>} />
-          <Route path="/calendar" element={<UserRoute><StoreCalendar /></UserRoute>} />
-          <Route path="/Camera" element={<UserRoute><Camera /></UserRoute>} />
-          <Route path="/" element={<UserRoute><StoreOptions /></UserRoute>} />
-          <Route path="/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
-          <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
-          <Route path="/mannager/edit" element={<UserRoute><AddEditManager /></UserRoute>} />
-        </Routes>
+        <ShopProvider>
+          <Navbar />
+          <Routes>
+            <Route path="signin" element={<AuthRoute><SignIn /></AuthRoute>} />
+            <Route path="/SOP" element={<UserRoute><Home /></UserRoute>} />
+            <Route path="/shops" element={<UserRoute><Stores /></UserRoute>} />
+            <Route path="/shop/options" element={<UserRoute><Options /></UserRoute>} />
+            <Route path="/minishops" element={<UserRoute><Ministores /></UserRoute>} />
+            <Route path="/calendar" element={<UserRoute><StoreCalendar /></UserRoute>} />
+            <Route path="/Camera" element={<UserRoute><Camera /></UserRoute>} />
+            <Route path="/" element={<UserRoute><StoreOptions /></UserRoute>} />
+            <Route path="/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
+            <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
+            <Route path="/mannager/edit" element={<UserRoute><AddEditManager /></UserRoute>} />
+            <Route path="/ministore/options" element={<MiniOptions />} />
+            <Route path="/*" element={<Error />} />
+          </Routes>
+        </ShopProvider>
       </UserProvider>
     </div>
   )

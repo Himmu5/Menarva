@@ -11,7 +11,7 @@ const UserProvider: FC<P> = ({ children }) => {
     const [user, setUser] = useState<User>();
     const [config, setUserConfig] = useState<UserConfig>();
 
-    console.log("config :",config);
+    
     useEffect(() => {
         getConfig().then((res) => {
             setUserConfig(res.result.authorities.authorities);
@@ -33,7 +33,7 @@ const UserProvider: FC<P> = ({ children }) => {
         setUser(undefined);
     }
 
-    return <UserContext.Provider value={{ user, removeUser, AuthUser }} >
+    return <UserContext.Provider value={{ config , user, removeUser, AuthUser }} >
         {children}
     </UserContext.Provider>
 }
