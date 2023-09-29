@@ -17,6 +17,7 @@ import Ministores from "./Components/Ministores/Ministores"
 import Error from "./Components/Error/404Page"
 import MiniOptions from "./Components/Ministores/Options"
 import ShopProvider from "./Components/Provider/ShopProvider"
+import ShowSalesReport from "./Sales/ShowSalesReport"
 
 
 function App() {
@@ -39,8 +40,9 @@ function App() {
             <Route path="/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
             <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
             <Route path="/mannager/edit" element={<UserRoute><AddEditManager /></UserRoute>} />
-            <Route path="/ministore/options" element={<MiniOptions />} />
-            <Route path="/*" element={<Error />} />
+            <Route path="/ministore/options" element={<UserRoute><MiniOptions /></UserRoute>} />
+            <Route path="/ministore/sales/report" element={<UserRoute><ShowSalesReport /></UserRoute>} />
+            <Route path="*" element={<Error />} />
           </Routes>
         </ShopProvider>
       </UserProvider>

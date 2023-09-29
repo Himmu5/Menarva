@@ -13,15 +13,6 @@ type P = {
 
 const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSales }) => {
 
-  console.log("Date : ", setSelectedDate);
-
-  const highlightDates: Date[] = [
-    new Date('2023-09-01'),
-    new Date('2023-09-06'),
-    new Date('2023-09-10')
-    // Add more highlighted dates here
-  ];
-
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]

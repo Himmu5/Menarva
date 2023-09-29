@@ -21,3 +21,13 @@ export interface MiniShop {
     createdAt:   number;
     updatedAt:   number;
 }
+export interface Sales {
+    shopId:                  number;
+    shopName:                null;
+    date:                    Date;
+    totalSales:              number;
+    imageUrl:                null;
+    isOwnerAcknowledged:     boolean;
+    isMiniOwnerAcknowledged: boolean;
+    status:                  number;
+}

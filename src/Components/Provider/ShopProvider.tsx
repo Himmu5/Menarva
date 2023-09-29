@@ -2,12 +2,13 @@ import { FC, ReactNode, useEffect, useState } from 'react'
 import { getShops, getminiStore } from '../../Axios/store';
 import { MiniShop, Shop } from '../../Typings/Shop';
 import { ShopContext } from '../../Context/Store';
-import { getMonthSales } from '../../Axios/sales';
+import { getDailySale, getMonthSales } from '../../Axios/sales';
+import { useNavigate } from 'react-router-dom';
 type P = {
     children: ReactNode
 }
 const ShopProvider: FC<P> = ({ children }) => {
-
+    const Navigate = useNavigate();
     const [shops, setShops] = useState<Shop[]>();
     const [selectedShop, setSelectedShop] = useState<Shop>();
     const [miniShopsData, setMiniShops] = useState<MiniShop>();
@@ -30,6 +31,8 @@ const ShopProvider: FC<P> = ({ children }) => {
 
     }, [selectedShop])
 
+
+
     useEffect(() => {
         if (selectedShop) {
 
@@ -47,9 +50,25 @@ const ShopProvider: FC<P> = ({ children }) => {
             setMiniShops(res)
         })
     }
+    const [dailySales, setDailySales] = useState();
+    function getDailySales() {
+        const date = selectedDate.getDate();
+        const month = selectedDate.getMonth() < 10 ? "0" + (selectedDate.getMonth() + 1) : selectedDate.getMonth();
+        const year = selectedDate.getFullYear();
+        getDailySale(selectedShop!.id, `${year}-${month}-${date}`).then((res) => {
+            setDailySales(res);
+            // console.log("Get Daily sales : ", res);
+            Navigate('/ministore/sales/report');
+        })
+    }
 
+    useEffect(() => {
+        if (selectedDate && selectedShop) {
+            getDailySales();
+        }
+    }, [selectedDate])
 
-    return <ShopContext.Provider value={{ shops, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales }} >
+    return <ShopContext.Provider value={{ shops, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales , dailySales}} >
         {children}
     </ShopContext.Provider>
 }
