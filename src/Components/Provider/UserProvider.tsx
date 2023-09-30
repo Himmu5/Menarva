@@ -9,11 +9,14 @@ type P = {
 const UserProvider: FC<P> = ({ children }) => {
 
     const [user, setUser] = useState<User>();
+    const [shopId , setShopId ] = useState<number>();
     const [config, setUserConfig] = useState<UserConfig>();
 
     
     useEffect(() => {
         getConfig().then((res) => {
+            
+            setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
             setUserConfig(res.result.authorities.authorities);
             setUser(res.result.user);
         })
@@ -33,7 +36,7 @@ const UserProvider: FC<P> = ({ children }) => {
         setUser(undefined);
     }
 
-    return <UserContext.Provider value={{ config , user, removeUser, AuthUser }} >
+    return <UserContext.Provider value={{ config , user, removeUser, AuthUser , shopId }} >
         {children}
     </UserContext.Provider>
 }

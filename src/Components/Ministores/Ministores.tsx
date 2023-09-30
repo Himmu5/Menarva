@@ -1,16 +1,28 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { withShop } from '../../HOC/withShop'
 import { MiniShop } from '../../Typings/Shop'
 import Error from '../Error/404Page'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 type P = {
-    miniShopsData: { message: string, result: MiniShop[] }
+    miniShopsData: { message: string, result: MiniShop[] };
+    getMiniStores : (id : number)=>void;
+    loading : boolean
 }
 
-const MiniStores: FC<P> = ({ miniShopsData }) => {
-    console.log("Data : ", miniShopsData);
+const MiniStores: FC<P> = ({ miniShopsData , getMiniStores , loading }) => {
+    const shopId = +useParams().id!;
+    console.log('shopId :',shopId);
 
+    useEffect(()=>{
+        
+        getMiniStores(shopId);
+
+    },[shopId])
+
+    if(loading){
+        return <div>Loading....</div>
+    }
     if (miniShopsData.result === null) {
         return <Error message={miniShopsData.message} />
     }

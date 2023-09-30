@@ -52,11 +52,11 @@ function App() {
               <Route path="/SOP" element={<UserRoute><Home /></UserRoute>} />
               <Route path="/shops" element={<UserRoute><Stores /></UserRoute>} />
               <Route path="/shop/options" element={<UserRoute><Options /></UserRoute>} />
-              <Route path="/minishops" element={<UserRoute><Ministores /></UserRoute>} />
+              <Route path="/minishops/:id" element={<UserRoute><Ministores /></UserRoute>} />
               <Route path="/calendar" element={<UserRoute><StoreCalendar /></UserRoute>} />
               <Route path="/Camera" element={<UserRoute><Camera /></UserRoute>} />
               <Route path="/" element={<UserRoute><StoreOptions /></UserRoute>} />
-              <Route path="/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
+              <Route path="/ministore/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
               <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
               <Route path="/mannager/edit" element={<UserRoute><AddEditManager /></UserRoute>} />
               <Route path="/ministore/options" element={<UserRoute><MiniOptions /></UserRoute>} />
