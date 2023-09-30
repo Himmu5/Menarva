@@ -6,11 +6,13 @@ import { addSales, getDailySale, getMonthSales } from '../../Axios/sales';
 import { useNavigate } from 'react-router-dom';
 import { withUser } from '../../HOC/withUser';
 import axiosInstance from '../../Axios/axios';
+import { UserClass } from '../../Typings/User';
 type P = {
     children: ReactNode;
-    shopId: number
+    shopId: number,
+    user: UserClass
 }
-const ShopProvider: FC<P> = ({ children, shopId }) => {
+const ShopProvider: FC<P> = ({ children, shopId, user }) => {
     const Navigate = useNavigate();
     const [shops, setShops] = useState<Shop[]>();
     const [selectedShop, setSelectedShop] = useState<Shop>();
@@ -19,24 +21,24 @@ const ShopProvider: FC<P> = ({ children, shopId }) => {
     const [monthSales, setmonthSales] = useState();
     const [loading, setLoading] = useState(true);
 
-    console.log("selectedShop  : ", selectedShop);
+    console.log("monthSales  : ", monthSales);
 
     useEffect(() => {
         getShops().then((res) => {
             console.log("res : ", res.result);
             setShops(res.result);
         })
-    }, [])
+    }, [user])
 
     useEffect(() => {
         if (selectedShop) {
             getMiniStores(selectedShop.id);
         }
 
-    }, [selectedShop])
+    }, [selectedShop, user])
 
     useEffect(() => {
-        axiosInstance.get("/shops/" + shopId).then((res) => {
+        axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
             // console.log("Res : ",res.data.result);
             setSelectedShop(res.data.result);
         })
@@ -45,8 +47,8 @@ const ShopProvider: FC<P> = ({ children, shopId }) => {
     useEffect(() => {
         if (selectedShop) {
 
-            getMonthSales(selectedShop.id, 2023 || selectedDate.getFullYear(), 8 || selectedDate.getMonth()).then((res) => {
-                console.log("res .", res);
+            getMonthSales(selectedShop.id, selectedDate.getFullYear(), selectedDate.getMonth()).then((res) => {
+                console.log("monthSales .", res);
                 setmonthSales(res);
             })
 
@@ -81,18 +83,18 @@ const ShopProvider: FC<P> = ({ children, shopId }) => {
         }
     }, [selectedDate])
 
-    function uploadSales (shopId : number , data : {
+    function uploadSales(shopId: number, data: {
         shopId: number;
         storeName: string;
         date: string;
         totalSales: number;
-      }){
-        addSales(shopId , data).then((res)=>{
+    }) {
+        addSales(shopId, data).then((res) => {
             alert(res.message);
         })
     }
 
-    return <ShopContext.Provider value={{ uploadSales , getMiniStores, loading, shops,selectedShop ,  setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

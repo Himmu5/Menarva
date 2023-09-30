@@ -8,24 +8,25 @@ import { withShop } from '../../HOC/withShop';
 type P = {
   selectedDate: Date;
   setSelectedDate: (s: Date) => void;
-  monthSales: { result: { pending: Date[], approved: Date[], rejected: Date[] } }
+  monthSales: { id : number , result: { pending: Date[], approved: Date[], rejected: Date[] } }
 }
 
 const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSales }) => {
-
+  console.log("Month Sales : ",monthSales);
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
-
-  monthSales.result.pending.forEach((d) => {
-    panding.push(new Date(d));
-  })
-  monthSales.result.rejected.forEach((d) => {
-    rejected.push(new Date(d));
-  })
-  monthSales.result.approved.forEach((d) => {
-    approved.push(new Date(d));
-  })
+  if (monthSales.id !== 1033 ) {
+    monthSales.result?.pending.forEach((d) => {
+      panding.push(new Date(d));
+    })
+    monthSales.result?.rejected.forEach((d) => {
+      rejected.push(new Date(d));
+    })
+    monthSales.result?.approved.forEach((d) => {
+      approved.push(new Date(d));
+    })
+  }
 
   const handleDateChange = (date: any) => {
     if (Array.isArray(date)) {
@@ -45,7 +46,7 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
       date.toDateString() === highlightedDate.toDateString()
     );
 
-    const isDateApprovedHighlighted = (date: Date) =>
+  const isDateApprovedHighlighted = (date: Date) =>
     approved.some((highlightedDate) =>
       date.toDateString() === highlightedDate.toDateString()
     );
@@ -60,7 +61,7 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
           value={selectedDate}
           onChange={handleDateChange}
           tileClassName={({ date }) => {
-            return isDatePandingHighlighted(date) ? 'h-12 rounded-full bg-yellow-500' : isDateRejectedHighlighted(date) ? " h-12 rounded-full bg-red-500 " : isDateApprovedHighlighted(date) ? " h-12 rounded-full bg-green-500 " :"  ";
+            return isDatePandingHighlighted(date) ? 'h-12 rounded-full bg-yellow-500' : isDateRejectedHighlighted(date) ? " h-12 rounded-full bg-red-500 " : isDateApprovedHighlighted(date) ? " h-12 rounded-full bg-green-500 " : "  ";
           }}
         />
       </div>

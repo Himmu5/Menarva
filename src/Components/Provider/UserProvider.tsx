@@ -9,23 +9,31 @@ type P = {
 const UserProvider: FC<P> = ({ children }) => {
 
     const [user, setUser] = useState<User>();
+    console.log("User : ",user);
     const [shopId , setShopId ] = useState<number>();
     const [config, setUserConfig] = useState<UserConfig>();
 
     
     useEffect(() => {
+        updateConfig();
+    },[])
+
+    function updateConfig(){
         getConfig().then((res) => {
             
             setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
             setUserConfig(res.result.authorities.authorities);
             setUser(res.result.user);
         })
-    }, [])
+    }
 
     function AuthUser(formData: { username: string, password: string }) {
         loginUser(formData).then((res) => {
-            localStorage.setItem('token', res.accessToken);
-            setUser(res);
+            localStorage.setItem('token', res.user.accessToken);
+            // console.log('res : user , ',res.user.user);
+            setUser(res.user.user);
+            setUserConfig(res.config.result.authorities.authorities);
+            setShopId(+Object.keys(res.config.result.authorities.shopAuthorities)[0]);
         }).catch(() => {
             alert("User is not validate");
         })

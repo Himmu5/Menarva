@@ -23,7 +23,6 @@ import { useEffect, useState } from "react"
 import { addManager, getManagers } from "./Axios/manager"
 import { Manager } from "./Typings/Manager"
 import { UserConfig } from "./Typings/User"
-import { addSales } from "./Axios/sales"
 
 
 function App() {
@@ -31,7 +30,7 @@ function App() {
   const [managers, setManagers] = useState<Manager[]>();
 
   useEffect(() => {
-    addSales()
+    // addSales()
     getManagers().then((res)=>{
       console.log("res : ",res);
       setManagers(res.result);
@@ -41,6 +40,8 @@ function App() {
   function createManager(config : UserConfig , shopId:number , user : { name: string; email: string; password: string; type: string }){
     addManager(config , shopId , user)
   }
+
+  
   return (
     <div >
       <UserProvider>

@@ -2,7 +2,7 @@ import { UserConfig } from "../Typings/User";
 import axiosInstance from "./axios";
 
 export const getManagers = () => {
-  return axiosInstance.get("/shops/managers").then((res) => {
+  return axiosInstance.get("/shops/managers" ,  { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
     return res.data;
   });
 };
@@ -19,7 +19,7 @@ export const addManager = (
       shopAuthorities: {},
     },
   };
-  return axiosInstance.post(`/shops/${shopId}/manager` , { ...data  }).then((res) => {
+  return axiosInstance.post(`/shops/${shopId}/manager` , { ...data  } , { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
     console.log("Res : ",res);
     return res.data;
   });

@@ -18,7 +18,8 @@ const monthNames = [
 export function getMonthSales(id: number, year: number, month: number) {
   return axiosInstance
     .get(
-      `/api/v1/accounting/sales_calendar/${id}?year=${year}&month=${monthNames[month]}`
+      `/api/v1/accounting/sales_calendar/${id}?year=${year}&month=${monthNames[month]}`,
+      { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
     )
     .then((res) => {
       return res.data;
@@ -29,7 +30,7 @@ export function getDailySale(id: number, date: string) {
   console.log("Date :", date);
 
   return axiosInstance
-    .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`)
+    .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } })
     .then((res) => {
       return res.data;
     });
@@ -45,7 +46,7 @@ export function addSales(
   }
 ) {
   return axiosInstance
-    .post(`/api/v1/accounting/${shopId}/add_sales`, data)
+    .post(`/api/v1/accounting/${shopId}/add_sales`, data , { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } })
     .then((res) => {
       return res.data;
     });
