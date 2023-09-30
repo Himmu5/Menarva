@@ -1,11 +1,11 @@
 
 import { ComponentType, useContext } from "react";
-import { UserContext } from "../Context/User";
+import { ManagerContext } from "../Context/Manager";
 
 
-export function withUser(IncomingComponent: ComponentType<any>) {
+export function withManager(IncomingComponent: ComponentType<any>) {
     return function OutgoingComponent(props: any) {
-        const userData = useContext(UserContext);
+        const userData = useContext(ManagerContext);
         return <IncomingComponent {...props} {...userData} />
     }
 }

@@ -18,7 +18,7 @@ export interface UserClass {
 }
 
 
-export interface UserConfig {
+export type UserConfig =  {
     ACCOUNTING: Accounting;
     SHOP:       Accounting;
     MANAGER:    Accounting;
