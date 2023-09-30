@@ -5,12 +5,14 @@ import { Shop } from '../../Typings/Shop';
 import Input from '../UI-Components/Input';
 import { BiRupee } from 'react-icons/bi'
 import { Button } from '@mui/material';
+import ImageUpload from './ImageUpload';
+import axiosInstance from '../../Axios/axios';
 
 type P = {
   selectedShop: Shop;
   uploadSales: (shopId: number, data: {
     shopId: number;
-    storeName: string;
+    shopName: string;
     date: string;
     totalSales: number;
   }) => void
@@ -18,6 +20,7 @@ type P = {
 
 const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
   console.log("selected Shop :", selectedShop);
+  // const [ImageUploaded, setImageUploaded] = useState(false)
 
   const [selectedDate, setSelectedDate] = useState<Date>();
 
@@ -36,10 +39,11 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (selectedDate && salesAmount) {
-      const date = `${selectedDate.getFullYear()}/${(selectedDate.getMonth() < 10) ? "0" + selectedDate.getMonth() : selectedDate.getMonth()}/${selectedDate.getDate()}`;
+      const date = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() < 10) ? "0" + (selectedDate.getMonth() + 1) : selectedDate.getMonth()}-${selectedDate.getDate()}`;
+      console.log("date ", date);
       const data = {
         shopId: selectedShop.id,
-        storeName: selectedShop.name,
+        shopName: selectedShop.name,
         date,
         totalSales: +salesAmount
       }
@@ -47,6 +51,21 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
       uploadSales(selectedShop.id, data)
       setSalesAmount("0.00");
       setSelectedDate(undefined);
+      // setImageUploaded(false);
+    }
+  }
+
+  function UploadImage(salesImage: FormData) {
+    console.log("file : ", salesImage);
+    if (selectedDate) {
+      const date = `${selectedDate?.getFullYear()}-${selectedDate.getMonth() < 10 ? ("0" + (selectedDate.getMonth() + 1)) : selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
+      axiosInstance.post('/api/v1/accounting/upload_sales_image/' + selectedShop.id + `?date=${date}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' } }).then((res) => {
+        console.log("Image : ", res)
+        // setImageUploaded(true);
+        alert(res.data.message);
+      })
+    } else {
+      alert("Please select a date");
     }
   }
 
@@ -72,8 +91,10 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
           <Input value={salesAmount} placeholder="Enter the Today's sales " onChange={(e) => setSalesAmount(e.target.value)} />
         </div>
 
+
         <Button variant='contained' type='submit' children=" Upload Sales " />
       </form>
+      { <ImageUpload UploadImage={UploadImage} />}
     </div>
   </div >
 }

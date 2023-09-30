@@ -91,6 +91,8 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
     }) {
         addSales(shopId, data).then((res) => {
             alert(res.message);
+        }).catch((err)=>{
+            alert(err);
         })
     }
 

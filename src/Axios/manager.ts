@@ -20,7 +20,7 @@ export const addManager = (
     },
   };
   return axiosInstance.post(`/shops/${shopId}/manager` , { ...data  } , { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
-    console.log("Res : ",res);
+    // console.log("Res : ",res);
     return res.data;
   });
 };

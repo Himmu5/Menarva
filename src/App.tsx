@@ -18,35 +18,16 @@ import Error from "./Components/Error/404Page"
 import MiniOptions from "./Components/Ministores/Options"
 import ShopProvider from "./Components/Provider/ShopProvider"
 import ShowSalesReport from "./Sales/ShowSalesReport"
-import { ManagerContext } from "./Context/Manager"
-import { useEffect, useState } from "react"
-import { addManager, getManagers } from "./Axios/manager"
-import { Manager } from "./Typings/Manager"
-import { UserConfig } from "./Typings/User"
+import ManagerProvider from "./Components/Provider/ManagerProvider"
 
 
 function App() {
 
-  const [managers, setManagers] = useState<Manager[]>();
-
-  useEffect(() => {
-    // addSales()
-    getManagers().then((res)=>{
-      console.log("res : ",res);
-      setManagers(res.result);
-    })
-  }, [])
-
-  function createManager(config : UserConfig , shopId:number , user : { name: string; email: string; password: string; type: string }){
-    addManager(config , shopId , user)
-  }
-
-  
   return (
     <div >
       <UserProvider>
         <ShopProvider>
-          <ManagerContext.Provider value={{ managers ,createManager }} >
+          <ManagerProvider>
             <Navbar />
             <Routes>
               <Route path="signin" element={<AuthRoute><SignIn /></AuthRoute>} />
@@ -64,7 +45,7 @@ function App() {
               <Route path="/ministore/sales/report" element={<UserRoute><ShowSalesReport /></UserRoute>} />
               <Route path="*" element={<Error />} />
             </Routes>
-          </ManagerContext.Provider>
+          </ManagerProvider>
         </ShopProvider>
       </UserProvider>
     </div>

@@ -5,7 +5,7 @@ import { BsFillPersonFill, BsSearch } from 'react-icons/bs'
 import { MdOutlineEmail } from 'react-icons/md'
 import { BiSolidLock } from 'react-icons/bi'
 import { Button } from '@mui/material';
-import { FormikBag, FormikProps, withFormik } from 'formik';
+import { FormikBag, FormikProps, useFormik, withFormik } from 'formik';
 import { withShop } from '../../HOC/withShop';
 import { Shop } from '../../Typings/Shop';
 import { withUser } from '../../HOC/withUser';
@@ -16,15 +16,30 @@ type P = {
     shops: Shop[];
     config: UserConfig;
     createManager: { config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string } }
-} & FormikProps<T>
+}
 
-const AddEditManager: FC<P> = ({ values, handleChange, handleSubmit, shops, config }) => {
+const AddEditManager: FC<P> = ({ shops, config , createManager }) => {
+
+    const initialValues = {
+        name: "", email: "", password: "", type: "", search: "", config,
+        shopId: 0
+    }
+    function submit(values: T, bag: FormikBag<P, T>) {
+        console.log("values  : ", values);
+        createManager(values.config, values.shopId, { name: values.name, email: values.email, password: values.password })
+    }
+
+    type T = typeof initialValues;
+    const { values, handleChange, handleSubmit } = useFormik({
+        initialValues,
+        onSubmit: submit
+    })
 
     let filteredShop = [] as Shop[]
     const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>({});
     const [editConfig, setEditConfig] = useState(config);
     console.log("editConfig ", editConfig);
-    console.log("filteredShop ", filteredShop);
+    // console.log("filteredShop ", filteredShop);
 
 
     if (values.search.length > 0) {
@@ -34,11 +49,11 @@ const AddEditManager: FC<P> = ({ values, handleChange, handleSubmit, shops, conf
     }
 
     function change(e, option, o) {
-        console.log("e : ", e.target.value);
-        values.config[option][o] = !values.config[option][o]
+        // console.log("e : ", e.target.value);
+        values.config[option][o] = e.target.value
     }
 
-    console.log("values.config[option][o]  :", values.config);
+    // console.log("values.config[option][o]  :", values.config);
 
     return <div className='min-h-[80vh] flex justify-center items-center '>
 
@@ -94,17 +109,17 @@ const AddEditManager: FC<P> = ({ values, handleChange, handleSubmit, shops, conf
                 </div>
 
                 {
-                    Object.keys(selectedShop).length > 0 && Object.keys(values.config).map((option) => {
+                    Object.keys(selectedShop).length > 0 && Object.keys(editConfig).map((option) => {
                         return <div className='gap-2'>
                             <p className='font-bold text-lg'>{option}</p>
                             {
-                                Object.keys(values.config[option]).map((o) => {
+                                Object.keys(editConfig[option]).map((o) => {
                                     console.log("values.config[option][o]  ", o);
                                     return <div className=' px-3 flex flex-col my-2 space-y-1'>
                                         <p>{o}</p>
-                                        <select value={values.config[option][o]} onChange={(e) => change(e, option, o)} className='border p-1 rounded-md' >
-                                            <option value="True">true</option>
-                                            <option value="False">false</option>
+                                        <select value={editConfig[option][o]} onChange={(e) => setEditConfig({ ...editConfig, [option]: { ...editConfig[option], [o]: e.target.value } })} className='border p-1 rounded-md' >
+                                            <option value={true}>true</option>
+                                            <option value={false}>false</option>
                                         </select>
                                     </div>
                                 })
@@ -124,38 +139,5 @@ const AddEditManager: FC<P> = ({ values, handleChange, handleSubmit, shops, conf
     </div>
 }
 
-const initialValues = {
-    name: "", email: "", password: "", type: "", search: "", config: {
-        ACCOUNTING: {
-            "READ": false,
-            "WRITE": false,
-            "UPDATE": false,
-            "DELETE": false
-        }, MANAGER: {
-            "READ": false,
-            "WRITE": false,
-            "UPDATE": false,
-            "DELETE": false
-        }, SHOP: {
-            "READ": false,
-            "WRITE": false,
-            "UPDATE": false,
-            "DELETE": false
-        }
-    },
-    shopId: 0
-}
 
-type T = typeof initialValues;
-
-function submit(values: T, bag: FormikBag<P, T>) {
-    console.log("bag : ", bag);
-    bag.props.createManager(values.config, values.shopId, { name: values.name, email: values.email, password: values.password })
-}
-
-const hoc = withFormik({
-    mapPropsToValues: () => (initialValues),
-    handleSubmit: submit
-})
-
-export default withManager(withUser(hoc(withShop(AddEditManager))));
+export default withManager(withUser(withShop(AddEditManager)));
