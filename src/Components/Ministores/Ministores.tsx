@@ -7,12 +7,12 @@ import { Link, useParams } from 'react-router-dom'
 type P = {
     miniShopsData: { message: string, result: MiniShop[] };
     getMiniStores : (id : number)=>void;
-    loading : boolean
+    loading : boolean;
+    shopId : number
 }
 
-const MiniStores: FC<P> = ({ miniShopsData , getMiniStores , loading }) => {
-    const shopId = +useParams().id!;
-    console.log('shopId :',shopId);
+const MiniStores: FC<P> = ({ miniShopsData , getMiniStores , loading , shopId }) => {
+    // const shopId = +useParams().id!;
 
     useEffect(()=>{
         

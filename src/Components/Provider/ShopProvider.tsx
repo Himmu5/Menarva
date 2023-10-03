@@ -35,14 +35,14 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
             getMiniStores(selectedShop.id);
         }
 
-    }, [selectedShop, user])
+    }, [ selectedShop, user])
 
     useEffect(() => {
         axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
             // console.log("Res : ",res.data.result);
             setSelectedShop(res.data.result);
         })
-    }, [shopId])
+    }, [shopId , user])
 
     useEffect(() => {
         if (selectedShop) {

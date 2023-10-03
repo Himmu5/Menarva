@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { withShop } from '../../HOC/withShop'
 import { Shop } from '../../Typings/Shop'
 import { Link } from 'react-router-dom';
+import Loading from '../../Loader/Loading';
 
 type P = {
     shops: Shop[];
@@ -9,6 +10,11 @@ type P = {
 }
 
 const stores: FC<P> = ({ shops, setSelectedShop }) => {
+
+    if(!shops){
+        return <Loading /> 
+    }
+
     return <div className=' m-2 max-w-7xl mx-auto my-5 flex flex-col gap-5 ' >
         {
             shops.map((shop) => {
