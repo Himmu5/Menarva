@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 import Input from '../UI-Components/Input';
 import { BsFillPersonFill, BsSearch } from 'react-icons/bs'
 import { MdOutlineEmail } from 'react-icons/md'
@@ -11,35 +11,67 @@ import { Shop } from '../../Typings/Shop';
 import { withUser } from '../../HOC/withUser';
 import { UserConfig } from '../../Typings/User';
 import { withManager } from '../../HOC/withManager';
+import { SingleManager } from '../../Typings/Manager';
+import { useParams } from 'react-router-dom';
 
 type P = {
     shops: Shop[];
     config: UserConfig;
-    createManager: { config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string } }
+    createManager: { config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string } };
+    singleManager: SingleManager;
+    UpdateManager: (
+        config: UserConfig, shopId: number, user: {
+            name: string;
+            email: string;
+            password: string;
+            type: string;
+            username: string
+        }
+    ) => void
 }
 
-const AddEditManager: FC<P> = ({ shops, config , createManager }) => {
+const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager , UpdateManager }) => {
+
+    const FormType = useParams().Form_Type;
+
 
     const initialValues = {
-        name: "", email: "", password: "", type: "", search: "", config,
+        name: singleManager?.userDO.name || "", username: singleManager?.userDO.username || "", email: singleManager?.userDO.email || "", password: singleManager?.userDO.password || "", type: "", search: "", config: singleManager?.shopAuthorities[3] | config,
         shopId: 0
     }
+    // console.log("singleManager :",shops);
+    useEffect(()=>{
+        if(!singleManager){
+            resetForm();
+        }
+    },[])
+
     function submit(values: T, bag: FormikBag<P, T>) {
-        console.log("values  : ", values);
-        createManager(values.config, values.shopId, { name: values.name, email: values.email, password: values.password })
+        if (FormType === "ADD") {
+            console.log("values  : ", values);
+            createManager(editConfig, values.shopId, { name: values.name, username: values.username, email: values.email, password: values.password })
+            bag.resetForm();
+        }
+        else if (FormType === "Edit") {
+            console.log("Edit Form ");
+            
+            UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type } , singleManager?.userDO.id)
+        }
     }
 
     type T = typeof initialValues;
-    const { values, handleChange, handleSubmit } = useFormik({
+    const { values, handleChange, handleSubmit, resetForm } = useFormik({
         initialValues,
         onSubmit: submit
     })
 
     let filteredShop = [] as Shop[]
-    const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>({});
-    const [editConfig, setEditConfig] = useState(config);
+    const oldSelection = singleManager?.shopAuthorities ? { [Object.keys(singleManager?.shopAuthorities)[0][0]]: shops.filter((shop) => shop.id == Object.keys(singleManager?.shopAuthorities)[0])[0] } : null
+    const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(oldSelection || {});
+    const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[3] : config);
+
     console.log("editConfig ", editConfig);
-    // console.log("filteredShop ", filteredShop);
+    console.log("selectedShop ", selectedShop);
 
 
     if (values.search.length > 0) {
@@ -52,18 +84,27 @@ const AddEditManager: FC<P> = ({ shops, config , createManager }) => {
         // console.log("e : ", e.target.value);
         values.config[option][o] = e.target.value
     }
+    useEffect(() => {
+        return () => {
+            resetForm();
+        }
+    }, [])
 
     // console.log("values.config[option][o]  :", values.config);
 
     return <div className='min-h-[80vh] flex justify-center items-center '>
-
+        {/* {FormType?.toUpperCase()} */}
         <div >
-            <h1 className=' my-5 text-center '>ADD MANAGER</h1>
+            <h1 className=' my-5 text-center '>{FormType?.toUpperCase()} MANAGER</h1>
 
             <form className='flex flex-col gap-5 ' onSubmit={handleSubmit}>
                 <div className='flex items-center relative'>
                     <BsFillPersonFill size={20} className="absolute left-2 " />
                     <Input type='' name='name' placeholder='Manager Name' value={values.name} onChange={handleChange} />
+                </div>
+                <div className='flex items-center relative'>
+                    <BsFillPersonFill size={20} className="absolute left-2 " />
+                    <Input type='' name='username' placeholder='User Name' value={values.username} onChange={handleChange} />
                 </div>
                 <div className='flex items-center relative'>
                     <MdOutlineEmail size={20} className="absolute left-2 " />
@@ -109,7 +150,7 @@ const AddEditManager: FC<P> = ({ shops, config , createManager }) => {
                 </div>
 
                 {
-                    Object.keys(selectedShop).length > 0 && Object.keys(editConfig).map((option) => {
+                    (Object.keys(selectedShop).length > 0 || singleManager?.userDO) && Object.keys(editConfig).map((option) => {
                         return <div className='gap-2'>
                             <p className='font-bold text-lg'>{option}</p>
                             {
@@ -130,7 +171,7 @@ const AddEditManager: FC<P> = ({ shops, config , createManager }) => {
                 }
 
 
-                <Button type='submit' variant='contained' children="CREATE MANAGER" style={{ color: "white" }} sx={{ borderRadius: 0 }} />
+                <Button type='submit' variant='contained' children={FormType?.toUpperCase() + " MANAGER"} style={{ color: "white" }} sx={{ borderRadius: 0 }} />
 
             </form>
 

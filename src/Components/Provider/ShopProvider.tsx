@@ -67,13 +67,13 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
 
     const [dailySales, setDailySales] = useState();
     function getDailySales() {
-        const date = selectedDate.getDate();
+        const date = selectedDate.getDate() < 10 ? "0" + (selectedDate.getDate()) : selectedDate.getDate();
         const month = selectedDate.getMonth() < 10 ? "0" + (selectedDate.getMonth() + 1) : selectedDate.getMonth();
         const year = selectedDate.getFullYear();
         getDailySale(selectedShop!.id, `${year}-${month}-${date}`).then((res) => {
             setDailySales(res);
-            // console.log("Get Daily sales : ", res);
             Navigate('/ministore/sales/report');
+            // console.log("Get Daily sales : ", res);
         })
     }
 
@@ -91,7 +91,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
     }) {
         addSales(shopId, data).then((res) => {
             alert(res.message);
-        }).catch((err)=>{
+        }).catch((err) => {
             alert(err);
         })
     }

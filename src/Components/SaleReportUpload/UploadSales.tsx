@@ -39,7 +39,7 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (selectedDate && salesAmount) {
-      const date = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() < 10) ? "0" + (selectedDate.getMonth() + 1) : selectedDate.getMonth()}-${selectedDate.getDate()}`;
+      const date = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() < 10) ? "0" + (selectedDate.getMonth() + 1) : selectedDate.getMonth()}-${selectedDate.getDate() < 10 ? "0" + selectedDate.getDate() : selectedDate.getDate()}`;
       console.log("date ", date);
       const data = {
         shopId: selectedShop.id,
@@ -58,7 +58,7 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
   function UploadImage(salesImage: FormData) {
     console.log("file : ", salesImage);
     if (selectedDate) {
-      const date = `${selectedDate?.getFullYear()}-${selectedDate.getMonth() < 10 ? ("0" + (selectedDate.getMonth() + 1)) : selectedDate.getMonth() + 1}-${selectedDate.getDate()}`;
+      const date = `${selectedDate?.getFullYear()}-${selectedDate.getMonth() < 10 ? ("0" + (selectedDate.getMonth() + 1)) : selectedDate.getMonth() + 1}-${selectedDate.getDate() < 10 ? ("0" + (selectedDate.getDate())) : selectedDate.getDate()}`;
       axiosInstance.post('/api/v1/accounting/upload_sales_image/' + selectedShop.id + `?date=${date}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' } }).then((res) => {
         console.log("Image : ", res)
         // setImageUploaded(true);
@@ -94,7 +94,7 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
 
         <Button variant='contained' type='submit' children=" Upload Sales " />
       </form>
-      { <ImageUpload UploadImage={UploadImage} />}
+      {<ImageUpload UploadImage={UploadImage} />}
     </div>
   </div >
 }

@@ -40,7 +40,7 @@ function App() {
               <Route path="/" element={<UserRoute><StoreOptions /></UserRoute>} />
               <Route path="/ministore/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
               <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
-              <Route path="/mannager/edit" element={<UserRoute><AddEditManager /></UserRoute>} />
+              <Route path="/mannager/edit/:Form_Type" element={<UserRoute><AddEditManager /></UserRoute>} />
               <Route path="/ministore/options" element={<UserRoute><MiniOptions /></UserRoute>} />
               <Route path="/ministore/sales/report" element={<UserRoute><ShowSalesReport /></UserRoute>} />
               <Route path="*" element={<Error />} />
