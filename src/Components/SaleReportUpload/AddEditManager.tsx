@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { FC, useState, useEffect } from 'react'
 import Input from '../UI-Components/Input';
-import { BsFillPersonFill, BsSearch } from 'react-icons/bs'
+import { BsFillPersonFill, BsSearch, BsShop } from 'react-icons/bs'
 import { MdOutlineEmail } from 'react-icons/md'
 import { BiSolidLock } from 'react-icons/bi'
 import { Button } from '@mui/material';
@@ -13,6 +13,7 @@ import { UserConfig } from '../../Typings/User';
 import { withManager } from '../../HOC/withManager';
 import { SingleManager } from '../../Typings/Manager';
 import { useParams } from 'react-router-dom';
+import { RxCross2 } from 'react-icons/rx'
 
 type P = {
     shops: Shop[];
@@ -30,21 +31,19 @@ type P = {
     ) => void
 }
 
-const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager , UpdateManager }) => {
+const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, UpdateManager }) => {
 
     const FormType = useParams().Form_Type;
 
-
-    const initialValues = {
+    const initialValues = FormType !== "ADD" ? {
         name: singleManager?.userDO.name || "", username: singleManager?.userDO.username || "", email: singleManager?.userDO.email || "", password: singleManager?.userDO.password || "", type: "", search: "", config: singleManager?.shopAuthorities[3] | config,
         shopId: 0
+    } : {
+        name: "", username: "", email: "", password: "", type: "", search: "", config: config,
+        shopId: 0
     }
-    // console.log("singleManager :",shops);
-    useEffect(()=>{
-        if(!singleManager){
-            resetForm();
-        }
-    },[])
+
+
 
     function submit(values: T, bag: FormikBag<P, T>) {
         if (FormType === "ADD") {
@@ -54,8 +53,8 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager , U
         }
         else if (FormType === "Edit") {
             console.log("Edit Form ");
-            
-            UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type } , singleManager?.userDO.id)
+
+            UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.userDO.id)
         }
     }
 
@@ -81,16 +80,16 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager , U
     }
 
     function change(e, option, o) {
-        // console.log("e : ", e.target.value);
         values.config[option][o] = e.target.value
     }
     useEffect(() => {
+        if(FormType === "Add"){
+            setSelectedShop({})
+        }
         return () => {
             resetForm();
         }
     }, [])
-
-    // console.log("values.config[option][o]  :", values.config);
 
     return <div className='min-h-[80vh] flex justify-center items-center '>
         {/* {FormType?.toUpperCase()} */}
@@ -136,7 +135,10 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager , U
                 <div className='space-y-1'>
                     {
                         Object.keys(selectedShop).length < 1 && filteredShop.map((shop) => {
-                            return <div onClick={() => { setSelectedShop({ ...selectedShop, [shop.id]: shop }); values.shopId = shop.id }} className=' px-3 py-1 border rounded-md shadow-md  '>{shop.name}</div>
+                            return <div onClick={() => { setSelectedShop({ ...selectedShop, [shop.id]: shop }); values.shopId = shop.id }} className=' px-3 flex items-center gap-4  py-1 border rounded-md shadow-md  '>
+                                <p><BsShop /></p>
+                                <p>{shop.name}</p>
+                            </div>
                         })
                     }
                 </div>
@@ -144,7 +146,9 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager , U
                 <div>
                     {
                         Object.keys(selectedShop).map((id: any) => {
-                            return <div className='flex flex-col gap-2'> <h1 className='font-bold'>Selected Shops </h1> <p className='text-sm '> {selectedShop[id].name}</p></div>
+                            return <div className='flex flex-col gap-2'> <h1 className='font-bold'>Selected Shops </h1> <div className='flex items-center justify-between'>
+                                <p className='text-sm '> {selectedShop[id].name}</p><RxCross2 className=" cursor-pointer  " onClick={() => setSelectedShop({})} />
+                            </div> </div>
                         })
                     }
                 </div>

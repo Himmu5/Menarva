@@ -18,11 +18,15 @@ const ManagerProvider: FC<P> = ({ children, user }) => {
 
     useEffect(() => {
         // addSales()
+        getManager();
+    }, [user])
+
+    function getManager(){
         getManagers().then((res) => {
             console.log("res : ", res);
             setManagers(res.result);
         })
-    }, [user])
+    }
     const navigate =useNavigate()
     function getSingleManager(mId: number) {
         getSingleManagers(mId).then((res) => {
@@ -54,7 +58,7 @@ const ManagerProvider: FC<P> = ({ children, user }) => {
 
     
 
-    return <ManagerContext.Provider value={{ UpdateManager , managers, createManager ,getSingleManager , singleManager }} >
+    return <ManagerContext.Provider value={{ UpdateManager , getManager , managers, createManager ,getSingleManager , singleManager }} >
         {children}
     </ManagerContext.Provider>
 }

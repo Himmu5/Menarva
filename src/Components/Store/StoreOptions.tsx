@@ -1,7 +1,6 @@
 import { FC, useState } from 'react'
-import { AiOutlineRight, AiOutlineLineChart, AiOutlineSetting } from 'react-icons/ai'
+import { AiOutlineLineChart, AiOutlineSetting } from 'react-icons/ai'
 import { FiEdit } from 'react-icons/fi'
-import { Link, Navigate } from 'react-router-dom'
 import { withUser } from '../../HOC/withUser'
 import { UserClass, UserConfig } from '../../Typings/User'
 import { IconType } from 'react-icons'
@@ -9,7 +8,6 @@ import Hamburger from 'hamburger-react'
 import Stores from './Stores'
 import Mannager from '../SaleReportUpload/Mannager'
 import Ministores from '../Ministores/Ministores'
-
 
 type P = {
   config: UserConfig,
