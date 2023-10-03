@@ -12,7 +12,7 @@ const UserProvider: FC<P> = ({ children }) => {
     console.log("User : ",user);
     const [shopId , setShopId ] = useState<number>();
     const [config, setUserConfig] = useState<UserConfig>();
-
+    const [shopConfig , setShopConfig ] = useState<UserConfig>();
     
     useEffect(() => {
         updateConfig();
@@ -20,7 +20,8 @@ const UserProvider: FC<P> = ({ children }) => {
 
     function updateConfig(){
         getConfig().then((res) => {
-            
+            console.log("shop config : ",res.result.authorities.shopAuthorities[3]);
+            setShopConfig(res.result.authorities.shopAuthorities[3]);
             setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
             setUserConfig(res.result.authorities.authorities);
             setUser(res.result.user);
@@ -44,7 +45,7 @@ const UserProvider: FC<P> = ({ children }) => {
         setUser(undefined);
     }
 
-    return <UserContext.Provider value={{ config , user, removeUser, AuthUser , shopId }} >
+    return <UserContext.Provider value={{shopConfig , config , user, removeUser, AuthUser , shopId }} >
         {children}
     </UserContext.Provider>
 }

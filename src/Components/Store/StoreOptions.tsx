@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import { AiOutlineLineChart, AiOutlineSetting } from 'react-icons/ai'
-import { FiEdit } from 'react-icons/fi'
+import { FiEdit, FiChevronRight } from 'react-icons/fi'
 import { withUser } from '../../HOC/withUser'
 import { UserClass, UserConfig } from '../../Typings/User'
 import { IconType } from 'react-icons'
@@ -8,6 +8,8 @@ import Hamburger from 'hamburger-react'
 import Stores from './Stores'
 import Mannager from '../SaleReportUpload/Mannager'
 import Ministores from '../Ministores/Ministores'
+import { BsShop } from 'react-icons/bs'
+
 
 type P = {
   config: UserConfig,
@@ -20,7 +22,7 @@ const StoreOptions: FC<P> = ({ user, shopId }) => {
   let data = [] as { option: string, logo: IconType }[]
 
   if (user.role === 1) {
-    data = [{ option: "Stores", logo: AiOutlineLineChart },
+    data = [{ option: "Stores", logo: BsShop },
     { option: "Warehouse", logo: AiOutlineSetting },
     { option: "Edit Managers", logo: FiEdit },]
   } else {
@@ -40,24 +42,35 @@ const StoreOptions: FC<P> = ({ user, shopId }) => {
     setOpen(!open);
   }
 
+  return <div className='relative '>
 
+    <div className=' '>
 
-  return <>
-
-    <div className='max-w-7xl mx-auto relative bg-white '>
-      <div className='flex items-center'>
+      <div className='flex items-center max-w-7xl mx-auto'>
         <Hamburger size={20} toggled={isOpen} toggle={setOpen} />
         <p>{selectedOption}</p>
       </div>
 
-      <div className='flex flex-col gap-1 absolute left-12  '>
-        {
-          isOpen && data.map((item) => {
-            return <div className=' cursor-pointer  ' onClick={() => onSelect(item)} key={item.option} >
-              {item.option}
-            </div>
-          })
-        }
+      <div className={'flex flex-col gap-1 px-5 fixed border-r shadow-md   bg-white z-10 h-[100vh] top-0 ' + (isOpen ? " w-[45vh] ml-0 duration-500 " : " -ml-80 duration-500 ")}>
+
+        <div className='flex items-center gap-2 py-2 '>
+          <Hamburger size={25} toggled={isOpen} toggle={setOpen} />
+          <p className='font-bold'>{selectedOption}</p>
+        </div>
+
+        <div className='mt-[50%] p-3'>
+          {
+            data.map((item) => {
+              return <div className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} key={item.option} >
+                <item.logo size={25} />
+                <p className='w-32'>
+                  {item.option}
+                </p>
+                <FiChevronRight size={25} />
+              </div>
+            })
+          }
+        </div>
       </div>
 
     </div>
@@ -66,7 +79,7 @@ const StoreOptions: FC<P> = ({ user, shopId }) => {
       selectedOption === 'Stores' ? <Stores /> : selectedOption === "Edit Managers" ? <Mannager /> : selectedOption === "Mini Stores" ? <Ministores to={"/minishops/" + shopId} shopId={shopId} /> : ''
     }
 
-  </>
+  </div>
 
 }
 export default withUser(StoreOptions);

@@ -29,6 +29,7 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
   }
 
   const handleDateChange = (date: any) => {
+    console.log("Change calendar");
     if (Array.isArray(date)) {
       setSelectedDate(date[0]);
     } else {
@@ -51,6 +52,14 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
       date.toDateString() === highlightedDate.toDateString()
     );
 
+    function handleViewChange(date:any){
+      if (Array.isArray(date)) {
+        setSelectedDate(date[0]);
+      } else {
+        setSelectedDate(date);
+      }
+    }
+
   return (
     <div className='max-w-7xl mx-auto flex flex-col'>
       <Link to={'/'} className='w-fit'><FaAngleLeft size={25} className=" w-fit text-xl mt-4 " /></Link>
@@ -59,6 +68,7 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
         <Calendar
           className={"max-w-sm"}
           value={selectedDate}
+          onClickMonth={handleViewChange}
           onChange={handleDateChange}
           tileClassName={({ date }) => {
             return isDatePandingHighlighted(date) ? 'h-12 rounded-full bg-yellow-500' : isDateRejectedHighlighted(date) ? " h-12 rounded-full bg-red-500 " : isDateApprovedHighlighted(date) ? " h-12 rounded-full bg-green-500 " : "  ";

@@ -13,7 +13,6 @@ type P = {
 }
 
 const MiniStores: FC<P> = ({ miniShopsData, getMiniStores, loading, shopId }) => {
-    // const shopId = +useParams().id!;
 
     useEffect(() => {
 

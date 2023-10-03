@@ -54,7 +54,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
 
         }
 
-    }, [selectedShop])
+    }, [selectedShop , selectedDate])
 
     function getMiniStores(id: number) {
         getminiStore(id).then((res) => {
@@ -67,15 +67,20 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
 
     const [dailySales, setDailySales] = useState();
     function getDailySales() {
-        const date = selectedDate.getDate() < 10 ? "0" + (selectedDate.getDate()) : selectedDate.getDate();
-        const month = selectedDate.getMonth() < 10 ? "0" + (selectedDate.getMonth() + 1) : selectedDate.getMonth();
-        const year = selectedDate.getFullYear();
-        getDailySale(selectedShop!.id, `${year}-${month}-${date}`).then((res) => {
+        const date = formatDateToYYYYMMDD(selectedDate);
+        getDailySale(selectedShop!.id, date).then((res) => {
             setDailySales(res);
             Navigate('/ministore/sales/report');
             // console.log("Get Daily sales : ", res);
         })
     }
+    function formatDateToYYYYMMDD(date:Date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 because months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        console.log("day: " ,`${year}-${month}-${day}`);        
+        return `${year}-${month}-${day}`;
+      }
 
     useEffect(() => {
         if (selectedDate && selectedShop) {
@@ -96,7 +101,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
         })
     }
 
-    return <ShopContext.Provider value={{ uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ formatDateToYYYYMMDD , uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

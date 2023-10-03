@@ -1,23 +1,24 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FiUpload } from 'react-icons/fi';
 
 type P = {
   UploadImage : (f:FormData)=>void;
+  selectedImage:File;
+  setSelectedImage : (f:File)=>void;
 }
-const ImageUpload: React.FC<P> = ({ UploadImage }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+const ImageUpload: React.FC<P> = ({ UploadImage , setSelectedImage , selectedImage}) => {
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
-    setSelectedFile(file);
+    setSelectedImage(file);
   }, []);
 
   const uploadImage = async () => {
-    if (!selectedFile) return;
+    if (!selectedImage) return;
 
     const formData = new FormData();
-    formData.append('salesImage', selectedFile);
+    formData.append('salesImage', selectedImage);
 
     UploadImage(formData);
   };
@@ -30,7 +31,7 @@ const ImageUpload: React.FC<P> = ({ UploadImage }) => {
 
   return (
      <div className=" max-w-md mx-auto relative my-5 ">
-      {selectedFile && <button
+      {selectedImage && <button
               onClick={uploadImage}
               className="bg-blue-500 absolute left-20 top-36 hover:bg-blue-700 text-white font-bold py-1  px-4 rounded-full"
             >
@@ -41,10 +42,10 @@ const ImageUpload: React.FC<P> = ({ UploadImage }) => {
         className="bg-gray-200 flex flex-col border-2 border-dashed border-gray-400 rounded-lg p-4 text-center cursor-pointer"
       >
         <input {...getInputProps()} />
-        {selectedFile ? (
+        {selectedImage ? (
           <>
             <img
-              src={URL.createObjectURL(selectedFile)}
+              src={URL.createObjectURL(selectedImage)}
               alt="Selected"
               className=" max-h-40 mx-auto mb-2"
             />

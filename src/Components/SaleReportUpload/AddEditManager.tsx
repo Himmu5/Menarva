@@ -37,19 +37,24 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 
     const initialValues = FormType !== "ADD" ? {
         name: singleManager?.userDO.name || "", username: singleManager?.userDO.username || "", email: singleManager?.userDO.email || "", password: singleManager?.userDO.password || "", type: "", search: "", config: singleManager?.shopAuthorities[3] | config,
-        shopId: 0
+        shopId: null
     } : {
         name: "", username: "", email: "", password: "", type: "", search: "", config: config,
-        shopId: 0
+        shopId: null
     }
 
 
 
     function submit(values: T, bag: FormikBag<P, T>) {
         if (FormType === "ADD") {
-            console.log("values  : ", values);
-            createManager(editConfig, values.shopId, { name: values.name, username: values.username, email: values.email, password: values.password })
-            bag.resetForm();
+            if (Object.keys(selectedShop).length > 0) {
+                console.log("values  : ", values);
+                createManager(editConfig, Object.keys(selectedShop)[0], { name: values.name, username: values.username, email: values.email, password: values.password })
+                bag.resetForm();
+            }
+            else{
+                alert("Please Select Shop")
+            }
         }
         else if (FormType === "Edit") {
             console.log("Edit Form ");
@@ -83,7 +88,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
         values.config[option][o] = e.target.value
     }
     useEffect(() => {
-        if(FormType === "Add"){
+        if (FormType === "Add") {
             setSelectedShop({})
         }
         return () => {

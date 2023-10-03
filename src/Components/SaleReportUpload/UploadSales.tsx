@@ -7,6 +7,8 @@ import { BiRupee } from 'react-icons/bi'
 import { Button } from '@mui/material';
 import ImageUpload from './ImageUpload';
 import axiosInstance from '../../Axios/axios';
+import { withUser } from '../../HOC/withUser';
+import { UserConfig } from '../../Typings/User';
 
 type P = {
   selectedShop: Shop;
@@ -15,12 +17,18 @@ type P = {
     shopName: string;
     date: string;
     totalSales: number;
-  }) => void
+  }) => void;
+  shopConfig : UserConfig;
+  formatDateToYYYYMMDD:(d:Date)=>string;
 }
 
-const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
+const UploadSales: FC<P> = ({ selectedShop, uploadSales , shopConfig , formatDateToYYYYMMDD }) => {
   console.log("selected Shop :", selectedShop);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
   // const [ImageUploaded, setImageUploaded] = useState(false)
+  console.log("Config :",shopConfig);
+  
 
   const [selectedDate, setSelectedDate] = useState<Date>();
 
@@ -39,12 +47,11 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (selectedDate && salesAmount) {
-      const date = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() < 10) ? "0" + (selectedDate.getMonth() + 1) : selectedDate.getMonth()}-${selectedDate.getDate() < 10 ? "0" + selectedDate.getDate() : selectedDate.getDate()}`;
-      console.log("date ", date);
+      const date = formatDateToYYYYMMDD(selectedDate);
       const data = {
         shopId: selectedShop.id,
         shopName: selectedShop.name,
-        date,
+        date : date,
         totalSales: +salesAmount
       }
       console.log("selectedShop : ", selectedShop.id);
@@ -55,14 +62,17 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
     }
   }
 
+
+
   function UploadImage(salesImage: FormData) {
     console.log("file : ", salesImage);
     if (selectedDate) {
-      const date = `${selectedDate?.getFullYear()}-${selectedDate.getMonth() < 10 ? ("0" + (selectedDate.getMonth() + 1)) : selectedDate.getMonth() + 1}-${selectedDate.getDate() < 10 ? ("0" + (selectedDate.getDate())) : selectedDate.getDate()}`;
+      const date = formatDateToYYYYMMDD(selectedDate);
       axiosInstance.post('/api/v1/accounting/upload_sales_image/' + selectedShop.id + `?date=${date}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' } }).then((res) => {
         console.log("Image : ", res)
-        // setImageUploaded(true);
+        setSelectedImage(null);
         alert(res.data.message);
+        
       })
     } else {
       alert("Please select a date");
@@ -94,8 +104,8 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales }) => {
 
         <Button variant='contained' type='submit' children=" Upload Sales " />
       </form>
-      {<ImageUpload UploadImage={UploadImage} />}
+      { shopConfig.ACCOUNTING.IMAGE_UPLOAD && <ImageUpload UploadImage={UploadImage} selectedImage={selectedImage!} setSelectedImage={setSelectedImage}/>}
     </div>
   </div >
 }
-export default withShop(UploadSales);
+export default withUser(withShop(UploadSales));
