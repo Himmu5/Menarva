@@ -5,13 +5,16 @@ import { UserClass, UserConfig } from '../../Typings/User';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Manager, SingleManager } from '../../Typings/Manager';
 import { withUser } from '../../HOC/withUser';
+import { withAlert } from '../../HOC/withAlert';
+import { AlertType } from '../../Typings/Alert';
 
 type P = {
     children: ReactNode;
-    user: UserClass
+    user: UserClass;
+    setAlert : (s:AlertType)=>void
 }
 
-const ManagerProvider: FC<P> = ({ children, user }) => {
+const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
 
     const [managers, setManagers] = useState<Manager[]>();
     const [singleManager, setSingleManager] = useState<SingleManager>();
@@ -42,9 +45,9 @@ const ManagerProvider: FC<P> = ({ children, user }) => {
         addManager(config, shopId, user).then((res) => {
             // console.log("Res : ",res.data.message);
             navigate("/mannager")
-            alert(res.message);
+            setAlert({ message : res.message , type : "success" } );
         }).catch((err) => {
-            alert(err);
+            setAlert({ message : err.message , type : "error" } );
         })
     }
 
@@ -52,9 +55,9 @@ const ManagerProvider: FC<P> = ({ children, user }) => {
         editManager(config, shopId, user, mId).then((res) => {
             // console.log("Res : ",res.data.message);
             navigate("/mannager")
-            alert(res.message);
+            setAlert({ message : res.message , type : "success" } );
         }).catch((err) => {
-            alert(err);
+            setAlert({ message : err.message , type : "error" } );
         })
     }
 
@@ -64,4 +67,4 @@ const ManagerProvider: FC<P> = ({ children, user }) => {
         {children}
     </ManagerContext.Provider>
 }
-export default withUser(ManagerProvider);
+export default withAlert(withUser(ManagerProvider));

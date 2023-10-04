@@ -7,12 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { withUser } from '../../HOC/withUser';
 import axiosInstance from '../../Axios/axios';
 import { UserClass } from '../../Typings/User';
+import { withAlert } from '../../HOC/withAlert';
+import { AlertType } from '../../Typings/Alert';
 type P = {
     children: ReactNode;
     shopId: number,
-    user: UserClass
+    user: UserClass;
+    setAlert: (s: AlertType) => void
 }
-const ShopProvider: FC<P> = ({ children, shopId, user }) => {
+const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     const Navigate = useNavigate();
     const [shops, setShops] = useState<Shop[]>();
     const [selectedShop, setSelectedShop] = useState<Shop>();
@@ -101,9 +104,9 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
         totalSales: number;
     }) {
         addSales(shopId, data).then((res) => {
-            alert(res.message);
+            setAlert({ message: res.message, type: "success" });
         }).catch((err) => {
-            alert(err);
+            setAlert({ message: err.message, type: "error" });
         })
     }
 
@@ -111,4 +114,4 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
         {children}
     </ShopContext.Provider>
 }
-export default withUser(ShopProvider);
+export default withAlert(withUser(ShopProvider));

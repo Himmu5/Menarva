@@ -9,6 +9,8 @@ import ImageUpload from './ImageUpload';
 import axiosInstance from '../../Axios/axios';
 import { withUser } from '../../HOC/withUser';
 import { UserConfig } from '../../Typings/User';
+import { withAlert } from '../../HOC/withAlert';
+import { AlertType } from '../../Typings/Alert';
 
 type P = {
   selectedShop: Shop;
@@ -18,17 +20,18 @@ type P = {
     date: string;
     totalSales: number;
   }) => void;
-  shopConfig : UserConfig;
-  formatDateToYYYYMMDD:(d:Date)=>string;
+  shopConfig: UserConfig;
+  formatDateToYYYYMMDD: (d: Date) => string;
+  setAlert: (s: AlertType) => void
 }
 
-const UploadSales: FC<P> = ({ selectedShop, uploadSales , shopConfig , formatDateToYYYYMMDD }) => {
+const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, formatDateToYYYYMMDD, setAlert }) => {
   console.log("selected Shop :", selectedShop);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   // const [ImageUploaded, setImageUploaded] = useState(false)
-  console.log("Config :",shopConfig);
-  
+  console.log("Config :", shopConfig);
+
 
   const [selectedDate, setSelectedDate] = useState<Date>();
 
@@ -51,7 +54,7 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales , shopConfig , formatDat
       const data = {
         shopId: selectedShop.id,
         shopName: selectedShop.name,
-        date : date,
+        date: date,
         totalSales: +salesAmount
       }
       console.log("selectedShop : ", selectedShop.id);
@@ -71,11 +74,11 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales , shopConfig , formatDat
       axiosInstance.post('/api/v1/accounting/upload_sales_image/' + selectedShop.id + `?date=${date}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' } }).then((res) => {
         console.log("Image : ", res)
         setSelectedImage(null);
-        alert(res.data.message);
-        
+        setAlert({ type: res.data.code === 1029 ? "error" : "success", message: res.data.message });
+
       })
     } else {
-      alert("Please select a date");
+      setAlert({ type: "error", message: "Please select a date" });
     }
   }
 
@@ -104,8 +107,8 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales , shopConfig , formatDat
 
         <Button variant='contained' type='submit' children=" Upload Sales " />
       </form>
-      { shopConfig.ACCOUNTING.IMAGE_UPLOAD && <ImageUpload UploadImage={UploadImage} selectedImage={selectedImage!} setSelectedImage={setSelectedImage}/>}
+      {shopConfig.ACCOUNTING.IMAGE_UPLOAD && <ImageUpload UploadImage={UploadImage} selectedImage={selectedImage!} setSelectedImage={setSelectedImage} />}
     </div>
   </div >
 }
-export default withUser(withShop(UploadSales));
+export default withAlert(withUser(withShop(UploadSales)));

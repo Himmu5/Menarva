@@ -43,7 +43,7 @@ const Alert:FC<AlertProp>=({ alert, RemoveAlert })=>{
   
 
   return (
-    <div className=" w-full absolute z-50 "> 
+    <div className=" w-full fixed z-50 "> 
       <div className="flex items-center justify-center px-4 my-2">
         <div
           role="alert"
