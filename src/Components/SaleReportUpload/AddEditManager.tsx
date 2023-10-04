@@ -52,7 +52,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                 createManager(editConfig, Object.keys(selectedShop)[0], { name: values.name, username: values.username, email: values.email, password: values.password })
                 bag.resetForm();
             }
-            else{
+            else {
                 alert("Please Select Shop")
             }
         }
@@ -71,7 +71,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 
     let filteredShop = [] as Shop[]
     const oldSelection = singleManager?.shopAuthorities ? { [Object.keys(singleManager?.shopAuthorities)[0][0]]: shops.filter((shop) => shop.id == Object.keys(singleManager?.shopAuthorities)[0])[0] } : null
-    const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(oldSelection || {});
+    const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(FormType == "ADD" ? {} : oldSelection);
     const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[3] : config);
 
     console.log("editConfig ", editConfig);
@@ -159,7 +159,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                 </div>
 
                 {
-                    (Object.keys(selectedShop).length > 0 || singleManager?.userDO) && Object.keys(editConfig).map((option) => {
+                    (Object.keys(selectedShop).length > 0) && Object.keys(editConfig).map((option) => {
                         return <div className='gap-2'>
                             <p className='font-bold text-lg'>{option}</p>
                             {
