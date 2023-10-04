@@ -3,10 +3,13 @@ import { loginUser } from '../../Axios/Auth';
 import { User, UserConfig } from '../../Typings/User';
 import { UserContext } from '../../Context/User';
 import { getConfig } from '../../Axios/config';
+import { withAlert } from '../../HOC/withAlert';
+import { AlertType } from '../../Typings/Alert';
 type P = {
-    children: ReactNode
+    children: ReactNode,
+    setAlert: (s: AlertType) => void,
 }
-const UserProvider: FC<P> = ({ children }) => {
+const UserProvider: FC<P> = ({ children, setAlert }) => {
 
     const [user, setUser] = useState<User>();
     console.log("User : ", user);
@@ -15,11 +18,11 @@ const UserProvider: FC<P> = ({ children }) => {
     const [shopConfig, setShopConfig] = useState<UserConfig>();
     const token = localStorage.getItem('token') || null
 
-        useEffect(() => {
-            if (user || token) {
-                updateConfig();
-            }
-        }, [])
+    useEffect(() => {
+        if (user || token) {
+            updateConfig();
+        }
+    }, [])
 
     function updateConfig() {
 
@@ -34,7 +37,9 @@ const UserProvider: FC<P> = ({ children }) => {
 
     function AuthUser(formData: { username: string, password: string }) {
         loginUser(formData).then((res) => {
+
             localStorage.setItem('token', res.user.accessToken);
+            setAlert({ type: "success", message: "Logged In Successfully" });
             // console.log("Authority : ",res.config.result.authorities.shopAuthorities);
             let sid = Object.keys(res.config.result.authorities.shopAuthorities)[0];
             setShopConfig(res.config.result.authorities.shopAuthorities[sid]);
@@ -42,17 +47,18 @@ const UserProvider: FC<P> = ({ children }) => {
             setUserConfig(res.config.result.authorities.authorities);
             setShopId(+Object.keys(res.config.result.authorities.shopAuthorities)[0]);
         }).catch((err) => {
-            alert(err.message);
+            setAlert({ type: "error", message: err.message })
         })
     }
 
     function removeUser() {
         localStorage.removeItem('token');
+        setAlert({ type: "success", message: "Logged Out Successfully" })
         setUser(undefined);
     }
 
-    return <UserContext.Provider value={{ token , shopConfig, config, user, removeUser, AuthUser, shopId }} >
+    return <UserContext.Provider value={{ token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
         {children}
     </UserContext.Provider>
 }
-export default UserProvider;
+export default withAlert(UserProvider);
