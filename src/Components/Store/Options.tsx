@@ -33,6 +33,7 @@ const Options: FC<P> = ({ selectedShop }) => {
                 <p>{selectedOption}</p>
             </div>
 
+
             <div className='flex flex-col gap-1 absolute left-12  '>
                 {
                     isOpen && op.map((item) => {

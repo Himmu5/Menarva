@@ -2,8 +2,9 @@ import { FC, useEffect } from 'react'
 import { withShop } from '../../HOC/withShop'
 import { MiniShop } from '../../Typings/Shop'
 import Error from '../Error/404Page'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Loading from '../../Loader/Loading'
+import BackButton from '../UI-Components/BackButton'
 
 type P = {
     miniShopsData: { message: string, result: MiniShop[] };
@@ -13,7 +14,7 @@ type P = {
 }
 
 const MiniStores: FC<P> = ({ miniShopsData, getMiniStores, loading, shopId }) => {
-
+    const Navigate = useNavigate();
     useEffect(() => {
 
         getMiniStores(shopId);
@@ -28,6 +29,7 @@ const MiniStores: FC<P> = ({ miniShopsData, getMiniStores, loading, shopId }) =>
     }
 
     return <div className=' m-2 max-w-7xl mx-auto my-5 flex flex-col gap-5 ' >
+        <div className='w-fit px-3' onClick={()=>Navigate(-1)}><BackButton /></div>
         {
             miniShopsData.result.map((mini) => {
                 return <Link to={"/ministore/options"} className='rounded-md shadow-md cursor-pointer shadow-gray-400 pl-[10%] m-3 ' key={mini.id}>

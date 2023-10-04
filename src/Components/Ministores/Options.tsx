@@ -1,18 +1,23 @@
 import { FC } from 'react'
 import { AiOutlineLineChart, AiOutlineRight } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { withUser } from '../../HOC/withUser'
 import { UserClass } from '../../Typings/User'
+import BackButton from '../UI-Components/BackButton'
 
 type P = {
-    user : UserClass
+    user: UserClass
 }
 
 const MiniOptions: FC<P> = ({ user }) => {
+    const Navigate = useNavigate();
     const data = [
         "Sales"
     ]
-    return <div className=' h-[80vh] w-full flex justify-center items-center flex-col '>
+    return <div className='max-w-7xl mx-auto relative'>
+        <div className='w-fit px-3 py-5 absolute' onClick={() => Navigate(-1)}><BackButton /></div>
+
+        <div className=' h-[80vh] w-full flex justify-center items-center flex-col '>
 
             {data.map((obj) => {
                 return <Link to={user.role === 1 ? "/calendar" : "/ministore/uploadsales"} className='w-full px-3 py-2 flex items-center justify-between max-w-xs rounded-md border shadow-lg hover:scale-105'>
@@ -24,6 +29,7 @@ const MiniOptions: FC<P> = ({ user }) => {
                 </Link>
             })
             }
+        </div>
     </div>
 }
 export default withUser(MiniOptions);
