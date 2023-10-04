@@ -19,22 +19,15 @@ import MiniOptions from "./Components/Ministores/Options"
 import ShopProvider from "./Components/Provider/ShopProvider"
 import ShowSalesReport from "./Sales/ShowSalesReport"
 import ManagerProvider from "./Components/Provider/ManagerProvider"
-import { AlertContext } from "./Context/AlertContext"
-import { AlertType } from "./Typings/Alert"
-import { useState } from "react"
 import Alert from "./Components/UI-Components/Alert"
+import AlertProvider from "./Components/Provider/AlertProvider"
 
 
 function App() {
-  const [alert, setAlert] = useState<AlertType>();
-
-  function RemoveAlert() {
-    setAlert(undefined);
-  }
 
   return (
     <div className="relative">
-      <AlertContext.Provider value={{ RemoveAlert, alert, setAlert }}>
+      <AlertProvider>
         <UserProvider>
           <ShopProvider>
             <ManagerProvider>
@@ -59,7 +52,7 @@ function App() {
             </ManagerProvider>
           </ShopProvider>
         </UserProvider>
-      </AlertContext.Provider>
+      </AlertProvider>
     </div>
   )
 }
