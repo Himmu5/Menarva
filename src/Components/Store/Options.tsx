@@ -1,44 +1,79 @@
 import { FC, useState } from 'react'
-import { AiOutlineLineChart, AiOutlineRight } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
-import { withShop } from '../../HOC/withShop'
-import { Shop } from '../../Typings/Shop'
 import Hamburger from 'hamburger-react'
 import Ministores from '../Ministores/Ministores'
 import { Home } from '@mui/icons-material'
+import { FiChevronRight } from 'react-icons/fi'
+import { BiStore } from 'react-icons/bi'
+import { MdOutlineInventory } from 'react-icons/md'
+import { IoIosOptions } from 'react-icons/io'
+import { Shop } from '../../Typings/Shop'
+import { IconType } from 'react-icons'
+import { withShop } from '../../HOC/withShop'
 
 type P = {
     selectedShop: Shop
 }
+
 const Options: FC<P> = ({ selectedShop }) => {
     console.log("Selected Shop : ", selectedShop);
-    const op = [
-        "Mini Stores",
-        "Inventory",
-        "SOP"
+    const data = [
+        { option: "Mini Stores", logo: BiStore },
+        {
+            option: "Inventory", logo: MdOutlineInventory
+        },
+        { option: "SOP", logo: IoIosOptions }
     ]
-    const [selectedOption, setSelectedOption] = useState(op[0]);
+    const [selectedOption, setSelectedOption] = useState(data[0]);
 
     const [isOpen, setOpen] = useState(false)
-    function onSelect(item: string) {
-        setSelectedOption(item  );
+    function onSelect(item: {
+        option: string;
+        logo: IconType;
+    }) {
+        setSelectedOption(item);
         setOpen(!open);
     }
 
 
     return <>
         <div className='max-w-7xl mx-auto relative bg-white '>
-            <div className='flex items-center'>
-                <Hamburger size={20} toggled={isOpen} toggle={setOpen} />
-                <p>{selectedOption}</p>
+            <div className=' '>
+
+                <div className='flex items-center max-w-7xl mx-auto'>
+                    <Hamburger size={20} toggled={isOpen} toggle={setOpen} />
+                    <p>{selectedOption.option}</p>
+                </div>
+
+                <div className={'flex flex-col gap-1 px-5 fixed border-r shadow-md   bg-white z-10 h-[100vh] top-0 ' + (isOpen ? " w-[45vh] ml-0 duration-500 " : " -ml-80 duration-500 ")}>
+
+                    <div className='flex items-center gap-2 py-2 '>
+                        <Hamburger size={25} toggled={isOpen} toggle={setOpen} />
+                        <p className='font-bold'>{selectedOption.option}</p>
+                    </div>
+
+                    <div className='mt-[50%] p-3'>
+                        {
+                            data.map((item) => {
+                                return <div className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} key={item.option} >
+                                    <item.logo size={25} />
+                                    <p className='w-32'>
+                                        {item.option}
+                                    </p>
+                                    <FiChevronRight size={25} />
+                                </div>
+                            })
+                        }
+                    </div>
+                </div>
+
             </div>
 
 
             <div className='flex flex-col gap-1 absolute left-12  '>
                 {
-                    isOpen && op.map((item) => {
-                        return <div className=' cursor-pointer  ' onClick={() => onSelect(item)} key={item} >
-                            {item}
+                    isOpen && data.map((item) => {
+                        return <div className=' cursor-pointer  ' onClick={() => onSelect(item)} key={item.option} >
+                            {item.option}
                         </div>
                     })
                 }
@@ -48,9 +83,9 @@ const Options: FC<P> = ({ selectedShop }) => {
 
 
         {
-            selectedOption === "Mini Stores" ? <Ministores /> : selectedOption === "SOP" && <Home />
+            selectedOption.option === "Mini Stores" ? <Ministores /> : selectedOption.option === "SOP" && <Home />
         }
-        
+
     </>
 
 }

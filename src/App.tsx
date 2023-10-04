@@ -43,7 +43,7 @@ function App() {
               <Route path="/mannager/edit/:Form_Type" element={<UserRoute><AddEditManager /></UserRoute>} />
               <Route path="/ministore/options" element={<UserRoute><MiniOptions /></UserRoute>} />
               <Route path="/ministore/sales/report" element={<UserRoute><ShowSalesReport /></UserRoute>} />
-              <Route path="*" element={<Error />} />
+              <Route path="*" element={<Error message="Page Not Found" />} />
             </Routes>
           </ManagerProvider>
         </ShopProvider>

@@ -24,10 +24,12 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
     console.log("monthSales  : ", monthSales);
 
     useEffect(() => {
-        getShops().then((res) => {
-            console.log("res : ", res.result);
-            setShops(res.result);
-        })
+        if (user?.role === 1) {
+            getShops().then((res) => {
+                console.log("res : ", res.result);
+                setShops(res.result);
+            })
+        }
     }, [user])
 
     useEffect(() => {
@@ -35,17 +37,19 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
             getMiniStores(selectedShop.id);
         }
 
-    }, [ selectedShop, user])
+    }, [selectedShop, user])
 
     useEffect(() => {
-        axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
-            // console.log("Res : ",res.data.result);
-            setSelectedShop(res.data.result);
-        })
-    }, [shopId , user])
+        if (user && shopId) {
+            axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
+                // console.log("Res : ",res.data.result);
+                setSelectedShop(res.data.result);
+            })
+        }
+    }, [shopId, user])
 
     useEffect(() => {
-        if (selectedShop) {
+        if (selectedShop && user?.role === 1) {
 
             getMonthSales(selectedShop.id, selectedDate.getFullYear(), selectedDate.getMonth()).then((res) => {
                 console.log("monthSales .", res);
@@ -54,7 +58,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
 
         }
 
-    }, [selectedShop , selectedDate])
+    }, [selectedShop, selectedDate])
 
     function getMiniStores(id: number) {
         getminiStore(id).then((res) => {
@@ -68,19 +72,21 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
     const [dailySales, setDailySales] = useState();
     function getDailySales() {
         const date = formatDateToYYYYMMDD(selectedDate);
-        getDailySale(selectedShop!.id, date).then((res) => {
-            setDailySales(res);
-            Navigate('/ministore/sales/report');
-            // console.log("Get Daily sales : ", res);
-        })
+        if (user?.role === 1) {
+            getDailySale(selectedShop!.id, date).then((res) => {
+                setDailySales(res);
+                Navigate('/ministore/sales/report');
+                // console.log("Get Daily sales : ", res);
+            })
+        }
     }
-    function formatDateToYYYYMMDD(date:Date) {
+    function formatDateToYYYYMMDD(date: Date) {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 because months are zero-based
         const day = String(date.getDate()).padStart(2, '0');
-        console.log("day: " ,`${year}-${month}-${day}`);        
+        console.log("day: ", `${year}-${month}-${day}`);
         return `${year}-${month}-${day}`;
-      }
+    }
 
     useEffect(() => {
         if (selectedDate && selectedShop) {
@@ -101,7 +107,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user }) => {
         })
     }
 
-    return <ShopContext.Provider value={{ formatDateToYYYYMMDD , uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ formatDateToYYYYMMDD, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

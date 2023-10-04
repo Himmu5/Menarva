@@ -9,19 +9,23 @@ type P = {
 const UserProvider: FC<P> = ({ children }) => {
 
     const [user, setUser] = useState<User>();
-    console.log("User : ",user);
-    const [shopId , setShopId ] = useState<number>();
+    console.log("User : ", user);
+    const [shopId, setShopId] = useState<number>();
     const [config, setUserConfig] = useState<UserConfig>();
-    const [shopConfig , setShopConfig ] = useState<UserConfig>();
-    
-    useEffect(() => {
-        updateConfig();
-    },[])
+    const [shopConfig, setShopConfig] = useState<UserConfig>();
+    const token = localStorage.getItem('token') || null
 
-    function updateConfig(){
+        useEffect(() => {
+            if (user || token) {
+                updateConfig();
+            }
+        }, [])
+
+    function updateConfig() {
+
         getConfig().then((res) => {
-            console.log("shop config : ",res.result.authorities.shopAuthorities[3]);
-            setShopConfig(res.result.authorities.shopAuthorities[3]);
+            let sid = Object.keys(res.result.authorities.shopAuthorities)[0];
+            setShopConfig(res.result.authorities.shopAuthorities[sid]);
             setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
             setUserConfig(res.result.authorities.authorities);
             setUser(res.result.user);
@@ -31,12 +35,14 @@ const UserProvider: FC<P> = ({ children }) => {
     function AuthUser(formData: { username: string, password: string }) {
         loginUser(formData).then((res) => {
             localStorage.setItem('token', res.user.accessToken);
-            // console.log('res : user , ',res.user.user);
+            // console.log("Authority : ",res.config.result.authorities.shopAuthorities);
+            let sid = Object.keys(res.config.result.authorities.shopAuthorities)[0];
+            setShopConfig(res.config.result.authorities.shopAuthorities[sid]);
             setUser(res.user.user);
             setUserConfig(res.config.result.authorities.authorities);
             setShopId(+Object.keys(res.config.result.authorities.shopAuthorities)[0]);
-        }).catch(() => {
-            alert("User is not validate");
+        }).catch((err) => {
+            alert(err.message);
         })
     }
 
@@ -45,7 +51,7 @@ const UserProvider: FC<P> = ({ children }) => {
         setUser(undefined);
     }
 
-    return <UserContext.Provider value={{shopConfig , config , user, removeUser, AuthUser , shopId }} >
+    return <UserContext.Provider value={{ token , shopConfig, config, user, removeUser, AuthUser, shopId }} >
         {children}
     </UserContext.Provider>
 }
