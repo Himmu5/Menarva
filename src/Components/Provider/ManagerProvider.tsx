@@ -18,7 +18,7 @@ const ManagerProvider: FC<P> = ({ children, user }) => {
 
     useEffect(() => {
         // addSales()
-        if (user) {
+        if (user?.role === 1) {
             getManager();
         }
     }, [user])

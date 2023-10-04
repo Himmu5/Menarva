@@ -5,6 +5,6 @@ import { AiOutlineRollback } from 'react-icons/ai'
 type P = {}
 
 const BackButton: FC<P> = () => {
-    return <Button children="back" color='inherit' startIcon={<AiOutlineRollback size={25} />} variant='contained' />
+    return <Button children="back" color='inherit' size='small' startIcon={<AiOutlineRollback size={20} />} variant='contained' />
 }
 export default BackButton;  

@@ -9,15 +9,17 @@ import Stores from './Stores'
 import Mannager from '../SaleReportUpload/Mannager'
 import Ministores from '../Ministores/Ministores'
 import { BsShop } from 'react-icons/bs'
+import Error from '../Error/404Page'
 
 
 type P = {
   config: UserConfig,
   user: UserClass;
-  shopId: number
+  shopId: number;
+  shopConfig:UserConfig
 }
 
-const StoreOptions: FC<P> = ({ user, shopId }) => {
+const StoreOptions: FC<P> = ({ user, shopId , shopConfig}) => {
 
   let data = [] as { option: string, logo: IconType }[]
 
@@ -40,6 +42,10 @@ const StoreOptions: FC<P> = ({ user, shopId }) => {
   }) {
     setSelectedOption(item.option);
     setOpen(!open);
+  }
+
+  if( user.role === 2 && shopConfig.ACCOUNTING.READ === false){
+    return <Error message='You are not allowed to see any config' />
   }
 
   return <div className='relative '>
