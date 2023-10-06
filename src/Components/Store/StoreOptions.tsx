@@ -17,21 +17,21 @@ type P = {
   config: UserConfig,
   user: UserClass;
   shopId: number;
-  shopConfig:UserConfig
+  shopConfig: UserConfig
 }
 
-const StoreOptions: FC<P> = ({ user, shopId , shopConfig}) => {
+const StoreOptions: FC<P> = ({ user, shopId, shopConfig, config }) => {
 
-  let data = [] as { option: string, logo: IconType }[]
+  let data = [] as { option: string, logo: IconType, show: boolean }[]
 
   if (user.role === 1) {
-    data = [{ option: "Stores", logo: BsShop },
-    { option: "Warehouse", logo: TbBuildingWarehouse },
-    { option: "Edit Managers", logo: FiEdit },]
+    data = [{ option: "Stores", logo: BsShop, show: true },
+    { option: "Warehouse", logo: TbBuildingWarehouse, show: true },
+    { option: "Edit Managers", logo: FiEdit, show: true },]
   } else {
-    data = [{ option: "Mini Stores", logo: AiOutlineLineChart },
-    { option: "SOP", logo: AiOutlineSetting },
-    { option: "Inventory", logo: FiEdit },]
+    data = [{ option: "Mini Stores", logo: AiOutlineLineChart, show: true },
+    { option: "SOP", logo: AiOutlineSetting, show: false },
+    { option: "Inventory", logo: FiEdit, show: false }]
   }
 
 
@@ -45,7 +45,7 @@ const StoreOptions: FC<P> = ({ user, shopId , shopConfig}) => {
     setOpen(!open);
   }
 
-  if( user.role === 2 && shopConfig.ACCOUNTING.READ === false){
+  if (user.role === 2 && shopConfig.ACCOUNTING.READ === false) {
     return <Error message='You are not allowed to see any config' />
   }
 
@@ -68,7 +68,7 @@ const StoreOptions: FC<P> = ({ user, shopId , shopConfig}) => {
         <div className='mt-[50%] p-3'>
           {
             data.map((item) => {
-              return <div className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} key={item.option} >
+              return item.show && <div className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} key={item.option} >
                 <item.logo size={25} />
                 <p className='w-32'>
                   {item.option}

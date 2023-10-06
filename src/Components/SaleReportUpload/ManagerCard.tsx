@@ -20,7 +20,7 @@ const ManagerCard: FC<P> = ({ index, manager, getSingleManager }) => {
                     <h1 className='border-b-2 border-gray-500 pl-3 pb-1'>{manager.name}</h1>
                     <p className='self-end text-gray-500 '>MANAGER</p>
                 </div>
-                <Button variant='contained' onClick={() => getSingleManager(manager.id)} startIcon={<MdOutlineModeEditOutline size={25} />} children="EDIT" />
+                <Button variant='contained'  onClick={() => getSingleManager(manager.id)} startIcon={<MdOutlineModeEditOutline size={25} />} children="EDIT" />
             </div>
         </div>
         <p className='flex items-center gap-3 p-2'><span>STORENAME1</span><span className='text-gray-400 '>[Branch Name]</span></p>
