@@ -58,7 +58,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig, config }) => {
         <p>{selectedOption}</p>
       </div>
 
-      <div className={'flex flex-col gap-1 px-5 fixed border-r shadow-md   bg-white z-10 h-[100vh] top-0 ' + (isOpen ? " w-[45vh] ml-0 duration-500 " : " -ml-80 duration-500 ")}>
+      <div className={'flex flex-col gap-1 px-5 fixed border-r shadow-md   bg-white z-10 h-[100vh] top-0 ' + (isOpen ? " w-[45vh] ml-0 duration-500 " : " -ml-96 duration-500 ")}>
 
         <div className='flex items-center gap-2 py-2 '>
           <Hamburger size={25} toggled={isOpen} toggle={setOpen} />
