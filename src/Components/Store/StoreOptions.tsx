@@ -10,6 +10,7 @@ import Mannager from '../SaleReportUpload/Mannager'
 import Ministores from '../Ministores/Ministores'
 import { BsShop } from 'react-icons/bs'
 import Error from '../Error/404Page'
+import { TbBuildingWarehouse } from 'react-icons/tb'
 
 
 type P = {
@@ -25,7 +26,7 @@ const StoreOptions: FC<P> = ({ user, shopId , shopConfig}) => {
 
   if (user.role === 1) {
     data = [{ option: "Stores", logo: BsShop },
-    { option: "Warehouse", logo: AiOutlineSetting },
+    { option: "Warehouse", logo: TbBuildingWarehouse },
     { option: "Edit Managers", logo: FiEdit },]
   } else {
     data = [{ option: "Mini Stores", logo: AiOutlineLineChart },

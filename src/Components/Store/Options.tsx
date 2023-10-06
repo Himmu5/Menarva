@@ -36,7 +36,7 @@ const Options: FC<P> = ({ selectedShop }) => {
 
 
     return <>
-        <div className='max-w-7xl mx-auto relative bg-white '>
+        <div className=' relative bg-white '>
             <div className=' '>
 
                 <div className='flex items-center max-w-7xl mx-auto'>
@@ -44,7 +44,7 @@ const Options: FC<P> = ({ selectedShop }) => {
                     <p>{selectedOption.option}</p>
                 </div>
 
-                <div className={'flex flex-col gap-1 px-5 fixed border-r shadow-md   bg-white z-10 h-[100vh] top-0 ' + (isOpen ? " w-[45vh] ml-0 duration-500 " : " -ml-80 duration-500 ")}>
+                <div className={'flex flex-col gap-1 px-5 fixed border-r shadow-md   bg-white z-10 h-[100vh] top-0 ' + (isOpen ? " w-[55vh] ml-0 duration-500 " : " -ml-96  duration-500  ")}>
 
                     <div className='flex items-center gap-2 py-2 '>
                         <Hamburger size={25} toggled={isOpen} toggle={setOpen} />
