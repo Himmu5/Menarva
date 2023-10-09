@@ -20,11 +20,12 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     const [shops, setShops] = useState<Shop[]>();
     const [selectedShop, setSelectedShop] = useState<Shop>();
     const [miniShopsData, setMiniShops] = useState<MiniShop>();
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date>();
     const [monthSales, setmonthSales] = useState();
+    const [ changeMonth , setChangeMonth ] = useState(new Date());
     const [loading, setLoading] = useState(true);
 
-    console.log("monthSales  : ", monthSales);
+    console.log("changeMonth  : ", changeMonth);
 
     useEffect(() => {
         if (user?.role === 1) {
@@ -53,15 +54,14 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     useEffect(() => {
         if (selectedShop && user?.role === 1) {
-
-            getMonthSales(selectedShop.id, selectedDate.getFullYear(), selectedDate.getMonth()).then((res) => {
-                console.log("monthSales .", res);
+            console.log("Change Month : ",changeMonth)
+            getMonthSales(selectedShop.id, changeMonth.getFullYear(), changeMonth.getMonth()).then((res) => {
                 setmonthSales(res);
             })
 
         }
 
-    }, [selectedShop, selectedDate])
+    }, [ selectedShop , changeMonth.getMonth() ])
 
     function getMiniStores(id: number) {
         getminiStore(id).then((res) => {
@@ -74,7 +74,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     const [dailySales, setDailySales] = useState();
     function getDailySales() {
-        const date = formatDateToYYYYMMDD(selectedDate);
+        const date = formatDateToYYYYMMDD(selectedDate!);
         if (user?.role === 1) {
             getDailySale(selectedShop!.id, date).then((res) => {
                 setDailySales(res);
@@ -110,7 +110,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         })
     }
 
-    return <ShopContext.Provider value={{ formatDateToYYYYMMDD, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ changeMonth , setChangeMonth , formatDateToYYYYMMDD, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

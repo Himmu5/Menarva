@@ -1,18 +1,19 @@
 import { FC } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { FaAngleLeft } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { withShop } from '../../HOC/withShop';
 import BackButton from '../UI-Components/BackButton';
 
 type P = {
   selectedDate: Date;
   setSelectedDate: (s: Date) => void;
-  monthSales: { id: number, result: { pending: Date[], approved: Date[], rejected: Date[] } }
+  monthSales: { id: number, result: { pending: Date[], approved: Date[], rejected: Date[] } };
+  setChangeMonth:(d:Date)=>void;
+  changeMonth:Date
 }
 
-const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSales }) => {
+const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSales,setChangeMonth }) => {
   console.log("Month Sales : ", monthSales);
   const panding = [] as Date[]
   const rejected = [] as Date[]
@@ -56,14 +57,16 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
   function handleViewChange(date: any) {
     if (Array.isArray(date)) {
       setSelectedDate(date[0]);
+      setChangeMonth(date[0]);
     } else {
       setSelectedDate(date);
+      setChangeMonth(date);
     }
   }
 
-  function onchange(){
-    console.log("change");
-    
+  function onchange(e:any){
+    console.log("change",e.activeStartDate)
+    setChangeMonth(e.activeStartDate);
   }
   const Navigate = useNavigate();
 
@@ -76,7 +79,7 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
         <Calendar
         onActiveStartDateChange={onchange}
           className={"max-w-sm"}
-          value={selectedDate}
+          value={changeMonth}
           onClickMonth={handleViewChange}
           onChange={handleDateChange}
           tileClassName={({ date }) => {
