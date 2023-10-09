@@ -4,11 +4,11 @@ import { Sales } from '../Typings/Shop'
 import { Link } from 'react-router-dom'
 import Error from '../Components/Error/404Page'
 type P = {
-    dailySales: { result: Sales , message : string }
+    dailySales: { result: Sales, message: string }
 }
 const ShowSalesReport: FC<P> = ({ dailySales }) => {
     console.log("daily sales : ", dailySales);
-    if(dailySales.result === undefined){
+    if (dailySales.result === undefined) {
         return <Error message={dailySales.message} />
     }
     return <div className='min-h-[80vh] max-w-5xl mx-auto flex justify-center items-center '>
@@ -17,10 +17,10 @@ const ShowSalesReport: FC<P> = ({ dailySales }) => {
             <h1 className='text-xl font-bold '>Sales Datails</h1>
             <p><span className='  font-bold text-lg'> Date :</span> {dailySales?.result.date.toLocaleString()}</p>
             <p><span className='font-bold text-lg'>Total Sales :</span> {dailySales?.result.totalSales}</p>
-
+            <img src={dailySales?.result?.imageUrl ? dailySales?.result.imageUrl : "No sales Image"} />
             <Link to={"/"} className='px-3 py-1 bg-indigo-400 rounded-md shadow-md text-white my-3 hover:scale-95 ' >back to Shops</Link>
         </div>
-        
+
     </div>
 }
 export default withShop(ShowSalesReport);

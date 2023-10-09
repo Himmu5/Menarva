@@ -60,6 +60,11 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
       setSelectedDate(date);
     }
   }
+
+  function onchange(){
+    console.log("change");
+    
+  }
   const Navigate = useNavigate();
 
   return (
@@ -69,6 +74,7 @@ const CalendarWithHighlights: FC<P> = ({ setSelectedDate, selectedDate, monthSal
       <div className='flex items-center justify-center min-h-[80vh]'>
 
         <Calendar
+        onActiveStartDateChange={onchange}
           className={"max-w-sm"}
           value={selectedDate}
           onClickMonth={handleViewChange}

@@ -46,7 +46,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig, config }) => {
   }
 
   if (user.role === 2 && shopConfig.ACCOUNTING.READ === false) {
-    return <Error message='You are not allowed to see any config' />
+    return <Error message='You are not allowed to see any resource please contact admin' />
   }
 
   return <div className='relative '>

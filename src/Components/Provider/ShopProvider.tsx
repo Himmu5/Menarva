@@ -106,7 +106,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         addSales(shopId, data).then((res) => {
             setAlert({ message: res.message, type: "success" });
         }).catch((err) => {
-            setAlert({ message: err.message, type: "error" });
+            setAlert({ message: err.response.status === 403 ? "You are not allowed to upload sales please contact admin" :  err.message, type: "error" });
         })
     }
 
