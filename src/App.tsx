@@ -21,6 +21,7 @@ import ShowSalesReport from "./Sales/ShowSalesReport"
 import ManagerProvider from "./Components/Provider/ManagerProvider"
 import Alert from "./Components/UI-Components/Alert"
 import AlertProvider from "./Components/Provider/AlertProvider"
+import SopProvider from "./Components/Provider/SopProvider"
 
 
 function App() {
@@ -31,24 +32,26 @@ function App() {
         <UserProvider>
           <ShopProvider>
             <ManagerProvider>
-              <Navbar />
-              <Alert />
-              <Routes>
-                <Route path="signin" element={<AuthRoute><SignIn /></AuthRoute>} />
-                <Route path="/SOP" element={<UserRoute><Home /></UserRoute>} />
-                <Route path="/shops" element={<UserRoute><Stores /></UserRoute>} />
-                <Route path="/shop/options" element={<UserRoute><Options /></UserRoute>} />
-                <Route path="/minishops/:id" element={<UserRoute><Ministores /></UserRoute>} />
-                <Route path="/calendar" element={<UserRoute><StoreCalendar /></UserRoute>} />
-                <Route path="/Camera" element={<UserRoute><Camera /></UserRoute>} />
-                <Route path="/" element={<UserRoute><StoreOptions /></UserRoute>} />
-                <Route path="/ministore/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
-                <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
-                <Route path="/mannager/edit/:Form_Type" element={<UserRoute><AddEditManager /></UserRoute>} />
-                <Route path="/ministore/options" element={<UserRoute><MiniOptions /></UserRoute>} />
-                <Route path="/ministore/sales/report" element={<UserRoute><ShowSalesReport /></UserRoute>} />
-                <Route path="*" element={<Error message="Page Not Found" />} />
-              </Routes>
+              <SopProvider>
+                <Navbar />
+                <Alert />
+                <Routes>
+                  <Route path="signin" element={<AuthRoute><SignIn /></AuthRoute>} />
+                  <Route path="/SOP" element={<UserRoute><Home /></UserRoute>} />
+                  <Route path="/shops" element={<UserRoute><Stores /></UserRoute>} />
+                  <Route path="/shop/options" element={<UserRoute><Options /></UserRoute>} />
+                  <Route path="/minishops/:id" element={<UserRoute><Ministores /></UserRoute>} />
+                  <Route path="/calendar" element={<UserRoute><StoreCalendar /></UserRoute>} />
+                  <Route path="/Camera" element={<UserRoute><Camera /></UserRoute>} />
+                  <Route path="/" element={<UserRoute><StoreOptions /></UserRoute>} />
+                  <Route path="/ministore/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
+                  <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
+                  <Route path="/mannager/edit/:Form_Type" element={<UserRoute><AddEditManager /></UserRoute>} />
+                  <Route path="/ministore/options" element={<UserRoute><MiniOptions /></UserRoute>} />
+                  <Route path="/ministore/sales/report" element={<UserRoute><ShowSalesReport /></UserRoute>} />
+                  <Route path="*" element={<Error message="Page Not Found" />} />
+                </Routes>
+              </SopProvider>
             </ManagerProvider>
           </ShopProvider>
         </UserProvider>

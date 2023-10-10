@@ -25,7 +25,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     const [ changeMonth , setChangeMonth ] = useState(new Date());
     const [loading, setLoading] = useState(true);
 
-    console.log("changeMonth  : ", changeMonth);
+    // console.log("changeMonth  : ", changeMonth);
 
     useEffect(() => {
         if (user?.role === 1) {
