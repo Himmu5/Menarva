@@ -14,7 +14,7 @@ type P = {
 }
 
 const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSales,setChangeMonth }) => {
-  console.log("Month Sales : ", monthSales);
+  // console.log("Month Sales : ", monthSales);
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
@@ -31,7 +31,7 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSa
   }
 
   const handleDateChange = (date: any) => {
-    console.log("Change calendar");
+    // console.log("Change calendar");
     if (Array.isArray(date)) {
       setSelectedDate(date[0]);
     } else {
@@ -64,8 +64,8 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSa
     }
   }
 
-  function onchange(e:any){
-    console.log("change",e.activeStartDate)
+  function onchange(e:any){ 
+    // console.log("change",e.activeStartDate)
     setChangeMonth(e.activeStartDate);
   }
   const Navigate = useNavigate();
