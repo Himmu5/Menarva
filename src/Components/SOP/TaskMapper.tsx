@@ -1,20 +1,18 @@
 import { FC } from 'react'
 import Task from './Task';
+import { Sops } from '../../Typings/sops';
 
 type P = {
-    dummyOptions: {
-        Heading: string;
-        options: string[];
-    }[]
+    sops: Sops[]
 }
-const TaskMapper: FC<P> = ({ dummyOptions }) => {
+const TaskMapper: FC<P> = ({ sops }) => {
 
 
 
     return <div className='w-full flex flex-col gap-3 my-3 p-2 text-black'>
         {
-            dummyOptions.map((option) => {
-                return <Task key={option.Heading} option={option} />
+            sops.map((option) => {
+                return <Task key={option.name} Sops={option} />
             })
         }
     </div>

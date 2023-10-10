@@ -11,6 +11,7 @@ import Ministores from '../Ministores/Ministores'
 import { BsShop } from 'react-icons/bs'
 import Error from '../Error/404Page'
 import { TbBuildingWarehouse } from 'react-icons/tb'
+import Home from '../SOP/Home'
 
 
 type P = {
@@ -30,7 +31,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig, config }) => {
     { option: "Edit Managers", logo: FiEdit, show: true },]
   } else {
     data = [{ option: "Mini Stores", logo: AiOutlineLineChart, show: true },
-    { option: "SOP", logo: AiOutlineSetting, show: false },
+    { option: "SOP", logo: AiOutlineSetting, show: true },
     { option: "Inventory", logo: FiEdit, show: false }]
   }
 
@@ -83,7 +84,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig, config }) => {
     </div>
 
     {
-      selectedOption === 'Stores' ? <Stores /> : selectedOption === "Edit Managers" ? <Mannager /> : selectedOption === "Mini Stores" ? <Ministores to={"/minishops/" + shopId} shopId={shopId} /> : ''
+      selectedOption === 'Stores' ? <Stores /> : selectedOption === "Edit Managers" ? <Mannager /> : selectedOption === "Mini Stores" ? <Ministores to={"/minishops/" + shopId} shopId={shopId} /> : selectedOption === "SOP" ? <Home /> :  ""
     }
 
   </div>

@@ -1,22 +1,33 @@
-import { FC, ReactNode, useEffect } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import { getSOP } from '../../Axios/Sop';
+import { withAlert } from '../../HOC/withProvider';
+import { AlertType } from '../../Typings/Alert';
+import { SopContext } from '../../Context/SopContext';
+import { Sops } from '../../Typings/sops';
 
 type P = {
-    children: ReactNode
+    children: ReactNode;
+    setAlert: (a: AlertType) => void
 }
 
-const SopProvider: FC<P> = ({ children }) => {
+const SopProvider: FC<P> = ({ children, setAlert }) => {
+
+    const [sops, setSOPS] = useState<Sops[]>();
 
     useEffect(() => {
-        getSOP();
-    }, [])
+        getSOPs();
+    },[])
 
-    return <div>
+    function getSOPs() {
+        getSOP().then((res) => {
+            setSOPS(res);
+        }).catch((err) => {
+            setAlert({ type: 'error', message: err.message })
+        })
+    }
 
-        {
-            children
-        }
-
-    </div>
+    return <SopContext.Provider value={{ sops }}>
+        {children}
+    </SopContext.Provider>
 }
-export default SopProvider;
+export default withAlert(SopProvider);
