@@ -20,14 +20,14 @@ export interface MiniShop {
     ownerEmail:  null;
     createdAt:   number;
     updatedAt:   number;
-}
+}   
 export interface Sales {
-    shopId:                  number;
-    shopName:                null;
-    date:                    Date;
-    totalSales:              number;
-    imageUrl:                null;
-    isOwnerAcknowledged:     boolean;
-    isMiniOwnerAcknowledged: boolean;
-    status:                  number;
+    shopId:                 number;
+    shopName:               string;
+    date:                   Date;
+    totalSales:             number;
+    imageUrl:               string;
+    ownerConsentStatus:     number;
+    miniOwnerConsentStatus: number;
+    status:                 number;
 }
