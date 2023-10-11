@@ -4,12 +4,17 @@ import { RxCross1 } from 'react-icons/rx'
 import { BsCircle } from 'react-icons/bs'
 import { FaUndo } from 'react-icons/fa'
 import { FiUpload } from 'react-icons/fi'
-import { saveAs } from 'file-saver';
+// import { saveAs } from 'file-saver';
 import React from 'react';
+import { withSops } from '../../HOC/withProvider';
+import { Sops } from '../../Typings/sops';
 
-type P = object
+type P = {
+    uploadSopImage: (blob: string, sopId: string, taskId: number) => void;
+    selectedSop : { sop: Sops , taskId : number }
+}
 
-const Camera: FC<P> = () => {
+const Camera: FC<P> = ({ uploadSopImage , selectedSop}) => {
     const webcamRef = React.createRef<Webcam>();
     const [picture, setPicture] = useState<string>();
     console.log("Picture ,", picture);
@@ -17,9 +22,11 @@ const Camera: FC<P> = () => {
         const screenshot = webcamRef.current!.getScreenshot();
         setPicture(screenshot!);
     };
+    console.log("pictire ",picture);
 
     const downloadPicture = ()=>{
-        saveAs(picture! , 'myPicture.jpg')
+        uploadSopImage(picture! , selectedSop.sop.id , selectedSop.taskId );
+        // saveAs(picture! , 'myPicture.jpg')
     }
     return <div className='min-h-[80vh] m-4'>
         {
@@ -50,4 +57,4 @@ const Camera: FC<P> = () => {
 
     </div>
 }
-export default Camera;
+export default withSops(Camera);
