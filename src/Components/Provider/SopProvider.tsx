@@ -38,7 +38,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
 
     function getSOPs() {
-        getSOP(selectedShop?.id, sopDate).then((res) => {
+        getSOP(shopId ? shopId : selectedShop?.id, sopDate).then((res) => {
             setSOPS(res);
         }).catch((err) => {
             setAlert({ type: 'error', message: err.message })

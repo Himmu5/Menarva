@@ -19,6 +19,8 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     const [shopConfig, setShopConfig] = useState<UserConfig>();
     const token = localStorage.getItem('token')
     const [loading, setLoading] = useState<boolean>(false);
+    console.log("Shop Id ; ",shopId);
+    
 
     useEffect(() => {
         if (token) {

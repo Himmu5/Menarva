@@ -6,9 +6,15 @@ export const getSOP = ( shopId:number , sopDate?:Date) => {
   console.log("shopId ",shopId);
   const dateLong = sopDate && (sopDate as any * 1);
   console.log("Date  ",dateLong);
-  
+  let url = "";
+  if(dateLong){
+    url = `/api/v1/shops/${shopId}/sops?date=${dateLong}`;
+  }else{
+    url = `/api/v1/shops/${shopId}/sops`;
+  }
+
   return axiosInstance
-    .get(`/api/v1/shops/${shopId}/sops?date=`+dateLong, {
+    .get(url, {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     })
     .then((res) => {

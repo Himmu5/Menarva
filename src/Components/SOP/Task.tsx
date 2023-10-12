@@ -28,7 +28,7 @@ const TaskComp: FC<P> = ({ Sops , setSelectedSop }) => {
                Sops.tasks.map((o) => {
                     return <div key={o.name} className='flex items-center justify-between'>
                         <p>{o.name}</p>
-                        { o.imgUrl===null ? <Link to={"/Camera"} onClick={()=>setSelectedSop({ sop : Sops , taskId : +o.id })} className='px-3 py-1 bg-blue-500 text-white rounded-md'>Mark as done</Link> : <UploadButton /> }
+                        { o.imgUrl===null ?<Link to={"/Camera"} onClick={()=>setSelectedSop({ sop : Sops , taskId : +o.id })} > <UploadButton /></Link> : <p className='px-3 py-1 bg-blue-500 text-white rounded-md'>Mark as done</p>  }
                     </div>
                 })
             }
