@@ -1,10 +1,14 @@
 import axios from "axios";
 import axiosInstance from "./axios";
 
-export const getSOP = () => {
+export const getSOP = ( shopId:number , sopDate?:Date) => {
   //   const token = "Bearer " + localStorage.getItem("token");
+  console.log("shopId ",shopId);
+  const dateLong = sopDate && (sopDate as any * 1);
+  console.log("Date  ",dateLong);
+  
   return axiosInstance
-    .get("/api/v1/shops/3/sops", {
+    .get(`/api/v1/shops/${shopId}/sops?date=`+dateLong, {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     })
     .then((res) => {

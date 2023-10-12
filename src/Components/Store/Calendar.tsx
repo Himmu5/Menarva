@@ -14,27 +14,30 @@ type P = {
   setChangeMonth: (d: Date) => void;
   changeMonth: Date;
   Sales: boolean;
-  sopCalendar:SopCalendar;
+  sopCalendar: SopCalendar;
+  setSopDate:(s:Date)=>void;
+  Navigate:() => void;
 }
 
-const CalendarWithHighlights: FC<P> = ({ changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar }) => {
+const CalendarWithHighlights: FC<P> = ({ setSopDate ,changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar }) => {
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
+  const Navigate = useNavigate();
 
-  if(Sales === true){
-    sopCalendar.completed.forEach((d)=>{
+  if (Sales === true) {
+    sopCalendar.completed.forEach((d) => {
       approved.push(new Date(d));
     })
-    sopCalendar.inComplete.forEach((d)=>{
+    sopCalendar.inComplete.forEach((d) => {
       // console.log(new Date(d));
-      
+
       panding.push(new Date(d))
     })
-    
+
   }
-  else{
-   
+  else {
+
     if (monthSales.id !== 1033) {
       monthSales.result?.pending.forEach((d) => {
         panding.push(new Date(d));
@@ -54,10 +57,16 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth, setSelectedDate, monthSale
 
   const handleDateChange = (date: any) => {
     // console.log("Change calendar");
-    if (Array.isArray(date)) {
-      setSelectedDate(date[0]);
-    } else {
-      setSelectedDate(date);
+    if(Sales === true){
+      setSopDate(date);
+      Navigate("/SOP");
+    }
+    else{
+      if (Array.isArray(date)) {
+        setSelectedDate(date[0]);
+      } else {
+        setSelectedDate(date);
+      }
     }
   };
 
@@ -76,21 +85,20 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth, setSelectedDate, monthSale
       date.toDateString() === highlightedDate.toDateString()
     );
 
-  function handleViewChange(date: any) {
-    if (Array.isArray(date)) {
-      setSelectedDate(date[0]);
-      setChangeMonth(date[0]);
-    } else {
-      setSelectedDate(date);
-      setChangeMonth(date);
-    }
-  }
+  // function handleViewChange(date: any) {
+  //   if (Array.isArray(date)) {
+  //     setSelectedDate(date[0]);
+  //     setChangeMonth(date[0]);
+  //   } else {
+  //     setSelectedDate(date);
+  //     setChangeMonth(date);
+  //   }
+  // }
 
   function onchange(e: any) {
     // console.log("change",e.activeStartDate)
     setChangeMonth(e.activeStartDate);
   }
-  const Navigate = useNavigate();
 
   return (
     <div className='max-w-7xl mx-auto flex flex-col'>
@@ -102,7 +110,6 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth, setSelectedDate, monthSale
           onActiveStartDateChange={onchange}
           className={"max-w-sm"}
           value={changeMonth}
-          onClickMonth={handleViewChange}
           onChange={handleDateChange}
           tileClassName={({ date }) => {
             return isDatePandingHighlighted(date) ? 'h-12 rounded-full bg-yellow-500' : isDateRejectedHighlighted(date) ? " h-12 rounded-full bg-red-500 " : isDateApprovedHighlighted(date) ? " h-12 rounded-full bg-green-500 " : "  ";

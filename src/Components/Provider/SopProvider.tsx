@@ -5,32 +5,40 @@ import { AlertType } from '../../Typings/Alert';
 import { SopContext } from '../../Context/SopContext';
 import { SopCalendar, Sops } from '../../Typings/sops';
 import { UserClass } from '../../Typings/User';
+import { Shop } from '../../Typings/Shop';
+import { useNavigate } from 'react-router-dom';
 
 type P = {
     children: ReactNode;
     setAlert: (a: AlertType) => void;
-    shopId: number;
+    selectedShop: Shop;
     user: UserClass;
-    changeMonth:Date
+    changeMonth: Date;
+    shopId: number
 }
 
-const SopProvider: FC<P> = ({ children, setAlert, shopId, user , changeMonth }) => {
+const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMonth, shopId }) => {
+    console.log("selectedShop : ", selectedShop);
+    const Navigate = useNavigate();
+
 
     const [sops, setSOPS] = useState<Sops[]>();
     const [selectedSop, setSelectedSop] = useState<{ Sops: Sops, taskId: number }>();
     const [sopStatus, setSopStatus] = useState("ALL");
-    const [ sopCalendar , setSopCalendar ] = useState<SopCalendar>();
+    const [sopCalendar, setSopCalendar] = useState<SopCalendar>();
+    const [sopDate, setSopDate] = useState<Date>();
     // console.log("SOP status : ", sopStatus);
 
 
     useEffect(() => {
-        if (user?.role === 2) {
+        if (user) {
             getSOPs();
         }
-    }, [])
+    }, [sopDate , selectedShop])
+
 
     function getSOPs() {
-        getSOP().then((res) => {
+        getSOP(selectedShop?.id, sopDate).then((res) => {
             setSOPS(res);
         }).catch((err) => {
             setAlert({ type: 'error', message: err.message })
@@ -38,13 +46,15 @@ const SopProvider: FC<P> = ({ children, setAlert, shopId, user , changeMonth }) 
     }
 
     function getSopCalendar() {
-        getSopByCalendar(shopId).then((res) => {
+        getSopByCalendar(selectedShop?.id).then((res) => {
             setSopCalendar(res.result)
         })
     }
-    useEffect(()=>{
-        getSopCalendar();
-    },[user , shopId , changeMonth])
+    useEffect(() => {
+        if (selectedShop) {
+            getSopCalendar();
+        }
+    }, [user, selectedShop, changeMonth])
 
     function uploadSopImage(blob: string, sopId: number, taskId: number) {
         const file = new File([blob], 'image.jpeg');
@@ -58,8 +68,8 @@ const SopProvider: FC<P> = ({ children, setAlert, shopId, user , changeMonth }) 
 
     }
 
-    return <SopContext.Provider value={{ sops, uploadSopImage, sopCalendar ,  setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
+    return <SopContext.Provider value={{ Navigate , setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
         {children}
     </SopContext.Provider>
 }
-export default withShop(withUser(withAlert(SopProvider)));
+export default withUser(withShop(withAlert(SopProvider)));
