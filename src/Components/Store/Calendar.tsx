@@ -4,31 +4,53 @@ import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import { withShop } from '../../HOC/withShop';
 import BackButton from '../UI-Components/BackButton';
+import { withSops } from '../../HOC/withProvider';
+import { SopCalendar } from '../../Typings/sops';
 
 type P = {
   selectedDate: Date;
   setSelectedDate: (s: Date) => void;
   monthSales: { id: number, result: { pending: Date[], approved: Date[], rejected: Date[] } };
-  setChangeMonth:(d:Date)=>void;
-  changeMonth:Date
+  setChangeMonth: (d: Date) => void;
+  changeMonth: Date;
+  Sales: boolean;
+  sopCalendar:SopCalendar;
 }
 
-const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSales,setChangeMonth }) => {
-  // console.log("Month Sales : ", monthSales);
+const CalendarWithHighlights: FC<P> = ({ changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar }) => {
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
-  if (monthSales.id !== 1033) {
-    monthSales.result?.pending.forEach((d) => {
-      panding.push(new Date(d));
-    })
-    monthSales.result?.rejected.forEach((d) => {
-      rejected.push(new Date(d));
-    })
-    monthSales.result?.approved.forEach((d) => {
+
+  if(Sales === true){
+    sopCalendar.completed.forEach((d)=>{
       approved.push(new Date(d));
     })
+    sopCalendar.inComplete.forEach((d)=>{
+      // console.log(new Date(d));
+      
+      panding.push(new Date(d))
+    })
+    
   }
+  else{
+   
+    if (monthSales.id !== 1033) {
+      monthSales.result?.pending.forEach((d) => {
+        panding.push(new Date(d));
+      })
+      monthSales.result?.rejected.forEach((d) => {
+        rejected.push(new Date(d));
+      })
+      monthSales.result?.approved.forEach((d) => {
+        approved.push(new Date(d));
+      })
+    }
+  }
+
+
+  console.log("sales  : ", Sales);
+
 
   const handleDateChange = (date: any) => {
     // console.log("Change calendar");
@@ -64,7 +86,7 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSa
     }
   }
 
-  function onchange(e:any){ 
+  function onchange(e: any) {
     // console.log("change",e.activeStartDate)
     setChangeMonth(e.activeStartDate);
   }
@@ -77,7 +99,7 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSa
       <div className='flex items-center justify-center min-h-[80vh]'>
 
         <Calendar
-        onActiveStartDateChange={onchange}
+          onActiveStartDateChange={onchange}
           className={"max-w-sm"}
           value={changeMonth}
           onClickMonth={handleViewChange}
@@ -91,4 +113,4 @@ const CalendarWithHighlights: FC<P> = ({ changeMonth , setSelectedDate,  monthSa
   );
 }
 
-export default withShop(CalendarWithHighlights);
+export default withSops(withShop(CalendarWithHighlights));

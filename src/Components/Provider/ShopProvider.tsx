@@ -22,7 +22,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     const [miniShopsData, setMiniShops] = useState<MiniShop>();
     const [selectedDate, setSelectedDate] = useState<Date>();
     const [monthSales, setmonthSales] = useState();
-    const [ changeMonth , setChangeMonth ] = useState(new Date());
+    const [changeMonth, setChangeMonth] = useState(new Date());
     const [loading, setLoading] = useState(true);
 
     // console.log("changeMonth  : ", changeMonth);
@@ -53,15 +53,19 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     }, [shopId, user])
 
     useEffect(() => {
+
+        getMonthSale();
+
+    }, [selectedShop, changeMonth.getMonth()])
+
+    function getMonthSale() {
         if (selectedShop && user?.role === 1) {
-            console.log("Change Month : ",changeMonth)
+            // console.log("Change Month : ", changeMonth)
             getMonthSales(selectedShop.id, changeMonth.getFullYear(), changeMonth.getMonth()).then((res) => {
                 setmonthSales(res);
             })
-
         }
-
-    }, [ selectedShop , changeMonth.getMonth() ])
+    }
 
     function getMiniStores(id: number) {
         getminiStore(id).then((res) => {
@@ -106,11 +110,11 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         addSales(shopId, data).then((res) => {
             setAlert({ message: res.message, type: "success" });
         }).catch((err) => {
-            setAlert({ message: err.response.status === 403 ? "You are not allowed to upload sales please contact admin" :  err.message, type: "error" });
+            setAlert({ message: err.response.status === 403 ? "You are not allowed to upload sales please contact admin" : err.message, type: "error" });
         })
     }
 
-    return <ShopContext.Provider value={{ changeMonth , setChangeMonth , formatDateToYYYYMMDD, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ changeMonth, getMonthSale, setChangeMonth, formatDateToYYYYMMDD, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

@@ -11,3 +11,8 @@ export interface Task {
     status:        number;
     photoRequired: boolean;
 }
+
+export interface SopCalendar {
+    completed:  number[];
+    inComplete: number[];
+}

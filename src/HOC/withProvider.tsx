@@ -16,7 +16,7 @@ function WithProvider(provider:Context<any>) {
   return MyHOC;
 }
 
-export const withCart = WithProvider(UserContext);
+export const withUser = WithProvider(UserContext);
 export const withAlert = WithProvider(AlertContext);
 export const withShop = WithProvider(ShopContext);
 export const withManager = WithProvider(ManagerContext);

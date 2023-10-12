@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Hamburger from 'hamburger-react'
 import Ministores from '../Ministores/Ministores'
 import { Home } from '@mui/icons-material'
@@ -9,13 +9,18 @@ import { IoIosOptions } from 'react-icons/io'
 import { Shop } from '../../Typings/Shop'
 import { IconType } from 'react-icons'
 import { withShop } from '../../HOC/withShop'
+import { withUser } from '../../HOC/withProvider'
+import { UserClass } from '../../Typings/User'
+import Calendar from './Calendar'
 
 type P = {
-    selectedShop: Shop
+    selectedShop: Shop;
+    user: UserClass;
+    getMonthSale: () => void;
 }
 
-const Options: FC<P> = ({ selectedShop }) => {
-    console.log("Selected Shop : ", selectedShop);
+const Options: FC<P> = ({ selectedShop, user, getMonthSale }) => {
+    // console.log("Selected Shop : ", selectedShop);
     const data = [
         { option: "Mini Stores", logo: BiStore },
         {
@@ -34,6 +39,9 @@ const Options: FC<P> = ({ selectedShop }) => {
         setOpen(!open);
     }
 
+    useEffect(() => {
+        getMonthSale();
+    }, [])
 
     return <>
         <div className=' relative bg-white '>
@@ -83,10 +91,10 @@ const Options: FC<P> = ({ selectedShop }) => {
 
 
         {
-            selectedOption.option === "Mini Stores" ? <Ministores /> : selectedOption.option === "SOP" && <Home />
+            selectedOption.option === "Mini Stores" ? <Ministores /> : (selectedOption.option === "SOP" && user.role === 2) ? <Home /> : ((selectedOption.option === "SOP" && user.role === 1) ? <Calendar Sales={true} /> : <div></div>)
         }
 
     </>
 
 }
-export default withShop(Options);
+export default withUser(withShop(Options));

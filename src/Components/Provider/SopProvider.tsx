@@ -1,26 +1,32 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
-import { getSOP, uploadImage } from '../../Axios/Sop';
-import { withAlert } from '../../HOC/withProvider';
+import { getSOP, getSopByCalendar, uploadImage } from '../../Axios/Sop';
+import { withAlert, withShop, withUser } from '../../HOC/withProvider';
 import { AlertType } from '../../Typings/Alert';
 import { SopContext } from '../../Context/SopContext';
-import { Sops } from '../../Typings/sops';
+import { SopCalendar, Sops } from '../../Typings/sops';
+import { UserClass } from '../../Typings/User';
 
 type P = {
     children: ReactNode;
     setAlert: (a: AlertType) => void;
-    shopId: number
+    shopId: number;
+    user: UserClass;
+    changeMonth:Date
 }
 
-const SopProvider: FC<P> = ({ children, setAlert, shopId }) => {
+const SopProvider: FC<P> = ({ children, setAlert, shopId, user , changeMonth }) => {
 
     const [sops, setSOPS] = useState<Sops[]>();
     const [selectedSop, setSelectedSop] = useState<{ Sops: Sops, taskId: number }>();
-    const [ sopStatus , setSopStatus ] = useState("ALL");
-    console.log("SOP status : ",sopStatus);
-    
+    const [sopStatus, setSopStatus] = useState("ALL");
+    const [ sopCalendar , setSopCalendar ] = useState<SopCalendar>();
+    // console.log("SOP status : ", sopStatus);
+
 
     useEffect(() => {
-        getSOPs();
+        if (user?.role === 2) {
+            getSOPs();
+        }
     }, [])
 
     function getSOPs() {
@@ -31,20 +37,29 @@ const SopProvider: FC<P> = ({ children, setAlert, shopId }) => {
         })
     }
 
+    function getSopCalendar() {
+        getSopByCalendar(shopId).then((res) => {
+            setSopCalendar(res.result)
+        })
+    }
+    useEffect(()=>{
+        getSopCalendar();
+    },[user , shopId , changeMonth])
+
     function uploadSopImage(blob: string, sopId: number, taskId: number) {
         const file = new File([blob], 'image.jpeg');
         // console.log("File : ",file);
-        
+
         const formData = new FormData();
         formData.append('image', file);
         uploadImage(formData, sopId, taskId, shopId).then((res) => {
-            console.log("Image Uploaded",res);
+            console.log("Image Uploaded", res);
         })
 
     }
 
-    return <SopContext.Provider value={{ sops, uploadSopImage, setSelectedSop, selectedSop , sopStatus , setSopStatus }}>
+    return <SopContext.Provider value={{ sops, uploadSopImage, sopCalendar ,  setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
         {children}
     </SopContext.Provider>
 }
-export default withAlert(SopProvider);
+export default withShop(withUser(withAlert(SopProvider)));

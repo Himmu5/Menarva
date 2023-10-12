@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosInstance from "./axios";
 
 export const getSOP = () => {
@@ -27,4 +28,22 @@ export function uploadImage(formData: FormData , sopId:number , taskId :number ,
     .catch((err) => {
       console.log("Error ", err);
     });
+}
+
+
+export const getSopByCalendar = (sopId: number) => {
+  const config = {
+    method: 'get', // Use the GET method
+    url: import.meta.env.VITE_BASE_URL+"/api/v1/shops/3/sops/calender", // Replace with your API endpoint
+    headers: { 
+      'Authorization': 'Bearer ' + localStorage.getItem("token"), 
+      'Content-Type': 'application/json'
+    },
+    data: {},
+  };
+  return axios(config).then((res)=>{
+    return res.data;
+  }).catch((err)=>{  
+    console.log("error ", err);
+  })
 }

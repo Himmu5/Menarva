@@ -25,7 +25,7 @@ const Camera: FC<P> = ({ uploadSopImage , selectedSop}) => {
     console.log("pictire ",picture);
 
     const downloadPicture = ()=>{
-        uploadSopImage(picture! , selectedSop.sop.id , selectedSop.taskId );
+        uploadSopImage(picture! , selectedSop?.sop.id , selectedSop?.taskId );
         // saveAs(picture! , 'myPicture.jpg')
     }
     return <div className='min-h-[80vh] m-4'>
