@@ -14,7 +14,7 @@ type P = {
     selectedShop: Shop;
     user: UserClass;
     changeMonth: Date;
-    shopId: number
+    shopId: number;
 }
 
 const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMonth, shopId }) => {
@@ -63,7 +63,12 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         const formData = new FormData();
         formData.append('image', file);
         uploadImage(formData, sopId, taskId, shopId).then((res) => {
-            console.log("Image Uploaded", res);
+            // console.log("Image Uploaded", res);
+            setAlert({ type : "success" , message : "Image Uploaded Successfully" });
+            Navigate('/SOP');
+            getSOPs();
+        }).catch((err)=>{
+            setAlert({ type : "error" , message : err.message });
         })
 
     }
@@ -72,4 +77,4 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         {children}
     </SopContext.Provider>
 }
-export default withUser(withShop(withAlert(SopProvider)));
+export default withAlert(withUser(withShop(withAlert(SopProvider))));
