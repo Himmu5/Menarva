@@ -1,12 +1,18 @@
 import { MdCameraAlt } from 'react-icons/md'
-import {FC} from 'react'
+import { FC } from 'react'
 
-type P = object
+type P = {
+  text: string;
+  color: "red" | "blue"
+}
 
-const UploadButton:FC<P> =()=>{
-  return <div className=' flex items-center gap-1 bg-blue-500 rounded-md px-3 py-1 text-white text-sm '>
+const UploadButton: FC<P> = ({ text, color }) => {
+  return <div className={'w-fit flex items-center gap-1 rounded-md px-3 py-1 text-white text-sm '+
+  (color == "red" &&  " bg-red-500 ")
+  +(color == "blue" && " bg-blue-500 ")
+   }>
     <MdCameraAlt />
-    <p>Upload</p>
-</div>
+    <p>{text}</p>
+  </div>
 }
 export default UploadButton;

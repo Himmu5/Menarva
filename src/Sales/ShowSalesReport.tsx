@@ -3,8 +3,6 @@ import { withShop } from '../HOC/withShop'
 import { Sales } from '../Typings/Shop'
 import { Link } from 'react-router-dom'
 import Error from '../Components/Error/404Page'
-import Dialog from '@mui/material/Dialog';
-import { Button } from '@mui/material'
 import ImageViwer from '../Components/UI-Components/ImageViwer'
 
 type P = {

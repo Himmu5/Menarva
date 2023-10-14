@@ -11,10 +11,11 @@ import { Sops } from '../../Typings/sops';
 
 type P = {
     uploadSopImage: (blob: string, sopId: string, taskId: number) => void;
-    selectedSop : { sop: Sops , taskId : number }
+    selectedSop : { sop: Sops , taskId : number };
+    Navigate:(i:string)=>void
 }
 
-const Camera: FC<P> = ({ uploadSopImage , selectedSop}) => {
+const Camera: FC<P> = ({ uploadSopImage , selectedSop , Navigate}) => {
     const webcamRef = React.createRef<Webcam>();
     const [picture, setPicture] = useState<string>();
     console.log("Picture ,", picture);
@@ -27,6 +28,11 @@ const Camera: FC<P> = ({ uploadSopImage , selectedSop}) => {
     const downloadPicture = ()=>{
         uploadSopImage(picture! , selectedSop?.sop.id , selectedSop?.taskId );
         // saveAs(picture! , 'myPicture.jpg')
+    }
+
+    const handleClose = ()=>{
+        setPicture(undefined);
+        Navigate("/Sop");
     }
     return <div className='min-h-[80vh] m-4'>
         {
@@ -47,7 +53,7 @@ const Camera: FC<P> = ({ uploadSopImage , selectedSop}) => {
                     ref={webcamRef}
                     screenshotFormat="image/jpeg" />
                 <div className='p-4 bg-black h-full flex justify-between items-center text-white  ' >
-                    <RxCross1 size={35} className=" hover:scale-95 cursor-pointer " />
+                    <RxCross1 size={35} className=" hover:scale-95 cursor-pointer " onClick={handleClose} />
                     <BsCircle size={40} className=" hover:scale-95 cursor-pointer " onClick={capture} />
                     <div></div>
                 </div>

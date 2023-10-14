@@ -1,4 +1,5 @@
 export interface Sops {
+    status : number;
     id:    string;
     name:  string;
     tasks: Task[];

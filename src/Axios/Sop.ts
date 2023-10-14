@@ -57,3 +57,9 @@ export const getSopByCalendar = (sopId: number) => {
     console.log("error ", err);
   })
 }
+
+export const setTaskStatus = (shopId : number , sopId:string , taskId : number)=>{
+  return axiosInstance.put(`/api/v1/shops/${shopId}/sops/${sopId}/tasks/${taskId}`).then(()=>{
+    console.log("Task status updated");
+  })
+}

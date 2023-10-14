@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
-import { getSOP, getSopByCalendar, uploadImage } from '../../Axios/Sop';
+import { getSOP, getSopByCalendar, setTaskStatus, uploadImage } from '../../Axios/Sop';
 import { withAlert, withShop, withUser } from '../../HOC/withProvider';
 import { AlertType } from '../../Typings/Alert';
 import { SopContext } from '../../Context/SopContext';
@@ -72,8 +72,14 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         })
 
     }
+    function setSopTaskStatus(sopId:string , taskId:number){
+        setTaskStatus(selectedShop.id ,sopId , taskId ).then((res)=>{
+            setAlert({ type : "success" , message : "Task status updated successfully" });
+            // getSOPs();
+        })
+    }
 
-    return <SopContext.Provider value={{ Navigate , setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
+    return <SopContext.Provider value={{ Navigate , setSopTaskStatus ,setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
         {children}
     </SopContext.Provider>
 }
