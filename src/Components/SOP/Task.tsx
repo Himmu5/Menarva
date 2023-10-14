@@ -34,7 +34,7 @@ const TaskComp: FC<P> = ({ Sops, sopStatus, user , setSelectedSop }) => {
         filterTask = Sops.tasks
     }
 
-    return  <div key={Sops.name} className=' shadow-md flex flex-col p-3 py-2 justify-between w-full border rounded-xl'>
+    return filterTask.length !==0 && <div key={Sops.name} className=' shadow-md flex flex-col p-3 py-2 justify-between w-full border rounded-xl'>
         <div className='flex items-center justify-between'>
             <p>{Sops.name}</p>
 
