@@ -44,7 +44,7 @@ const TaskComp: FC<P> = ({ Sops, sopStatus, user , setSelectedSop }) => {
 
         {showOptions && <div className=' duration-500 w-full flex flex-col gap-1 text-xs p-2 border rounded-xl shadow-sm my-2 '>
             {
-               filterTask.map((o) => {
+              filterTask.length !== 0 && filterTask.map((o) => {
                     return <SubTasks setSelectedSop={setSelectedSop} o={o} sopStatus={sopStatus} Sops={Sops} user={user} />
                 })
             }

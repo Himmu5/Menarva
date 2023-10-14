@@ -7,7 +7,7 @@ type P = {
     sops: Sops[];
     sopStatus: "ALL" | "PENDING" | "COMPLETED"
 }
-const TaskMapper: FC<P> = ({ sops , sopStatus }) => {
+const TaskMapper: FC<P> = ({ sops }) => {
 
     
 

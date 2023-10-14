@@ -7,7 +7,7 @@ type P = {
 }
 
 const UploadButton: FC<P> = ({ text, color }) => {
-  return <div className={'w-fit flex items-center gap-1 rounded-md px-3 py-1 text-white text-sm '+
+  return <div className={'w-fit flex cursor-pointer items-center gap-1 rounded-md px-3 py-1 text-white text-sm '+
   (color == "red" &&  " bg-red-500 ")
   +(color == "blue" && " bg-blue-500 ")
    }>
