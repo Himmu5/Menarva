@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import Error from '../Components/Error/404Page'
 import Dialog from '@mui/material/Dialog';
 import { Button } from '@mui/material'
+import ImageViwer from '../Components/UI-Components/ImageViwer'
 
 type P = {
     dailySales: { result: Sales, message: string }
@@ -26,10 +27,7 @@ const ShowSalesReport: FC<P> = ({ dailySales }) => {
             <p><span className='font-bold text-lg'>Total Sales :</span> {dailySales?.result.totalSales}</p>
             {dailySales?.result?.imageUrl ? <img src={dailySales?.result?.imageUrl} alt="sales image" onClick={()=>setOpen(!open)} /> : "No Sales Image Found"}
 
-            <Dialog open={open} onClose={() => { setOpen(!open)}} className=' relative flex flex-col  ' >
-                <img src={dailySales?.result?.imageUrl!} alt="sales image" />
-                <Button onClick={()=>setOpen(!open)} children="OK" variant='contained' className='w-fit self-center bottom-4  ' sx={{ position : 'absolute'  }} />
-            </Dialog>
+            <ImageViwer imageUrl={dailySales?.result?.imageUrl!} open={open} setOpen={setOpen}  />
 
             <Link to={"/"} className='px-3 py-1 bg-indigo-400 rounded-md shadow-md text-white my-3 hover:scale-95 ' >back to Shops</Link>
         </div>
