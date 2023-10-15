@@ -41,6 +41,7 @@ const TaskComp: FC<P> = ({ Sops, sopStatus, user , setSelectedSop }) => {
             {showOptions === true ? <BiSolidUpArrow className="cursor-pointer" size={20} onClick={() => setShowOptions(!showOptions)} /> : <BsFillCaretDownFill size={20} onClick={() => setShowOptions(!showOptions)} className="cursor-pointer" />}
 
         </div>
+       
 
         {showOptions && <div className=' duration-500 w-full flex flex-col gap-1 text-xs p-2 border rounded-xl shadow-sm my-2 '>
             {

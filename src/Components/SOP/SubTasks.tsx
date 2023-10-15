@@ -1,9 +1,10 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Sops, Task } from '../../Typings/sops'
 import UploadButton from '../UI-Components/UploadButton'
 import { UserClass } from '../../Typings/User';
 import { Link } from 'react-router-dom';
 import { withSops } from '../../HOC/withProvider';
+import ImageViwer from '../UI-Components/ImageViwer';
 type P = {
     sopStatus: string,
     o: Task;
@@ -14,6 +15,7 @@ type P = {
 }
 
 const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskStatus }) => {
+    const [ open , setOpen] = useState(false);
     let statusComponent = <div></div>
 
     if (user.role === 1) {
@@ -24,7 +26,7 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
         }
         if (sopStatus == "COMPLETED") {
             if (o.status == 2) {
-                statusComponent = <UploadButton color='blue' text='View' />
+                statusComponent = <div onClick={()=>setOpen(!open)}> <UploadButton color={'blue'} text={"View"} /></div>
             }
         }
         if (sopStatus == "ALL") {
@@ -32,7 +34,7 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
                 statusComponent = <UploadButton color='red' text='Pending' />
             }
             else if (o.status == 2) {
-                statusComponent = <UploadButton color={'blue'} text={"View"} />
+                statusComponent =<div onClick={()=>setOpen(!open)}> <UploadButton color={'blue'} text={"View"} /></div>
             }
 
         }
@@ -61,9 +63,12 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
         }
     }
 
-    return <div key={o.name} className='flex items-center justify-between'>
-        <p>{o.name}</p>
-        {statusComponent}
-    </div>
+    return <>
+         <ImageViwer imageUrl={o.imgUrl!} open={open} setOpen={setOpen} />
+        <div key={o.name} className='flex items-center justify-between'>
+            <p>{o.name}</p>
+            {statusComponent}
+        </div>
+    </>
 }
 export default withSops(SubTasks);

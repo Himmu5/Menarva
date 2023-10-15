@@ -10,36 +10,58 @@ import { withSops } from '../../HOC/withProvider';
 import { Sops } from '../../Typings/sops';
 
 type P = {
-    uploadSopImage: (blob: string, sopId: string, taskId: number) => void;
-    selectedSop : { sop: Sops , taskId : number };
-    Navigate:(i:string)=>void
+    uploadSopImage: (blob: Blob, sopId: string, taskId: number) => void;
+    selectedSop: { sop: Sops, taskId: number };
+    Navigate: (i: string) => void
 }
 
-const Camera: FC<P> = ({ uploadSopImage , selectedSop , Navigate}) => {
+const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
     const webcamRef = React.createRef<Webcam>();
     const [picture, setPicture] = useState<string>();
-    console.log("Picture ,", picture);
+   
+    console.log("dataURItoBlob ",picture && dataURItoBlob(picture!));
+
+    function dataURItoBlob(dataURI:string) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: mimeString });
+      }
+
+
     const capture = () => {
         const screenshot = webcamRef.current!.getScreenshot();
         setPicture(screenshot!);
     };
-    console.log("pictire ",picture);
 
-    const downloadPicture = ()=>{
-        uploadSopImage(picture! , selectedSop?.sop.id , selectedSop?.taskId );
-        // saveAs(picture! , 'myPicture.jpg')
+    const file = new File([picture!], 'image.jpg' );
+
+    console.log("URL.createObjectURL(file) ", URL.createObjectURL(file));
+
+    const downloadPicture = () => {
+        console.log("Uploading picture");
+        
+        uploadSopImage(dataURItoBlob(picture!), selectedSop?.sop.id, selectedSop?.taskId);
+        // saveAs(picture! , 'myPicture.jpg'
     }
 
-    const handleClose = ()=>{
+    const handleClose = () => {
         setPicture(undefined);
         Navigate("/Sop");
     }
     return <div className='min-h-[80vh] m-4'>
+        {/* <input type="file" onChange={(e)=>setPicture(e.target.value)} /> */}
+        {/* <img src={dataURItoBlob(picture!)}  alt="New Formated Image"/> */}
+
         {
             picture ? <div className='relative  max-w-3xl mx-auto'>
                 <img src={picture} alt='picture' />
                 <div className=' absolute gap-4 justify-center  font-bold bottom-0 flex w-full my-2 '>
-                    <div onClick={()=>setPicture(undefined)} className=' cursor-pointer flex bg-white opacity-40 w-1/6 p-4 items-center flex-col gap-2'>
+                    <div onClick={() => setPicture(undefined)} className=' cursor-pointer flex bg-white opacity-40 w-1/6 p-4 items-center flex-col gap-2'>
                         <FaUndo size={25} />
                         <p>Retake</p>
                     </div>

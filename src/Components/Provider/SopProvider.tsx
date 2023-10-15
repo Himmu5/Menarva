@@ -28,13 +28,14 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
     const [sopCalendar, setSopCalendar] = useState<SopCalendar>();
     const [sopDate, setSopDate] = useState<Date>();
     // console.log("SOP status : ", sopStatus);
+    const [image, setImage] = useState<File>()
 
 
     useEffect(() => {
         if (user) {
             getSOPs();
         }
-    }, [sopDate , selectedShop])
+    }, [sopDate, selectedShop])
 
 
     function getSOPs() {
@@ -56,30 +57,33 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         }
     }, [user, selectedShop, changeMonth])
 
-    function uploadSopImage(blob: string, sopId: number, taskId: number) {
-        const file = new File([blob], 'image.jpeg');
-        // console.log("File : ",file);
+    function uploadSopImage(blob: Blob, sopId: number, taskId: number) {
+        const file = new File([blob], 'image.jpg');
+        // setImage(file);
+        
+        console.log("blob : ", blob);
 
         const formData = new FormData();
-        formData.append('image', file);
-        uploadImage(formData, sopId, taskId, shopId).then((res) => {
-            // console.log("Image Uploaded", res);
-            setAlert({ type : "success" , message : "Image Uploaded Successfully" });
+        formData.append('image', file, "image.jpg");
+        console.log("FOrm data : ", formData);
+
+        uploadImage(formData, sopId, taskId, shopId).then(() => {
+            setAlert({ type: "success", message: "Image Uploaded Successfully" });
             Navigate('/SOP');
             getSOPs();
-        }).catch((err)=>{
-            setAlert({ type : "error" , message : err.message });
+        }).catch((err) => {
+            setAlert({ type: "error", message: err.message });
         })
 
     }
-    function setSopTaskStatus(sopId:string , taskId:number){
-        setTaskStatus(selectedShop.id ,sopId , taskId ).then((res)=>{
-            setAlert({ type : "success" , message : "Task status updated successfully" });
+    function setSopTaskStatus(sopId: string, taskId: number) {
+        setTaskStatus(selectedShop.id, sopId, taskId).then((res) => {
+            setAlert({ type: "success", message: "Task status updated successfully" });
             getSOPs();
         })
     }
 
-    return <SopContext.Provider value={{ Navigate , setSopTaskStatus ,setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
+    return <SopContext.Provider value={{ image, Navigate, setSopTaskStatus, setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
         {children}
     </SopContext.Provider>
 }
