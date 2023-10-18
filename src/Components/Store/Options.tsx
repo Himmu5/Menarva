@@ -19,7 +19,7 @@ type P = {
     getMonthSale: () => void;
 }
 
-const Options: FC<P> = ({ selectedShop, user, getMonthSale }) => {
+const Options: FC<P> = ({ user, getMonthSale }) => {
     // console.log("Selected Shop : ", selectedShop);
     const data = [
         { option: "Mini Stores", logo: BiStore },

@@ -45,10 +45,10 @@ export function uploadImage(
     });
 }
 
-export const getSopByCalendar = (sopId: number) => {
+export const getSopByCalendar = (shopId:number) => {
   const config = {
     method: "get", // Use the GET method
-    url: import.meta.env.VITE_BASE_URL + "/api/v1/shops/3/sops/calender", // Replace with your API endpoint
+    url: import.meta.env.VITE_BASE_URL + `/api/v1/shops/${shopId}/sops/calender`, // Replace with your API endpoint
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
       "Content-Type": "application/json",
