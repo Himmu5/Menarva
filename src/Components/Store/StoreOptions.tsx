@@ -21,7 +21,7 @@ type P = {
   shopConfig: UserConfig
 }
 
-const StoreOptions: FC<P> = ({ user, shopId, shopConfig, config }) => {
+const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
 
   let data = [] as { option: string, logo: IconType, show: boolean }[]
 

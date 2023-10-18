@@ -28,7 +28,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
     const [sopCalendar, setSopCalendar] = useState<SopCalendar>();
     const [sopDate, setSopDate] = useState<Date>();
     // console.log("SOP status : ", sopStatus);
-    const [image, setImage] = useState<File>()
+    const [image] = useState<File>()
 
 
     useEffect(() => {
@@ -77,7 +77,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
     }
     function setSopTaskStatus(sopId: string, taskId: number) {
-        setTaskStatus(selectedShop.id, sopId, taskId).then((res) => {
+        setTaskStatus(selectedShop.id, sopId, taskId).then(() => {
             setAlert({ type: "success", message: "Task status updated successfully" });
             getSOPs();
         })
