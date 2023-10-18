@@ -4,7 +4,10 @@ import axiosInstance from "./axios";
 export const getManagers = () => {
   return axiosInstance
     .get("/shops/managers", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "ngrok-skip-browser-warning": 69420,
+      },
     })
     .then((res) => {
       return res.data;
@@ -27,7 +30,12 @@ export const addManager = (
     .post(
       `/shops/${shopId}/manager`,
       { ...data },
-      { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "ngrok-skip-browser-warning": 69420,
+        },
+      }
     )
     .then((res) => {
       // console.log("Res : ",res);
@@ -42,17 +50,20 @@ export const editManager = (
   mId: number
 ) => {
   const data = {
-    user : { ...user , id : mId , role : 2 },
+    user: { ...user, id: mId, role: 2 },
     authorities: {
       authorities: { authorities: { ...config } },
       shopAuthorities: {},
     },
   };
   const newData = { ...data, releaseShopId: null };
-  
+
   return axiosInstance
     .put(`/shops/update_manager?shopId=${shopId}`, newData, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "ngrok-skip-browser-warning": 69420,
+      },
     })
     .then((res) => {
       // console.log("Res : ",res);
@@ -63,7 +74,10 @@ export const editManager = (
 export const getSingleManagers = (id: number) => {
   return axiosInstance
     .get("/shops/manager/" + id, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "ngrok-skip-browser-warning": 69420,
+      },
     })
     .then((res) => {
       return res.data;

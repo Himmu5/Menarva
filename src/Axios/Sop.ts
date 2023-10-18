@@ -52,6 +52,7 @@ export const getSopByCalendar = (sopId: number) => {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": 69420,
     },
     data: {},
   };
@@ -72,6 +73,7 @@ export const setTaskStatus = (
   return axiosInstance
     .put(`/api/v1/shops/${shopId}/sops/${sopId}/tasks/${taskId}`, {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      "ngrok-skip-browser-warning": 69420,
     })
     .then(() => {
       console.log("Task status updated");

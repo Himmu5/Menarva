@@ -45,7 +45,8 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     useEffect(() => {
         if (user && shopId) {
-            axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
+            axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') , 
+            "ngrok-skip-browser-warning": 69420, } }).then((res) => {
                 // console.log("Res : ",res.data.result);
                 setSelectedShop(res.data.result);
             })

@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect, useState } from 'react'
 import { ManagerContext } from '../../Context/Manager';
 import { addManager, editManager, getManagers, getSingleManagers } from '../../Axios/manager';
 import { UserClass, UserConfig } from '../../Typings/User';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Manager, SingleManager } from '../../Typings/Manager';
 import { withUser } from '../../HOC/withUser';
 import { withAlert } from '../../HOC/withAlert';
