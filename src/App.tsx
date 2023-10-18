@@ -22,12 +22,14 @@ import ManagerProvider from "./Components/Provider/ManagerProvider"
 import Alert from "./Components/UI-Components/Alert"
 import AlertProvider from "./Components/Provider/AlertProvider"
 import SopProvider from "./Components/Provider/SopProvider"
+// import Inventory from "./Components/Inventory/Inventory"
 
 
 function App() {
 
   return (
     <div className="relative">
+      {/* <Inventory /> */}
       <AlertProvider>
         <UserProvider>
           <ShopProvider>

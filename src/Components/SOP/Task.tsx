@@ -24,17 +24,19 @@ const TaskComp: FC<P> = ({ Sops, sopStatus, user , setSelectedSop }) => {
     // }
 
     let filterTask =  [] as Task[];
+    if(sopStatus === "ALL"){
+        filterTask = Sops.tasks
+    }
     if(sopStatus === "PENDING"){
         filterTask = Sops.tasks.filter((o)=> o.status === 1 )
     }
     if(sopStatus === "COMPLETED"){
         filterTask = Sops.tasks.filter((o)=> o.status === 2)
     }
-    if(sopStatus === "ALL"){
-        filterTask = Sops.tasks
-    }
+   
 
-    return filterTask.length !==0 && <div key={Sops.name} className=' shadow-md flex flex-col p-3 py-2 justify-between w-full border rounded-xl'>
+   
+    return  filterTask.length !==0 && <div key={Sops.name} className=' shadow-md flex flex-col p-3 py-2 justify-between w-full border rounded-xl'>
         <div className='flex items-center justify-between'>
             <p>{Sops.name}</p>
 
