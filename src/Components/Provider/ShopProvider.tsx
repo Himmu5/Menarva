@@ -79,9 +79,12 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     const [dailySales, setDailySales] = useState();
     function getDailySales() {
-        const date = formatDateToYYYYMMDD(selectedDate!);
+        // const date = formatDateToYYYYMMDD(selectedDate!);
         if (user?.role === 1) {
-            getDailySale(selectedShop!.id, date).then((res) => {
+            // const longDate = selectedDate! * 1
+            const longDate =  selectedDate! as any * 1
+
+            getDailySale(selectedShop!.id, longDate ).then((res) => {
                 setDailySales(res);
                 Navigate('/ministore/sales/report');
                 // console.log("Get Daily sales : ", res);
@@ -105,7 +108,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     function uploadSales(shopId: number, data: {
         shopId: number;
         storeName: string;
-        date: string;
+        date: number;
         totalSales: number;
     }) {
         addSales(shopId, data).then((res) => {

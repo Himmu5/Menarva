@@ -15,7 +15,7 @@ export const getSOP = (shopId: number, sopDate?: Date) => {
 
   return axiosInstance
     .get(url, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") , "ngrok-skip-browser-warning": 69420, },
     })
     .then((res) => {
       return res.data.result.sops;
@@ -35,7 +35,7 @@ export function uploadImage(
     .post(
       `/api/v1/shops/${storeId}/sops/${sopId}/tasks/${taskId}/image`,
       formData,
-      { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
+      { headers: { Authorization: "Bearer " + localStorage.getItem("token") ,"ngrok-skip-browser-warning": 69420, } }
     )
     .then((res) => {
       console.log("res ", res);

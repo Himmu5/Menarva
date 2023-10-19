@@ -11,13 +11,14 @@ import { withUser } from '../../HOC/withUser';
 import { UserConfig } from '../../Typings/User';
 import { withAlert } from '../../HOC/withAlert';
 import { AlertType } from '../../Typings/Alert';
+import 'react-calendar/dist/Calendar.css';
 
 type P = {
   selectedShop: Shop;
   uploadSales: (shopId: number, data: {
     shopId: number;
     shopName: string;
-    date: string;
+    date: number;
     totalSales: number;
   }) => void;
   shopConfig: UserConfig;
@@ -25,7 +26,7 @@ type P = {
   setAlert: (s: AlertType) => void
 }
 
-const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, formatDateToYYYYMMDD, setAlert }) => {
+const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert }) => {
   console.log("selected Shop :", selectedShop);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -50,11 +51,11 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, formatDateT
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (selectedDate && salesAmount) {
-      const date = formatDateToYYYYMMDD(selectedDate);
+      const longDate = selectedDate as any * 1
       const data = {
         shopId: selectedShop.id,
         shopName: selectedShop.name,
-        date: date,
+        date: longDate,
         totalSales: +salesAmount
       }
       console.log("selectedShop : ", selectedShop.id);
@@ -70,8 +71,9 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, formatDateT
   function UploadImage(salesImage: FormData) {
     console.log("file : ", salesImage);
     if (selectedDate) {
-      const date = formatDateToYYYYMMDD(selectedDate);
-      axiosInstance.post('/api/v1/accounting/upload_sales_image/' + selectedShop.id + `?date=${date}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' } }).then((res) => {
+      
+      const longDate = selectedDate as any * 1
+      axiosInstance.post('/api/v1/accounting/upload_sales_image/' + selectedShop.id + `?date=${longDate}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' } }).then((res) => {
         console.log("Image : ", res)
         setSelectedImage(null);
         setAlert({ type: res.data.code === 1029 ? "error" : "success", message: res.data.message });
@@ -81,6 +83,12 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, formatDateT
       setAlert({ type: "error", message: "Please select a date" });
     }
   }
+  const tileClassName = (p :{ date:Date , view : string }) => {
+    if (p.view === 'month' && p.date.toDateString() === new Date().toDateString()) {
+      return 'current-date'; // You can define this class in your CSS for the blue circle style
+    }
+    return '';
+  };
 
   return <div>
 
@@ -95,9 +103,11 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, formatDateT
             Selected Date : {selectedDate?.toLocaleString()}
           </div>
         }
+
         {!showCalendar && <Calendar
-          className={"max-w-sm"}
+          className={" max-w-sm "}
           value={selectedDate}
+          tileClassName={tileClassName}
           onChange={handleDateChange} />}
         <div className='flex items-center relative '>
           <BiRupee size={25} className=" left-2 text-gray-400 absolute " />

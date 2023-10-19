@@ -31,7 +31,7 @@ export function getMonthSales(id: number, year: number, month: number) {
     });
 }
 
-export function getDailySale(id: number, date: string) {
+export function getDailySale(id: number, date: number) {
   console.log("Date :", date);
 
   return axiosInstance
@@ -51,17 +51,21 @@ export function addSales(
   data: {
     shopId: number;
     storeName: string;
-    date: string;
+    date: number;
     totalSales: number;
   }
 ) {
   return axiosInstance
-    .post(`/api/v1/accounting/${shopId}/add_sales`, data, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "ngrok-skip-browser-warning": 69420,
-      },
-    })
+    .post(
+      `/api/v1/accounting/${shopId}/add_sales`,
+      data,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "ngrok-skip-browser-warning": 69420,
+        },
+      }
+    )
     .then((res) => {
       return res.data;
     });

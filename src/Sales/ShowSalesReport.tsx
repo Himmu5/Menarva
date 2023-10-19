@@ -12,10 +12,12 @@ type P = {
     dailySales: { result: Sales, message: string }
 }
 const ShowSalesReport: FC<P> = ({ dailySales }) => {
+    console.log("dailySales : ", dailySales);
+    
 
     const [open, setOpen] = useState(false);
 
-    if (dailySales.result === undefined) {
+    if (dailySales.result === null) {
         return <Error message={dailySales.message} />
     }
 

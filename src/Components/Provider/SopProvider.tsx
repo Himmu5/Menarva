@@ -18,7 +18,6 @@ type P = {
 }
 
 const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMonth, shopId }) => {
-    console.log("selectedShop : ", selectedShop);
     const Navigate = useNavigate();
 
 
@@ -59,13 +58,9 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
     function uploadSopImage(blob: Blob, sopId: number, taskId: number) {
         const file = new File([blob], 'image.jpg');
-        // setImage(file);
-        
-        console.log("blob : ", blob);
 
         const formData = new FormData();
         formData.append('image', file, "image.jpg");
-        console.log("FOrm data : ", formData);
 
         uploadImage(formData, sopId, taskId, shopId).then(() => {
             setAlert({ type: "success", message: "Image Uploaded Successfully" });
