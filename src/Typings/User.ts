@@ -23,6 +23,10 @@ export type UserConfig =  {
     SHOP:       Accounting;
     MANAGER:    Accounting;
     CONFIG:     Accounting;
+    SOP : {
+        READ : boolean;
+        IMAGE_UPLOAD:boolean
+    }
 }
 
 export interface Accounting {

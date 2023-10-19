@@ -22,6 +22,7 @@ type P = {
 }
 
 const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
+  // console.log("SHOP : 111",shopConfig);
 
   let data = [] as { option: string, logo: IconType, show: boolean }[]
 
@@ -31,7 +32,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
     { option: "Edit Managers", logo: FiEdit, show: true },]
   } else {
     data = [{ option: "Mini Stores", logo: AiOutlineLineChart, show: true },
-    { option: "SOP", logo: AiOutlineSetting, show: true },
+    { option: "SOP", logo: AiOutlineSetting, show: shopConfig.SOP.READ },
     { option: "Inventory", logo: FiEdit, show: false }]
   }
 
@@ -46,7 +47,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
     setOpen(!open);
   }
 
-  if (user.role === 2 && shopConfig.ACCOUNTING.READ === false) {
+  if (user.role === 2 && shopConfig.ACCOUNTING.READ === false && shopConfig.SOP.READ === false) {
     return <Error message='You are not allowed to see any resource please contact admin' />
   }
 
@@ -84,7 +85,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
     </div>
 
     {
-      selectedOption === 'Stores' ? <Stores /> : selectedOption === "Edit Managers" ? <Mannager /> : selectedOption === "Mini Stores" ? <Ministores to={"/minishops/" + shopId} shopId={shopId} /> : selectedOption === "SOP" ? <Home /> :  ""
+      selectedOption === 'Stores' ? <Stores /> : selectedOption === "Edit Managers" ? <Mannager /> : selectedOption === "Mini Stores" ? <Ministores to={"/minishops/" + shopId} shopId={shopId} /> : selectedOption === "SOP" ? <Home /> : ""
     }
 
   </div>

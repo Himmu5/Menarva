@@ -83,7 +83,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         })
     }
 
-    return <SopContext.Provider value={{ image, Navigate, setSopTaskStatus, setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
+    return <SopContext.Provider value={{getSOPs, image, Navigate, setSopTaskStatus, setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
         {children}
     </SopContext.Provider>
 }
