@@ -8,7 +8,7 @@ const Avatar: FC<P> = ({ Managers }) => {
     const [show, setShow] = useState(false);
     const COMMON_CLASS = "flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800"
 
-    return <div className='absolute z-10 bottom-6 right-4'>
+    return <div >
         <div className="flex -space-x-4 justify-center">
             {
                 Managers.map((Person, index) => {
@@ -16,6 +16,9 @@ const Avatar: FC<P> = ({ Managers }) => {
                         <p className={COMMON_CLASS}>{Person.name.charAt(0)}</p>
                     </div>
                 })
+            }
+            {
+                Managers.length === 0 && <p className='text-sm'>No managers available</p> 
             }
 
             {

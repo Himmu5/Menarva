@@ -32,7 +32,10 @@ const stores: FC<P> = ({ shops, setSelectedShop }) => {
                         <p>[Branch Name]</p>
                     </div>
                 </Link>
-                <Avatar Managers={shops[key].Managers} />
+                    <div className='flex items-center absolute z-10 bottom-6 gap-2 right-4'>
+                        <p className='font-bold'>Managers :  </p>
+                        <Avatar Managers={shops[key].Managers} />
+                    </div>
                 </div>
             })
         }
