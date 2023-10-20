@@ -36,7 +36,6 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     useEffect(() => {
         if (user?.role === 1) {
             getShops().then((res:any) => {
-                console.log("res : ", res);
                 setShops(res);
             })
         }

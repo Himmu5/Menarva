@@ -26,7 +26,7 @@ const stores: FC<P> = ({ shops, setSelectedShop }) => {
         {
             Object.keys(shops).map((key) => {
                 const shop = shops[key as keyof typeof shops].store;
-                return <div className='w-full relative flex flex-col ' > <Link key={key} to={"/shop/options"} onClick={() => setSelectedShop(shop)} className=' w-full rounded-md shadow-md cursor-pointer shadow-gray-400 pl-[10%] m-3 '>
+                return <div key={key} className='w-full relative flex flex-col ' > <Link key={key} to={"/shop/options"} onClick={() => setSelectedShop(shop)} className=' w-full rounded-md shadow-md cursor-pointer shadow-gray-400 pl-[10%] m-3 '>
                     <div className='flex items-center min-h-[250px] gap-2'>
                         <p>{shop.name}</p>
                         <p>[Branch Name]</p>

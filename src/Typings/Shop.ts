@@ -1,3 +1,5 @@
+import { Manager } from "./Manager";
+
 export interface Shop {
     id:          number;
     name:        string;
@@ -8,6 +10,11 @@ export interface Shop {
     ownerEmail:  null;
     createdAt:   number;
     updatedAt:   number;
+}
+
+export interface shopObject {
+    shop : Shop,
+    Managers : Manager
 }
 
 export interface MiniShop {

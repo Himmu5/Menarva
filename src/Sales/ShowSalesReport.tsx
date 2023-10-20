@@ -20,13 +20,13 @@ const ShowSalesReport: FC<P> = ({ dailySales }) => {
     if (dailySales.result === null) {
         return <Error message={dailySales.message} />
     }
-
+    const date =  new Date(dailySales?.result?.date);
 
     return <div className=' min-h-[80vh] max-w-5xl mx-auto flex justify-center items-center '>
 
         <div className=' w-1/2 min-h-[20vh] text-center space-y-5 py-5 border m-4 shadow-md rounded-md flex flex-col p-2  '>
             <h1 className='text-xl font-bold '>Sales Datails</h1>
-            <p><span className='  font-bold text-lg'> Date :</span> {dailySales?.result.date.toLocaleString()}</p>
+            <p><span className='  font-bold text-lg'> Date :</span> {date.toISOString()}</p>
             <p><span className='font-bold text-lg'>Total Sales :</span> {dailySales?.result.totalSales}</p>
             {dailySales?.result?.imageUrl ? <img className='cursor-pointer' src={dailySales?.result?.imageUrl} alt="sales image" onClick={() => setOpen(!open)} /> : "No Sales Image Found"}
 

@@ -1,9 +1,3 @@
-export interface User {
-    accessToken: string;
-    username:    null;
-    password:    null;
-    user:        UserClass;
-}
 
 export interface UserClass {
     isActive:  boolean;
