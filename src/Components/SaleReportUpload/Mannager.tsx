@@ -27,7 +27,7 @@ const Mannager: FC<P> = ({ managers, getSingleManager, getManager }) => {
         <div className='flex flex-col gap-3 my-5'>
             {
                 managers.map((Manager) => {
-                    return <ManagerCard getSingleManager={getSingleManager} manager={Manager} index={Manager.id} />
+                    return <ManagerCard key={Manager.id} getSingleManager={getSingleManager} manager={Manager} index={Manager.id} />
                 })
             }
         </div>

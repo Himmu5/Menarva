@@ -14,6 +14,8 @@ import { withManager } from '../../HOC/withManager';
 import { SingleManager } from '../../Typings/Manager';
 import { useParams } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx'
+import { withAlert } from '../../HOC/withProvider';
+import { AlertType } from '../../Typings/Alert';
 
 type P = {
     shops: shopObject;
@@ -29,10 +31,11 @@ type P = {
             username: string
         }
     ) => void;
-    user:UserClass
+    user:UserClass;
+    setAlert : (a:AlertType)=>void
 }
 
-const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, UpdateManager , user}) => {
+const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, UpdateManager , user , setAlert}) => {
 
     const FormType = useParams().Form_Type;
     // console.log("shops : ",shops);
@@ -46,7 +49,6 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     }
 
 
-
     function submit(values: T, bag: FormikBag<P, T>) {
         if (FormType === "ADD") {
             if (Object.keys(selectedShop).length > 0) {
@@ -55,11 +57,16 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                 bag.resetForm();
             }
             else {
-                alert("Please Select Shop")
+                setAlert({message :"Please Select Shop" , type:"error" })
             }
         }
         else if (FormType === "Edit") {
+            if (Object.keys(selectedShop).length > 0) {
             UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.userDO.id)
+            }
+            else {
+                setAlert({message :"Please Select Shop" , type:"error" })
+            }
         }
     }
 
@@ -75,8 +82,12 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(FormType == "ADD" ? {} : oldSelection);
     const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[3] : config);
 
+    console.log("Selected Shop : ",selectedShop);
+    
+
     if (values.search.length > 0) {
-        filteredShop = shops.filter((shop) => {
+        filteredShop = Object.keys(shops).filter((key) => {
+            const shop = shops[key].shop;
             return (Object.keys(selectedShop).length > 0 ? !selectedShop[shop.id] : true) && shop.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1;
         });
     }
@@ -157,7 +168,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 
                 {
                     (Object.keys(selectedShop).length > 0) && Object.keys(editConfig).map((option) => {
-                        return <div className='gap-2'>
+                        return <div className='gap-2' key={option}>
                             <p className='font-bold text-lg'>{option}</p>
                             {
                                 Object.keys(editConfig[option]).map((o) => {
@@ -186,4 +197,4 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 }
 
 
-export default withManager(withUser(withShop(AddEditManager)));
+export default withAlert(withManager(withUser(withShop(AddEditManager))));
