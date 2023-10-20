@@ -32,7 +32,7 @@ const Home: FC<P> = ({ sops, getSOPs }) => {
             <p className='text-red-500'>PENDING</p>
             <p className='text-green-500 '>COMPLETED</p>
         </div> */}
-
+        
         <SelectionOption list={['ALL', 'PENDING', 'COMPLETED']} />
         <TaskMapper sops={sops} />
 

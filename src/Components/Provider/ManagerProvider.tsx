@@ -37,7 +37,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         getSingleManagers(mId).then((res) => {
             // console.log("Res : ", res);
             setSingleManager(res.result);
-            navigate('/mannager/edit/Edit');
+            navigate('/manager/Edit');
         })
     }
 

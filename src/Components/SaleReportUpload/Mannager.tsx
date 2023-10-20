@@ -20,7 +20,7 @@ const Mannager: FC<P> = ({ managers, getSingleManager, getManager }) => {
     return <div className='max-w-5xl mx-auto p-2 '>
         <div className='flex justify-between items-center w-full'>
             <p></p>
-            <Link to={'/mannager/edit/ADD'} className='text-white flex justify-between text-xs py-4 '>
+            <Link to={'/manager/ADD'} className='text-white flex justify-between text-xs py-4 '>
                 <Button startIcon={<IoAdd color="white" />} children="Add Manager" variant='contained' style={{ color: "white" }} />
             </Link>
         </div>
