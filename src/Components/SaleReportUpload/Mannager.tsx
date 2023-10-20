@@ -3,8 +3,8 @@ import { IoAdd } from 'react-icons/io5';
 import { FC, useEffect } from 'react'
 import ManagerCard from './ManagerCard';
 import { Link } from 'react-router-dom';
-import { withManager } from '../../HOC/withManager';
 import { Manager } from '../../Typings/Manager';
+import { withManager } from '../../HOC/withProvider';
 
 type P = {
     managers: Manager[];

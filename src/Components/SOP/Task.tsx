@@ -2,8 +2,7 @@ import { FC, useState } from 'react'
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import { BiSolidUpArrow } from 'react-icons/bi'
 import { Sops, Task } from '../../Typings/sops';
-import { withSops } from '../../HOC/withProvider';
-import { withUser } from '../../HOC/withUser';
+import { withSops, withUser } from '../../HOC/withProvider';
 import { UserClass } from '../../Typings/User';
 import SubTasks from './SubTasks';
 

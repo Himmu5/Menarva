@@ -1,10 +1,10 @@
 import { FC } from 'react'
-import { withShop } from '../../HOC/withShop'
 import { Shop } from '../../Typings/Shop'
 import { Link } from 'react-router-dom';
 import Loading from '../../Loader/Loading';
 import { Manager } from '../../Typings/Manager';
 import Avatar from '../UI-Components/ManagerAvatar';
+import { withShop } from '../../HOC/withProvider';
 
 type P = {
     shops: {

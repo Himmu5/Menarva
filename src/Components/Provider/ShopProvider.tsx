@@ -4,12 +4,11 @@ import { MiniShop, Shop } from '../../Typings/Shop';
 import { ShopContext } from '../../Context/Store';
 import { addSales, getDailySale, getMonthSales } from '../../Axios/sales';
 import { useNavigate } from 'react-router-dom';
-import { withUser } from '../../HOC/withUser';
 import axiosInstance from '../../Axios/axios';
 import { UserClass } from '../../Typings/User';
-import { withAlert } from '../../HOC/withAlert';
 import { AlertType } from '../../Typings/Alert';
 import { Manager } from '../../Typings/Manager';
+import { withAlert, withUser } from '../../HOC/withProvider';
 type P = {
     children: ReactNode;
     shopId: number,

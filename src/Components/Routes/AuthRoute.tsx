@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react'
-import { withUser } from '../../HOC/withUser'
-import { User } from '../../Typings/User'
 import { Navigate } from 'react-router-dom'
+import { UserClass } from '../../Typings/User'
+import { withUser } from '../../HOC/withProvider'
 type P = {
     children: ReactNode,
-    user: User
+    user: UserClass
 }
 
 const AuthRoute: FC<P> = ({ user , children }) => {

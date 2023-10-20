@@ -3,9 +3,9 @@ import { Sops, Task } from '../../Typings/sops'
 import UploadButton from '../UI-Components/UploadButton'
 import { UserClass, UserConfig } from '../../Typings/User';
 import { Link } from 'react-router-dom';
-import { withSops } from '../../HOC/withProvider';
+import { withSops, withUser } from '../../HOC/withProvider';
 import ImageViwer from '../UI-Components/ImageViwer';
-import { withUser } from '../../HOC/withUser';
+
 type P = {
     sopStatus: string,
     o: Task;

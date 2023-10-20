@@ -1,7 +1,6 @@
 import { FC, useState } from 'react'
 import { AiOutlineLineChart, AiOutlineSetting } from 'react-icons/ai'
 import { FiEdit, FiChevronRight } from 'react-icons/fi'
-import { withUser } from '../../HOC/withUser'
 import { UserClass, UserConfig } from '../../Typings/User'
 import { IconType } from 'react-icons'
 import Hamburger from 'hamburger-react'
@@ -12,6 +11,7 @@ import { BsShop } from 'react-icons/bs'
 import Error from '../Error/404Page'
 import { TbBuildingWarehouse } from 'react-icons/tb'
 import Home from '../SOP/Home'
+import { withUser } from '../../HOC/withProvider'
 
 
 type P = {

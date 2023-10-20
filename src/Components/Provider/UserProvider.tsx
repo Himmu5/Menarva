@@ -3,9 +3,9 @@ import { loginUser } from '../../Axios/Auth';
 import { UserClass, UserConfig } from '../../Typings/User';
 import { UserContext } from '../../Context/User';
 import { getConfig } from '../../Axios/config';
-import { withAlert } from '../../HOC/withAlert';
 import { AlertType } from '../../Typings/Alert';
 import Loading from '../../Loader/Loading';
+import { withAlert } from '../../HOC/withProvider';
 type P = {
     children: ReactNode,
     setAlert: (s: AlertType) => void,

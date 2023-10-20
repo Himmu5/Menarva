@@ -3,7 +3,7 @@ import { MdEmail } from 'react-icons/md'
 import Input from '../UI-Components/Input'
 import { IoMdLock } from 'react-icons/io'
 import { Button } from '@mui/material'
-import { withUser } from '../../HOC/withUser'
+import { withUser } from '../../HOC/withProvider'
 import { FormikBag, FormikProps, withFormik } from 'formik'
 type P = {
     AuthUser : (values : { username : string , password : string })=>void;

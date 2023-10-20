@@ -1,12 +1,11 @@
 import { FC, useEffect } from 'react'
-import { withShop } from '../../HOC/withShop'
 import { MiniShop } from '../../Typings/Shop'
 import Error from '../Error/404Page'
 import { Link, useNavigate } from 'react-router-dom'
 import Loading from '../../Loader/Loading'
 import BackButton from '../UI-Components/BackButton'
-import { withUser } from '../../HOC/withUser'
 import { UserClass } from '../../Typings/User'
+import { withShop, withUser } from '../../HOC/withProvider'
 
 type P = {
     miniShopsData: { message: string, result: MiniShop[] };

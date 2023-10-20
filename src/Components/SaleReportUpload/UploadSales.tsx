@@ -1,17 +1,15 @@
 import { FC, FormEvent, useState } from 'react'
 import Calendar from 'react-calendar';
-import { withShop } from '../../HOC/withShop';
 import { Shop } from '../../Typings/Shop';
 import Input from '../UI-Components/Input';
 import { BiRupee } from 'react-icons/bi'
 import { Button } from '@mui/material';
 import ImageUpload from './ImageUpload';
 import axiosInstance from '../../Axios/axios';
-import { withUser } from '../../HOC/withUser';
 import { UserConfig } from '../../Typings/User';
-import { withAlert } from '../../HOC/withAlert';
 import { AlertType } from '../../Typings/Alert';
 import 'react-calendar/dist/Calendar.css';
+import { withAlert, withShop, withUser } from '../../HOC/withProvider';
 
 type P = {
   selectedShop: Shop;

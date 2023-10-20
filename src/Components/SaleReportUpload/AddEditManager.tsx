@@ -6,15 +6,12 @@ import { MdOutlineEmail } from 'react-icons/md'
 import { BiSolidLock } from 'react-icons/bi'
 import { Button } from '@mui/material';
 import { FormikBag, FormikProps, useFormik, withFormik } from 'formik';
-import { withShop } from '../../HOC/withShop';
 import { Shop, shopObject } from '../../Typings/Shop';
-import { withUser } from '../../HOC/withUser';
 import { UserClass, UserConfig } from '../../Typings/User';
-import { withManager } from '../../HOC/withManager';
 import { SingleManager } from '../../Typings/Manager';
 import { useParams } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx'
-import { withAlert } from '../../HOC/withProvider';
+import { withAlert, withManager, withShop, withUser } from '../../HOC/withProvider';
 import { AlertType } from '../../Typings/Alert';
 
 type P = {

@@ -1,7 +1,7 @@
 import { useEffect ,FC } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { MdOutlineDangerous } from "react-icons/md";
-import { withAlert } from "../../HOC/withAlert";
+import { withAlert } from "../../HOC/withProvider";
 
 
 type AlertProp={

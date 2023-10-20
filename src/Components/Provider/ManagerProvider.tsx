@@ -4,9 +4,8 @@ import { addManager, editManager, getManagers, getSingleManagers } from '../../A
 import { UserClass, UserConfig } from '../../Typings/User';
 import { useNavigate } from 'react-router-dom';
 import { Manager, SingleManager } from '../../Typings/Manager';
-import { withUser } from '../../HOC/withUser';
-import { withAlert } from '../../HOC/withAlert';
 import { AlertType } from '../../Typings/Alert';
+import { withAlert, withUser } from '../../HOC/withProvider';
 
 type P = {
     children: ReactNode;

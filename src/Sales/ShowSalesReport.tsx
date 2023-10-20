@@ -1,5 +1,4 @@
 import { FC, useState } from 'react'
-import { withShop } from '../HOC/withShop'
 import { Sales } from '../Typings/Shop'
 import { Link } from 'react-router-dom'
 import Error from '../Components/Error/404Page'
@@ -7,6 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import { Button } from '@mui/material'
 import ApprovalStatus from '../Components/UI-Components/ApprovalStatus'
 import ImageViwer from '../Components/UI-Components/ImageViwer'
+import { withShop } from '../HOC/withProvider';
 
 type P = {
     dailySales: { result: Sales, message: string }

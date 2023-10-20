@@ -2,9 +2,8 @@ import { FC } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
-import { withShop } from '../../HOC/withShop';
 import BackButton from '../UI-Components/BackButton';
-import { withSops } from '../../HOC/withProvider';
+import { withShop, withSops } from '../../HOC/withProvider';
 import { SopCalendar } from '../../Typings/sops';
 
 type P = {
