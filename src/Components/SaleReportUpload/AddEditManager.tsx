@@ -141,13 +141,14 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 
 
                 {
-                    values.type.length > 0 &&
+                    Object.keys(selectedShop).length == 0 &&
                     <div className='flex items-center relative'>
                         <BsSearch size={20} className="absolute left-2 " />
                         <Input type='text' name='search' placeholder={`Search ${values.type.split(" ")[0]}`} value={values.search} onChange={handleChange} />
                     </div>
 
                 }
+
                 <div className='space-y-1'>
                     {
                         Object.keys(selectedShop).length < 1 && filteredShop.map((shop) => {
