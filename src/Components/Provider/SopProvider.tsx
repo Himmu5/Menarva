@@ -26,7 +26,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
     const [sopStatus, setSopStatus] = useState("ALL");
     const [sopCalendar, setSopCalendar] = useState<SopCalendar>();
     const [sopDate, setSopDate] = useState<Date>();
-    console.log("sopDate : ", sopDate);
+    // console.log("sopDate : ", sopDate);
     const [image] = useState<File>()
 
 

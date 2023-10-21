@@ -3,8 +3,9 @@ import { Sops, Task } from '../../Typings/sops'
 import UploadButton from '../UI-Components/UploadButton'
 import { UserClass, UserConfig } from '../../Typings/User';
 import { Link } from 'react-router-dom';
-import { withSops, withUser } from '../../HOC/withProvider';
+import { withAlert, withSops, withUser } from '../../HOC/withProvider';
 import ImageViwer from '../UI-Components/ImageViwer';
+import { AlertType } from '../../Typings/Alert';
 
 type P = {
     sopStatus: string,
@@ -13,10 +14,11 @@ type P = {
     Sops: Sops;
     setSelectedSop: (s: { sop: Sops; taskId: number; }) => void;
     setSopTaskStatus: (sopId: string, taskId: number) => void;
-    shopConfig:UserConfig
+    shopConfig:UserConfig;
+    setAlert : (a:AlertType)=>void
 }
 
-const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskStatus , shopConfig }) => {
+const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskStatus , shopConfig , setAlert }) => {
     console.log("shopConfig",shopConfig);
     
     const [ open , setOpen] = useState(false);
@@ -25,7 +27,7 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
     if (user.role === 1) {
         if (sopStatus == "PENDING") {
             if (o.status === 1) {
-                statusComponent = <UploadButton color='red' text='Pending' />
+                statusComponent = <div onClick={()=>setAlert({ type:"error" , message : "You are not allowed to change the state" })}><UploadButton color='red' text='Pending' /></div>
             }
         }
         if (sopStatus == "COMPLETED") {
@@ -35,7 +37,7 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
         }
         if (sopStatus == "ALL") {
             if (o.status == 1) {
-                statusComponent = <UploadButton color='red' text='Pending' />
+                statusComponent =<div onClick={()=>setAlert({ type:"error" , message : "You are not allowed to change the state" })}> <UploadButton color='red' text='Pending' /></div>
             }
             else if (o.status == 2) {
                 statusComponent =<div onClick={()=>setOpen(!open)}> <UploadButton color={'blue'} text={"View"} /></div>
@@ -75,4 +77,4 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
         </div>
     </>
 }
-export default withSops(withUser(SubTasks));
+export default withAlert(withSops(withUser(SubTasks)));

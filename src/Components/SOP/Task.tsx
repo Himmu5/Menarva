@@ -53,5 +53,3 @@ const TaskComp: FC<P> = ({ Sops, sopStatus, user , setSelectedSop }) => {
     </div>
 }
 export default withUser(withSops(TaskComp))
-
-// { ( o.imgUrl === null && sopStatus === "PENDING" && <div className=''>unavailable</div> )|| o.imgUrl === null ?<Link to={"/Camera"} onClick={() => setSelectedSop({ sop: Sops, taskId: +o.id })} > </Link> : <p className={CLASS} >Mark as done</p>}
