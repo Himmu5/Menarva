@@ -14,11 +14,11 @@ type P = {
   changeMonth: Date;
   Sales: boolean;
   sopCalendar: SopCalendar;
-  setSopDate:(s:Date)=>void;
-  Navigate:() => void;
+  setSopDate: (s: Date) => void;
+  Navigate: () => void;
 }
 
-const CalendarWithHighlights: FC<P> = ({ setSopDate ,changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar }) => {
+const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar }) => {
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
@@ -56,11 +56,17 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate ,changeMonth, setSelectedDat
 
   const handleDateChange = (date: any) => {
     // console.log("Change calendar");
-    if(Sales === true){
-      setSopDate(date);
-      Navigate("/SOP");
+    if (Sales === true) {
+      const currentDate = new Date();
+      if (currentDate.getDate() < date.getDate() && currentDate.getMonth() < date.getMonth()) {
+        alert("Please select previous date from current Date")
+      }
+      else {
+        setSopDate(date);
+        Navigate("/SOP");
+      }
     }
-    else{
+    else {
       if (Array.isArray(date)) {
         setSelectedDate(date[0]);
       } else {
