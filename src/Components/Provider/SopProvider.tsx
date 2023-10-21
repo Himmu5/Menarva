@@ -26,7 +26,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
     const [sopStatus, setSopStatus] = useState("ALL");
     const [sopCalendar, setSopCalendar] = useState<SopCalendar>();
     const [sopDate, setSopDate] = useState<Date>();
-    // console.log("SOP status : ", sopStatus);
+    console.log("sopDate : ", sopDate);
     const [image] = useState<File>()
 
 
@@ -50,6 +50,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
             setSopCalendar(res.result)
         })
     }
+
     useEffect(() => {
         if (selectedShop) {
             getSopCalendar();
@@ -78,7 +79,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         })
     }
 
-    return <SopContext.Provider value={{getSOPs, image, Navigate, setSopTaskStatus, setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus }}>
+    return <SopContext.Provider value={{getSOPs, image, Navigate, setSopTaskStatus, setSopDate, sops, uploadSopImage, sopCalendar, setSelectedSop, selectedSop, sopStatus, setSopStatus , sopDate }}>
         {children}
     </SopContext.Provider>
 }
