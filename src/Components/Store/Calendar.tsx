@@ -58,7 +58,7 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDat
     // console.log("Change calendar");
     if (Sales === true) {
       const currentDate = new Date();
-      if (currentDate.getDate() < date.getDate() && currentDate.getMonth() < date.getMonth()) {
+      if (+currentDate.getDate() < +date.getDate() && +currentDate.getMonth() < +date.getMonth()) {
         alert("Please select previous date from current Date")
       }
       else {

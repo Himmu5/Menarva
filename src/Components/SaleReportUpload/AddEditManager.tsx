@@ -79,15 +79,21 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(FormType == "ADD" ? {} : oldSelection);
     const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[3] : config);
 
-    console.log("Selected Shop : ",selectedShop);
+    // console.log("shops  : ",shops);
     
 
     if (values.search.length > 0) {
-        filteredShop = Object.keys(shops).filter((key) => {
-            const shop = shops[key].shop;
+        const stores = Object.keys(shops).map((key)=>{
+            return shops[key].store
+        })
+        filteredShop = stores.filter((shop) => {
+            // console.log("Shop :",shops);
+            
             return (Object.keys(selectedShop).length > 0 ? !selectedShop[shop.id] : true) && shop.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1;
         });
     }
+    // console.log("Filter : ",filteredShop);
+    
 
     function change(e, option, o) {
         values.config[option][o] = e.target.value
