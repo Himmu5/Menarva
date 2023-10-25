@@ -15,7 +15,10 @@ export const getSOP = (shopId: number, sopDate?: Date) => {
 
   return axiosInstance
     .get(url, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") , "ngrok-skip-browser-warning": 69420, },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "ngrok-skip-browser-warning": 69420,
+      },
     })
     .then((res) => {
       return res.data.result.sops;
@@ -35,7 +38,12 @@ export function uploadImage(
     .post(
       `/api/v1/shops/${storeId}/sops/${sopId}/tasks/${taskId}/image`,
       formData,
-      { headers: { Authorization: "Bearer " + localStorage.getItem("token") ,"ngrok-skip-browser-warning": 69420, } }
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "ngrok-skip-browser-warning": 69420,
+        },
+      }
     )
     .then((res) => {
       console.log("res ", res);
@@ -45,10 +53,11 @@ export function uploadImage(
     });
 }
 
-export const getSopByCalendar = (shopId:number) => {
+export const getSopByCalendar = (shopId: number) => {
   const config = {
     method: "get", // Use the GET method
-    url: import.meta.env.VITE_BASE_URL + `/api/v1/shops/${shopId}/sops/calender`, // Replace with your API endpoint
+    url:
+      import.meta.env.VITE_BASE_URL + `/api/v1/shops/${shopId}/sops/calender`, // Replace with your API endpoint
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
       "Content-Type": "application/json",
@@ -71,10 +80,16 @@ export const setTaskStatus = (
   taskId: number
 ) => {
   return axiosInstance
-    .put(`/api/v1/shops/${shopId}/sops/${sopId}/tasks/${taskId}`, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-      "ngrok-skip-browser-warning": 69420,
-    })
+    .put(
+      `/api/v1/shops/${shopId}/sops/${sopId}/tasks/${taskId}`,
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "ngrok-skip-browser-warning": 69420,
+        },
+      }
+    )
     .then(() => {
       console.log("Task status updated");
     });
