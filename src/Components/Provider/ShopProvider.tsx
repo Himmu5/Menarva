@@ -23,6 +23,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
             Managers: Manager[];
         };
     }>();
+    const [miniShop, setMiniShop] = useState<MiniShop>();
     const [selectedShop, setSelectedShop] = useState<Shop>();
     const [miniShopsData, setMiniShops] = useState<MiniShop>();
     const [selectedDate, setSelectedDate] = useState<Date>();
@@ -34,7 +35,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     useEffect(() => {
         if (user?.role === 1) {
-            getShops().then((res:any) => {
+            getShops().then((res: any) => {
                 setShops(res);
             })
         }
@@ -49,8 +50,12 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     useEffect(() => {
         if (user && shopId) {
-            axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') , 
-            "ngrok-skip-browser-warning": 69420, } }).then((res) => {
+            axiosInstance.get("/shops/" + shopId, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    "ngrok-skip-browser-warning": 69420,
+                }
+            }).then((res) => {
                 // console.log("Res : ",res.data.result);
                 setSelectedShop(res.data.result);
             })
@@ -86,9 +91,9 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         // const date = formatDateToYYYYMMDD(selectedDate!);
         if (user?.role === 1) {
             // const longDate = selectedDate! * 1
-            const longDate =  selectedDate! as any * 1
+            const longDate = selectedDate! as any * 1
 
-            getDailySale(selectedShop!.id, longDate ).then((res) => {
+            getDailySale(selectedShop!.id, longDate).then((res) => {
                 setDailySales(res);
                 Navigate('/ministore/sales/report');
                 // console.log("Get Daily sales : ", res);
@@ -114,7 +119,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         })
     }
 
-    return <ShopContext.Provider value={{ changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ setMiniShop, miniShop, changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

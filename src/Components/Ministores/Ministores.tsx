@@ -12,10 +12,11 @@ type P = {
     getMiniStores: (id: number) => void;
     loading: boolean;
     shopId: number;
-    user:UserClass
+    user:UserClass;
+    setMiniShop : (m : MiniShop)=>void
 }
 
-const MiniStores: FC<P> = ({ miniShopsData, getMiniStores, user, shopId }) => {
+const MiniStores: FC<P> = ({setMiniShop  , miniShopsData, getMiniStores, user, shopId }) => {
     const Navigate = useNavigate();
     useEffect(() => {
 
@@ -34,7 +35,7 @@ const MiniStores: FC<P> = ({ miniShopsData, getMiniStores, user, shopId }) => {
         { user.role == 1 && <div className='w-fit px-3' onClick={()=>Navigate(-1)}><BackButton /></div> }
         {
             miniShopsData.result.map((mini) => {
-                return <Link to={"/ministore/options"} className='rounded-md shadow-md cursor-pointer shadow-gray-400 pl-[10%] m-3 ' key={mini.id}>
+                return <Link onClick={()=>setMiniShop(mini)} to={"/ministore/options"} className='rounded-md shadow-md cursor-pointer shadow-gray-400 pl-[10%] m-3 ' key={mini.id}>
                     <div className='flex items-center min-h-[250px] gap-2'>
                         <p>{mini.name}</p>
                         <p>[Branch Name]</p>
