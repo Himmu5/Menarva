@@ -77,9 +77,9 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     
     const oldSelection = singleManager?.shopAuthorities ? { [Object.keys(singleManager?.shopAuthorities)[0][0]] : shops[Object.keys(singleManager?.shopAuthorities)[0][0]].store  } : null
     const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(FormType == "ADD" ? {} : oldSelection);
-    const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[3] : config);
+    const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[Object.keys(singleManager.shopAuthorities)[0]] : config);
 
-    // console.log("shops  : ",shops);
+    console.log("editConfig  : ",editConfig , singleManager);
     
 
     if (values.search.length > 0) {
