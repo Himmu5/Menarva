@@ -1,7 +1,7 @@
 import { useEffect ,FC } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { MdOutlineDangerous } from "react-icons/md";
-import { withAlert } from "../../HOC/withAlert";
+import { withAlert } from "../../HOC/withProvider";
 
 
 type AlertProp={
@@ -49,7 +49,7 @@ const Alert:FC<AlertProp>=({ alert, RemoveAlert })=>{
           role="alert"
           id="alert"
           className={
-            "transition duration-150 ease-in-out w-full lg:w-11/12 mx-auto bg-white dark:bg-gray-800 shadow-xl rounded flex flex-col py-4 md:py-0 items-center md:flex-row justify-between max-w-5xl mx-auto"
+            "transition duration-150 ease-in-out w-full lg:w-11/12 mx-auto bg-white dark:bg-gray-800 shadow-xl rounded flex flex-col py-4 md:py-0 items-center md:flex-row justify-between max-w-5xl "
           }
         >
           <div className="flex flex-col items-center md:flex-row">

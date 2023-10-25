@@ -8,8 +8,7 @@ import { MdOutlineInventory } from 'react-icons/md'
 import { IoIosOptions } from 'react-icons/io'
 import { Shop } from '../../Typings/Shop'
 import { IconType } from 'react-icons'
-import { withShop } from '../../HOC/withShop'
-import { withUser } from '../../HOC/withProvider'
+import { withShop, withUser } from '../../HOC/withProvider'
 import { UserClass } from '../../Typings/User'
 import Calendar from './Calendar'
 
@@ -44,7 +43,7 @@ const Options: FC<P> = ({ user, getMonthSale }) => {
     }, [])
 
     return <>
-        <div className=' relative bg-white '>
+        <div className=' relative bg-white z-40'>
             <div className=' '>
 
                 <div className='flex items-center max-w-7xl mx-auto'>

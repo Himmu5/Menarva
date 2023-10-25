@@ -1,25 +1,24 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { loginUser } from '../../Axios/Auth';
-import { User, UserConfig } from '../../Typings/User';
+import { UserClass, UserConfig } from '../../Typings/User';
 import { UserContext } from '../../Context/User';
 import { getConfig } from '../../Axios/config';
-import { withAlert } from '../../HOC/withAlert';
 import { AlertType } from '../../Typings/Alert';
 import Loading from '../../Loader/Loading';
+import { withAlert } from '../../HOC/withProvider';
 type P = {
     children: ReactNode,
     setAlert: (s: AlertType) => void,
 }
 const UserProvider: FC<P> = ({ children, setAlert }) => {
 
-    const [user, setUser] = useState<User>();
+    const [user, setUser] = useState<UserClass>();
     // console.log("User : ", user);
     const [shopId, setShopId] = useState<number>();
     const [config, setUserConfig] = useState<UserConfig>();
     const [shopConfig, setShopConfig] = useState<UserConfig>();
     const token = localStorage.getItem('token')
     const [loading, setLoading] = useState<boolean>(false);
-    console.log("Shop Id ; ",shopId);
     
 
     useEffect(() => {
@@ -73,8 +72,6 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
   if (loading) {
     return <Loading />;
   }
-
-
 
     return <UserContext.Provider value={{ token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
         {children}

@@ -2,8 +2,7 @@ import { FC, useState } from 'react'
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import { BiSolidUpArrow } from 'react-icons/bi'
 import { Sops, Task } from '../../Typings/sops';
-import { withSops } from '../../HOC/withProvider';
-import { withUser } from '../../HOC/withUser';
+import { withSops, withUser } from '../../HOC/withProvider';
 import { UserClass } from '../../Typings/User';
 import SubTasks from './SubTasks';
 
@@ -56,5 +55,3 @@ const TaskComp: FC<P> = ({ Sops, sopStatus, user , setSelectedSop }) => {
     </div>
 }
 export default withUser(withSops(TaskComp))
-
-// { ( o.imgUrl === null && sopStatus === "PENDING" && <div className=''>unavailable</div> )|| o.imgUrl === null ?<Link to={"/Camera"} onClick={() => setSelectedSop({ sop: Sops, taskId: +o.id })} > </Link> : <p className={CLASS} >Mark as done</p>}

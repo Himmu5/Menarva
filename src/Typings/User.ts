@@ -1,9 +1,3 @@
-export interface User {
-    accessToken: string;
-    username:    null;
-    password:    null;
-    user:        UserClass;
-}
 
 export interface UserClass {
     isActive:  boolean;
@@ -23,6 +17,10 @@ export type UserConfig =  {
     SHOP:       Accounting;
     MANAGER:    Accounting;
     CONFIG:     Accounting;
+    SOP : {
+        READ : boolean;
+        IMAGE_UPLOAD:boolean
+    }
 }
 
 export interface Accounting {

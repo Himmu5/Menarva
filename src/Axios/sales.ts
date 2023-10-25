@@ -19,18 +19,28 @@ export function getMonthSales(id: number, year: number, month: number) {
   return axiosInstance
     .get(
       `/api/v1/accounting/sales_calendar/${id}?year=${year}&month=${monthNames[month]}`,
-      { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "ngrok-skip-browser-warning": 69420,
+        },
+      }
     )
     .then((res) => {
       return res.data;
     });
 }
 
-export function getDailySale(id: number, date: string) {
+export function getDailySale(id: number, date: number) {
   console.log("Date :", date);
 
   return axiosInstance
-    .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } })
+    .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "ngrok-skip-browser-warning": 69420,
+      },
+    })
     .then((res) => {
       return res.data;
     });
@@ -41,27 +51,23 @@ export function addSales(
   data: {
     shopId: number;
     storeName: string;
-    date: string;
+    date: number;
     totalSales: number;
   }
 ) {
   return axiosInstance
-    .post(`/api/v1/accounting/${shopId}/add_sales`, data , { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } })
+    .post(
+      `/api/v1/accounting/${shopId}/add_sales`,
+      data,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "ngrok-skip-browser-warning": 69420,
+        },
+      }
+    )
     .then((res) => {
       return res.data;
     });
 }
 
-// export function addSales() {
-//   axiosInstance.post("/api/v1/accounting/3/add_sales",  {
-//     shopId: 3,
-//     storeName: "Himanshu",
-//     date: "2023-09-29",
-//     dineInSales: 78.9,
-//     takeAwaySales: 78.9,
-//     onlineSales: 78.9,
-//     totalSales: 78.9,
-//   }).then((res)=>{
-//     console.log("Res :",res);
-//   })
-// }

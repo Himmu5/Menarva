@@ -4,11 +4,11 @@ import { MiniShop, Shop } from '../../Typings/Shop';
 import { ShopContext } from '../../Context/Store';
 import { addSales, getDailySale, getMonthSales } from '../../Axios/sales';
 import { useNavigate } from 'react-router-dom';
-import { withUser } from '../../HOC/withUser';
 import axiosInstance from '../../Axios/axios';
 import { UserClass } from '../../Typings/User';
-import { withAlert } from '../../HOC/withAlert';
 import { AlertType } from '../../Typings/Alert';
+import { Manager } from '../../Typings/Manager';
+import { withAlert, withUser } from '../../HOC/withProvider';
 type P = {
     children: ReactNode;
     shopId: number,
@@ -17,7 +17,12 @@ type P = {
 }
 const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     const Navigate = useNavigate();
-    const [shops, setShops] = useState<Shop[]>();
+    const [shops, setShops] = useState<{
+        [key: number]: {
+            store: Shop;
+            Managers: Manager[];
+        };
+    }>();
     const [selectedShop, setSelectedShop] = useState<Shop>();
     const [miniShopsData, setMiniShops] = useState<MiniShop>();
     const [selectedDate, setSelectedDate] = useState<Date>();
@@ -29,9 +34,8 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     useEffect(() => {
         if (user?.role === 1) {
-            getShops().then((res) => {
-                // console.log("res : ", res.result);
-                setShops(res.result);
+            getShops().then((res:any) => {
+                setShops(res);
             })
         }
     }, [user])
@@ -45,7 +49,8 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     useEffect(() => {
         if (user && shopId) {
-            axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }).then((res) => {
+            axiosInstance.get("/shops/" + shopId, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') , 
+            "ngrok-skip-browser-warning": 69420, } }).then((res) => {
                 // console.log("Res : ",res.data.result);
                 setSelectedShop(res.data.result);
             })
@@ -78,23 +83,18 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     const [dailySales, setDailySales] = useState();
     function getDailySales() {
-        const date = formatDateToYYYYMMDD(selectedDate!);
+        // const date = formatDateToYYYYMMDD(selectedDate!);
         if (user?.role === 1) {
-            getDailySale(selectedShop!.id, date).then((res) => {
+            // const longDate = selectedDate! * 1
+            const longDate =  selectedDate! as any * 1
+
+            getDailySale(selectedShop!.id, longDate ).then((res) => {
                 setDailySales(res);
                 Navigate('/ministore/sales/report');
                 // console.log("Get Daily sales : ", res);
             })
         }
     }
-    function formatDateToYYYYMMDD(date: Date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 because months are zero-based
-        const day = String(date.getDate()).padStart(2, '0');
-        // console.log("day: ", `${year}-${month}-${day}`);
-        return `${year}-${month}-${day}`;
-    }
-
     useEffect(() => {
         if (selectedDate && selectedShop) {
             getDailySales();
@@ -104,7 +104,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     function uploadSales(shopId: number, data: {
         shopId: number;
         storeName: string;
-        date: string;
+        date: number;
         totalSales: number;
     }) {
         addSales(shopId, data).then((res) => {
@@ -114,7 +114,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         })
     }
 
-    return <ShopContext.Provider value={{ changeMonth, getMonthSale, setChangeMonth, formatDateToYYYYMMDD, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

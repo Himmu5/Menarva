@@ -3,13 +3,16 @@ import { MdEmail } from 'react-icons/md'
 import Input from '../UI-Components/Input'
 import { IoMdLock } from 'react-icons/io'
 import { Button } from '@mui/material'
-import { withUser } from '../../HOC/withUser'
+import { withAlert, withUser } from '../../HOC/withProvider'
 import { FormikBag, FormikProps, withFormik } from 'formik'
+import { AlertType } from '../../Typings/Alert'
 type P = {
-    AuthUser : (values : { username : string , password : string })=>void;
+    AuthUser: (values: { username: string, password: string }) => void;
+    setAlert : (a:AlertType)=>void;
 } & FormikProps<FormValues>
 
-const SignIn: FC<P> = ({ values, handleChange , handleSubmit  }) => {
+const SignIn: FC<P> = ({ values, handleChange, handleSubmit }) => {
+    console.log("values ", values);
 
     return <div className="min-h-[80vh] flex items-center justify-center ">
         <div className="w-full p-3 text-center max-w-md mx-auto ">
@@ -28,7 +31,7 @@ const SignIn: FC<P> = ({ values, handleChange , handleSubmit  }) => {
                 </div>
 
                 <div className="flex gap-1 items-center text-xs mb-16">
-                    <input id="term" type="checkbox" />
+                    <input id="term" name='checkbox' type="checkbox" value={values.checkbox} onChange={handleChange} />
                     <label htmlFor="term" >I agree to the <span className="text-blue-400 underline">Term of Service</span> and <span className="text-blue-400 underline"> Privacy Policy</span></label>
                 </div>
 
@@ -41,15 +44,19 @@ const SignIn: FC<P> = ({ values, handleChange , handleSubmit  }) => {
 
 const initialValues = {
     username: "",
-    password: ""
+    password: "",
+    checkbox: "",
 }
 
 type FormValues = typeof initialValues;
 
 function submit(values: FormValues, bag: FormikBag<P, FormValues>) {
-
-    console.log(values, "  ", bag);
-    bag.props.AuthUser(values);
+    if (values.checkbox) {
+        console.log(values, "  ", bag);
+        bag.props.AuthUser(values);
+    }else{
+        bag.props.setAlert({ type : "error" , message : "Please accept term and conditions"  })
+    }
 
 }
 
@@ -58,4 +65,4 @@ const HOC = withFormik({
     handleSubmit: submit,
 })
 
-export default withUser(HOC(SignIn));
+export default withAlert(withUser(HOC(SignIn)));

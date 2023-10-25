@@ -6,17 +6,16 @@ import { MdOutlineEmail } from 'react-icons/md'
 import { BiSolidLock } from 'react-icons/bi'
 import { Button } from '@mui/material';
 import { FormikBag, FormikProps, useFormik, withFormik } from 'formik';
-import { withShop } from '../../HOC/withShop';
-import { Shop } from '../../Typings/Shop';
-import { withUser } from '../../HOC/withUser';
-import { UserConfig } from '../../Typings/User';
-import { withManager } from '../../HOC/withManager';
+import { Shop, shopObject } from '../../Typings/Shop';
+import { UserClass, UserConfig } from '../../Typings/User';
 import { SingleManager } from '../../Typings/Manager';
 import { useParams } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx'
+import { withAlert, withManager, withShop, withUser } from '../../HOC/withProvider';
+import { AlertType } from '../../Typings/Alert';
 
 type P = {
-    shops: Shop[];
+    shops: shopObject;
     config: UserConfig;
     createManager: { config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string } };
     singleManager: SingleManager;
@@ -28,12 +27,15 @@ type P = {
             type: string;
             username: string
         }
-    ) => void
+    ) => void;
+    user:UserClass;
+    setAlert : (a:AlertType)=>void
 }
 
-const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, UpdateManager }) => {
+const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, UpdateManager , user , setAlert}) => {
 
     const FormType = useParams().Form_Type;
+    // console.log("shops : ",shops);
 
     const initialValues = FormType !== "ADD" ? {
         name: singleManager?.userDO.name || "", username: singleManager?.userDO.username || "", email: singleManager?.userDO.email || "", password: singleManager?.userDO.password || "", type: "", search: "", config: singleManager?.shopAuthorities[3] | config,
@@ -44,7 +46,6 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     }
 
 
-
     function submit(values: T, bag: FormikBag<P, T>) {
         if (FormType === "ADD") {
             if (Object.keys(selectedShop).length > 0) {
@@ -53,13 +54,16 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                 bag.resetForm();
             }
             else {
-                alert("Please Select Shop")
+                setAlert({message :"Please Select Shop" , type:"error" })
             }
         }
         else if (FormType === "Edit") {
-            console.log("Edit Form ");
-
+            if (Object.keys(selectedShop).length > 0) {
             UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.userDO.id)
+            }
+            else {
+                setAlert({message :"Please Select Shop" , type:"error" })
+            }
         }
     }
 
@@ -70,19 +74,26 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     })
 
     let filteredShop = [] as Shop[]
-    const oldSelection = singleManager?.shopAuthorities ? { [Object.keys(singleManager?.shopAuthorities)[0][0]]: shops.filter((shop) => shop.id == Object.keys(singleManager?.shopAuthorities)[0])[0] } : null
+    
+    const oldSelection = singleManager?.shopAuthorities ? { [Object.keys(singleManager?.shopAuthorities)[0][0]] : shops[Object.keys(singleManager?.shopAuthorities)[0][0]].store  } : null
     const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(FormType == "ADD" ? {} : oldSelection);
     const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[3] : config);
 
-    console.log("editConfig ", editConfig);
-    console.log("selectedShop ", selectedShop);
-
+    // console.log("shops  : ",shops);
+    
 
     if (values.search.length > 0) {
-        filteredShop = shops.filter((shop) => {
+        const stores = Object.keys(shops).map((key)=>{
+            return shops[key].store
+        })
+        filteredShop = stores.filter((shop) => {
+            // console.log("Shop :",shops);
+            
             return (Object.keys(selectedShop).length > 0 ? !selectedShop[shop.id] : true) && shop.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1;
         });
     }
+    // console.log("Filter : ",filteredShop);
+    
 
     function change(e, option, o) {
         values.config[option][o] = e.target.value
@@ -119,7 +130,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                     <Input type='password' name='password' placeholder='Password' value={values.password} onChange={handleChange} />
                 </div>
 
-                <select name="type" id="" className='px-3 py-2 border rounded-md' value={values.type} onChange={handleChange}>
+                <select name="type" className='px-3 py-2 border rounded-md' value={"Store Manager"} onChange={handleChange}>
                     <option className='flex items-center relative' >
                         <BsFillPersonFill size={20} className="absolute left-2 " />
                         <p className='px-10'>Manager Type</p>
@@ -130,17 +141,18 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 
 
                 {
-                    values.type.length > 0 &&
+                    Object.keys(selectedShop).length == 0 &&
                     <div className='flex items-center relative'>
                         <BsSearch size={20} className="absolute left-2 " />
                         <Input type='text' name='search' placeholder={`Search ${values.type.split(" ")[0]}`} value={values.search} onChange={handleChange} />
                     </div>
 
                 }
+
                 <div className='space-y-1'>
                     {
                         Object.keys(selectedShop).length < 1 && filteredShop.map((shop) => {
-                            return <div onClick={() => { setSelectedShop({ ...selectedShop, [shop.id]: shop }); values.shopId = shop.id }} className=' px-3 flex items-center gap-4  py-1 border rounded-md shadow-md  '>
+                            return <div key={shop.id} onClick={() => { setSelectedShop({ ...selectedShop, [shop.id]: shop }); values.shopId = shop.id }} className=' px-3 flex items-center gap-4  py-1 border rounded-md shadow-md  '>
                                 <p><BsShop /></p>
                                 <p>{shop.name}</p>
                             </div>
@@ -151,7 +163,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                 <div>
                     {
                         Object.keys(selectedShop).map((id: any) => {
-                            return <div className='flex flex-col gap-2'> <h1 className='font-bold'>Selected Shops </h1> <div className='flex items-center justify-between'>
+                            return <div key={id} className='flex flex-col gap-2'> <h1 className='font-bold'>Selected Shops </h1> <div className='flex items-center justify-between'>
                                 <p className='text-sm '> {selectedShop[id].name}</p><RxCross2 className=" cursor-pointer  " onClick={() => setSelectedShop({})} />
                             </div> </div>
                         })
@@ -160,12 +172,11 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 
                 {
                     (Object.keys(selectedShop).length > 0) && Object.keys(editConfig).map((option) => {
-                        return <div className='gap-2'>
+                        return <div className='gap-2' key={option}>
                             <p className='font-bold text-lg'>{option}</p>
                             {
                                 Object.keys(editConfig[option]).map((o) => {
-                                    console.log("values.config[option][o]  ", o);
-                                    return <div className=' px-3 flex flex-col my-2 space-y-1'>
+                                    return <div key={o} className=' px-3 flex flex-col my-2 space-y-1'>
                                         <p>{o}</p>
                                         <select value={editConfig[option][o]} onChange={(e) => setEditConfig({ ...editConfig, [option]: { ...editConfig[option], [o]: e.target.value } })} className='border p-1 rounded-md' >
                                             <option value={true}>true</option>
@@ -190,4 +201,4 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 }
 
 
-export default withManager(withUser(withShop(AddEditManager)));
+export default withAlert(withManager(withUser(withShop(AddEditManager))));

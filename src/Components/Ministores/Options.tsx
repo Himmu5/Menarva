@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { AiOutlineLineChart, AiOutlineRight } from 'react-icons/ai'
 import { Link, useNavigate } from 'react-router-dom'
-import { withUser } from '../../HOC/withUser'
 import { UserClass } from '../../Typings/User'
 import BackButton from '../UI-Components/BackButton'
+import { withUser } from '../../HOC/withProvider'
 
 type P = {
     user: UserClass

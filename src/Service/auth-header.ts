@@ -7,6 +7,7 @@ export default function authHeader() {
       Authorization: `Bearer ${token}`,
       "Access-Control-Allow-Origin": true,
       "Access-Control-Allow-Headers": "X-Requested-With",
+      "ngrok-skip-browser-warning": 69420,
     };
   }
   return {};

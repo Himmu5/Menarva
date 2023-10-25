@@ -1,3 +1,5 @@
+import { Manager } from "./Manager";
+
 export interface Shop {
     id:          number;
     name:        string;
@@ -10,6 +12,11 @@ export interface Shop {
     updatedAt:   number;
 }
 
+export interface shopObject {
+    shop : Shop,
+    Managers : Manager
+}
+
 export interface MiniShop {
     id:          number;
     name:        string;
@@ -20,14 +27,14 @@ export interface MiniShop {
     ownerEmail:  null;
     createdAt:   number;
     updatedAt:   number;
-}
+}   
 export interface Sales {
-    shopId:                  number;
-    shopName:                null;
-    date:                    Date;
-    totalSales:              number;
-    imageUrl:                null;
-    isOwnerAcknowledged:     boolean;
-    isMiniOwnerAcknowledged: boolean;
-    status:                  number;
+    shopId:                 number;
+    shopName:               string;
+    date:                   Date;
+    totalSales:             number;
+    imageUrl:               string;
+    ownerConsentStatus:     number;
+    miniOwnerConsentStatus: number;
+    status:                 number;
 }

@@ -8,6 +8,7 @@ import { FiUpload } from 'react-icons/fi'
 import React from 'react';
 import { withSops } from '../../HOC/withProvider';
 import { Sops } from '../../Typings/sops';
+import { MdOutlineFlipCameraIos } from 'react-icons/md'
 
 type P = {
     uploadSopImage: (blob: Blob, sopId: string, taskId: number) => void;
@@ -18,19 +19,20 @@ type P = {
 const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
     const webcamRef = React.createRef<Webcam>();
     const [picture, setPicture] = useState<string>();
-   
-    console.log("dataURItoBlob ",picture && dataURItoBlob(picture!));
+    const [facingMode, setFacingMode] = useState("user");
 
-    function dataURItoBlob(dataURI:string) {
+    console.log("dataURItoBlob ", picture && dataURItoBlob(picture!));
+
+    function dataURItoBlob(dataURI: string) {
         const byteString = atob(dataURI.split(',')[1]);
         const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
         const ab = new ArrayBuffer(byteString.length);
         const ia = new Uint8Array(ab);
         for (let i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
+            ia[i] = byteString.charCodeAt(i);
         }
         return new Blob([ab], { type: mimeString });
-      }
+    }
 
 
     const capture = () => {
@@ -38,13 +40,13 @@ const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
         setPicture(screenshot!);
     };
 
-    const file = new File([picture!], 'image.jpg' );
+    const file = new File([picture!], 'image.jpg');
 
     console.log("URL.createObjectURL(file) ", URL.createObjectURL(file));
 
     const downloadPicture = () => {
         console.log("Uploading picture");
-        
+
         uploadSopImage(dataURItoBlob(picture!), selectedSop?.sop.id, selectedSop?.taskId);
         // saveAs(picture! , 'myPicture.jpg'
     }
@@ -73,16 +75,17 @@ const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
             </div> : <div className='h-full w-full max-w-3xl mx-auto'>
                 <Webcam className=' w-full max-h-[80vh] ' audio={false}
                     ref={webcamRef}
+                    videoConstraints={{ facingMode }}
                     screenshotFormat="image/jpeg" />
                 <div className='p-4 bg-black h-full flex justify-between items-center text-white  ' >
                     <RxCross1 size={35} className=" hover:scale-95 cursor-pointer " onClick={handleClose} />
                     <BsCircle size={40} className=" hover:scale-95 cursor-pointer " onClick={capture} />
-                    <div></div>
-                </div>
+                    <div onClick={() => setFacingMode(facingMode === "user" ? "environment" : "user")} > <MdOutlineFlipCameraIos size={35} /> </div>
             </div>
-        }
+            </div>
+}
 
 
-    </div>
+    </div >
 }
 export default withSops(Camera);

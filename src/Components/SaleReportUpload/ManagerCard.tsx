@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { FC } from 'react'
 import { MdOutlineModeEditOutline } from 'react-icons/md';
 import { Manager } from '../../Typings/Manager';
-import { withManager } from '../../HOC/withManager';
+import { withManager } from '../../HOC/withProvider';
 
 type P = {
     index: number;
