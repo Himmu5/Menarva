@@ -3,8 +3,9 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import BackButton from '../UI-Components/BackButton';
-import { withShop, withSops } from '../../HOC/withProvider';
+import { withAlert, withShop, withSops } from '../../HOC/withProvider';
 import { SopCalendar } from '../../Typings/sops';
+import { AlertType } from '../../Typings/Alert';
 
 type P = {
   selectedDate: Date;
@@ -16,9 +17,10 @@ type P = {
   sopCalendar: SopCalendar;
   setSopDate: (s: Date) => void;
   Navigate: () => void;
+  setAlert: (alert: AlertType) => void;
 }
 
-const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar }) => {
+const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar, setAlert }) => {
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
@@ -57,9 +59,11 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDat
   const handleDateChange = (date: any) => {
     // console.log("Change calendar");
     if (Sales === true) {
+      console.log("Hello Bro");
+      
       const currentDate = new Date();
-      if (+currentDate.getDate() < +date.getDate() && +currentDate.getMonth() < +date.getMonth()) {
-        alert("Please select previous date from current Date")
+      if ((+currentDate.getDate() < +date.getDate()) || (+currentDate.getMonth() < +date.getMonth())) {
+        setAlert({ message: "Please select previous date from current Date", type: "error" })
       }
       else {
         setSopDate(date);
@@ -90,16 +94,7 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDat
       date.toDateString() === highlightedDate.toDateString()
     );
 
-  // function handleViewChange(date: any) {
-  //   if (Array.isArray(date)) {
-  //     setSelectedDate(date[0]);
-  //     setChangeMonth(date[0]);
-  //   } else {
-  //     setSelectedDate(date);
-  //     setChangeMonth(date);
-  //   }
-  // }
-
+    
   function onchange(e: any) {
     // console.log("change",e.activeStartDate)
     setChangeMonth(e.activeStartDate);
@@ -125,4 +120,4 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDat
   );
 }
 
-export default withSops(withShop(CalendarWithHighlights));
+export default withAlert(withSops(withShop(CalendarWithHighlights)));

@@ -43,7 +43,7 @@ const Options: FC<P> = ({ user, getMonthSale }) => {
     }, [])
 
     return <>
-        <div className=' relative bg-white '>
+        <div className=' relative bg-white z-40'>
             <div className=' '>
 
                 <div className='flex items-center max-w-7xl mx-auto'>
