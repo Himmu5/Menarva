@@ -1,3 +1,4 @@
+import axios from "axios";
 import { UserConfig } from "../Typings/User";
 import axiosInstance from "./axios";
 
@@ -47,7 +48,8 @@ export const editManager = (
   config: UserConfig,
   shopId: number,
   user: { name: string; email: string; password: string; type: string },
-  mId: number
+  mId: number,
+  detacheShopId?: number
 ) => {
   const data = {
     user: { ...user, id: mId, role: 2 },
@@ -56,7 +58,10 @@ export const editManager = (
       shopAuthorities: {},
     },
   };
-  const newData = { ...data, releaseShopId: null };
+  const newData = {
+    ...data,
+    releaseShopId: detacheShopId ? detacheShopId : null,
+  };
 
   return axiosInstance
     .put(`/shops/update_manager?shopId=${shopId}`, newData, {
@@ -82,4 +87,27 @@ export const getSingleManagers = (id: number) => {
     .then((res) => {
       return res.data;
     });
+};
+
+export const attachToShop = (shopId: number , userId : number , config: UserConfig ) => {
+  return axios.post(
+    import.meta.env.VITE_BASE_URL+`/shops/${shopId}/manager`,
+    {
+      userId,
+      authorities: {
+        authorities: { authorities: { ...config } },
+        shopAuthorities: {},
+      },
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "ngrok-skip-browser-warning": 69420,
+      },
+    }
+  ).then((res)=>{
+    return res.data;
+  }).catch((err)=>{
+    return err.message;
+  })
 };

@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { ManagerContext } from '../../Context/Manager';
-import { addManager, editManager, getManagers, getSingleManagers } from '../../Axios/manager';
+import { addManager, attachToShop, editManager, getManagers, getSingleManagers } from '../../Axios/manager';
 import { UserClass, UserConfig } from '../../Typings/User';
 import { useNavigate } from 'react-router-dom';
 import { Manager, SingleManager } from '../../Typings/Manager';
@@ -50,8 +50,8 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         })
     }
 
-    function UpdateManager(config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string }, mId: number) {
-        editManager(config, shopId, user, mId).then((res) => {
+    function UpdateManager(config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string }, mId: number , detacheShopId ?: number) {
+        editManager(config, shopId, user, mId , detacheShopId).then((res) => {
             // console.log("Res : ",res.data.message);
             navigate("/mannager")
             setAlert({ message : res.message , type : "success" } );
@@ -60,9 +60,18 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         })
     }
 
+    function attachToShopManager(shopId: number, userId: number, config: UserConfig){
+        attachToShop(shopId , userId , config).then((res)=>{
+            navigate("/mannager")
+            setAlert({ message : res.message , type : "success" } );
+        }).catch((err)=>{
+            setAlert({ message : err.message , type : "error" } );
+        }) 
+    }
 
 
-    return <ManagerContext.Provider value={{ UpdateManager, getManager, managers, createManager, getSingleManager, singleManager }} >
+
+    return <ManagerContext.Provider value={{ UpdateManager,attachToShopManager , getManager, managers, createManager, getSingleManager, singleManager }} >
         {children}
     </ManagerContext.Provider>
 }
