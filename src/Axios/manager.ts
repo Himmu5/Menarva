@@ -90,6 +90,13 @@ export const getSingleManagers = (id: number) => {
 };
 
 export const attachToShop = (shopId: number , userId : number , config: UserConfig ) => {
+  console.log("config ", {
+    userId,
+    authorities: {
+      authorities: { authorities: { ...config } },
+      shopAuthorities: {},
+    },
+  });
   return axios.post(
     import.meta.env.VITE_BASE_URL+`/shops/${shopId}/manager`,
     {

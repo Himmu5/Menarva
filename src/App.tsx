@@ -7,7 +7,7 @@ import StoreCalendar from "./Components/Store/Calendar"
 import Camera from "./Components/Camera/Camera"
 import StoreOptions from "./Components/Store/StoreOptions"
 import UploadSales from "./Components/SaleReportUpload/UploadSales"
-import Mannager from "./Components/SaleReportUpload/Mannager"
+import Manager from "./Components/SaleReportUpload/Mannager"
 import AddEditManager from "./Components/SaleReportUpload/AddEditManager"
 import AuthRoute from "./Components/Routes/AuthRoute"
 import UserRoute from "./Components/Routes/UserRoute"
@@ -47,7 +47,7 @@ function App() {
                   <Route path="/Camera" element={<Camera />} />
                   <Route path="/" element={<UserRoute><StoreOptions /></UserRoute>} />
                   <Route path="/ministore/uploadsales" element={<UserRoute><UploadSales /></UserRoute>} />
-                  <Route path="/mannager" element={<UserRoute><Mannager /></UserRoute>} />
+                  <Route path="/manager" element={<UserRoute><Manager /></UserRoute>} />
                   <Route path="/manager/:Form_Type" element={<UserRoute><AddEditManager /></UserRoute>} />
                   <Route path="/ministore/options" element={<UserRoute><MiniOptions /></UserRoute>} />
                   <Route path="/ministore/sales/report" element={<UserRoute><ShowSalesReport /></UserRoute>} />

@@ -53,7 +53,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
     function UpdateManager(config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string }, mId: number , detacheShopId ?: number) {
         editManager(config, shopId, user, mId , detacheShopId).then((res) => {
             // console.log("Res : ",res.data.message);
-            navigate("/mannager")
+            navigate("/manager")
             setAlert({ message : res.message , type : "success" } );
         }).catch((err) => {
             setAlert({ message : err.message , type : "error" } );
@@ -62,7 +62,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
 
     function attachToShopManager(shopId: number, userId: number, config: UserConfig){
         attachToShop(shopId , userId , config).then((res)=>{
-            navigate("/mannager")
+            navigate("/manager")
             setAlert({ message : res.message , type : "success" } );
         }).catch((err)=>{
             setAlert({ message : err.message , type : "error" } );
