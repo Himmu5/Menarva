@@ -24,6 +24,7 @@ type P = {
 const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
 
   let data = [] as { option: string, logo: IconType, show: boolean }[]
+  
 
   if (user.role === 1) {
     data = [{ option: "Stores", logo: BsShop, show: true },
@@ -31,7 +32,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
     { option: "Edit Managers", logo: FiEdit, show: true },]
   } else {
     data = [{ option: "Mini Stores", logo: AiOutlineLineChart, show: true },
-    { option: "SOP", logo: AiOutlineSetting, show: shopConfig.SOP.READ },
+    { option: "SOP", logo: AiOutlineSetting, show: shopConfig?.SOP?.READ },
     { option: "Inventory", logo: FiEdit, show: false }]
   }
 
@@ -46,9 +47,13 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
     setOpen(!open);
   }
 
-  if (user.role === 2 && shopConfig.ACCOUNTING.READ === false && shopConfig.SOP.READ === false) {
+  if( user.role ==2 && shopConfig  == undefined){
+    return <Error hideButton={true} message='You are not attached to any shops' />
+  }
+  else if (user.role === 2 && shopConfig.ACCOUNTING.READ === false && shopConfig.SOP.READ === false) {
     return <Error message='You are not allowed to see any resource please contact admin' />
   }
+  
 
   return <div className='relative '>
 

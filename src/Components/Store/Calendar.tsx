@@ -6,6 +6,7 @@ import BackButton from '../UI-Components/BackButton';
 import { withAlert, withShop, withSops } from '../../HOC/withProvider';
 import { SopCalendar } from '../../Typings/sops';
 import { AlertType } from '../../Typings/Alert';
+import { MiniShop } from '../../Typings/Shop';
 
 type P = {
   selectedDate: Date;
@@ -18,9 +19,10 @@ type P = {
   setSopDate: (s: Date) => void;
   Navigate: () => void;
   setAlert: (alert: AlertType) => void;
+  miniShop: MiniShop
 }
 
-const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar, setAlert }) => {
+const CalendarWithHighlights: FC<P> = ({miniShop , setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar, setAlert }) => {
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
@@ -60,7 +62,7 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDat
     // console.log("Change calendar");
     if (Sales === true) {
       console.log("Hello Bro");
-      
+
       const currentDate = new Date();
       if ((+currentDate.getDate() < +date.getDate()) || (+currentDate.getMonth() < +date.getMonth())) {
         setAlert({ message: "Please select previous date from current Date", type: "error" })
@@ -94,7 +96,7 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDat
       date.toDateString() === highlightedDate.toDateString()
     );
 
-    
+
   function onchange(e: any) {
     // console.log("change",e.activeStartDate)
     setChangeMonth(e.activeStartDate);
@@ -102,8 +104,11 @@ const CalendarWithHighlights: FC<P> = ({ setSopDate, changeMonth, setSelectedDat
 
   return (
     <div className='max-w-7xl mx-auto flex flex-col'>
-      <div className='w-fit px-3' onClick={() => Navigate(-1)}><BackButton /></div>
+      <div className='flex items-center justify-between px-4'>
+        <div className='w-fit px-3' onClick={() => Navigate(-1)}><BackButton /></div>
+        <div className='flex items-center gap-2'> <p className='font-bold '>Mini Shop :</p> <p className='text-blue-800'> {miniShop.name}</p></div>
 
+      </div>
       <div className='flex items-center justify-center min-h-[80vh]'>
 
         <Calendar

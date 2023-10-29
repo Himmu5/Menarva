@@ -4,8 +4,9 @@ import { Button } from '@mui/material';
 
 type P = {
     message?: string;
+    hideButton?:boolean
 }
-const Error: FC<P> = ({ message }) => {
+const Error: FC<P> = ({ message , hideButton }) => {
     const Navigate = useNavigate();
 
     return <div className='h-[80vh] w-full flex justify-center items-center text-center text-sm'>
@@ -13,7 +14,7 @@ const Error: FC<P> = ({ message }) => {
             <div className=' font-bold text-xl '>
                 {message}
             </div>
-            <div className='w-fit px-3  text-white '  onClick={() => Navigate(-1)}><Button variant='contained' children="back" /></div>
+           { hideButton == false ? <div className='w-fit px-3  text-white '  onClick={() => Navigate(-1)}><Button variant='contained' children="back" /></div> : <div></div> }
         </div>
     </div>
 }
