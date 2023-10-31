@@ -1,4 +1,4 @@
-// import { Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 // import Navbar from "./Components/Common/Navbar"
 // import SignIn from "./Components/SignIn/SignIn"
 // import Home from "./Components/SOP/Home"
@@ -25,13 +25,17 @@
 // import Inventory from "./Components/Inventory/Inventory"
 
 import Inventory from "./Inventory/Inventory"
+import Billing from "./Inventory/Billing"
 
 
 function App() {
 
   return (
     <div className="relative">
-      <Inventory />
+      <Routes>
+        <Route path="/" element={<Inventory />} />
+        <Route path="/billing" element={<Billing />}/>
+      </Routes>
       {/* <AlertProvider>
         <UserProvider>
           <ShopProvider>
