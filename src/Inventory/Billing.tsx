@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { BillingImage } from '../../public';
 import { BsFillBellFill, BsFillCalendarFill } from 'react-icons/bs';
-import UploadBill from './UploadBill';
 import AddEditItemForm from './AddEditItemForm';
 
 type P = {}

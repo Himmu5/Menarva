@@ -2,6 +2,7 @@ import { FC, useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsFillBellFill, BsFillCalendarFill } from 'react-icons/bs';
 import Slider from './Slider';
+import ItemList from './ItemList';
 
 type P = {}
 
@@ -21,6 +22,8 @@ const Inventory: FC<P> = () => {
                 <p className='text-black'>17, Aug</p>
             </div>
         </div>
+
+        <ItemList />
 
 
     </div>
