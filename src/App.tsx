@@ -1,36 +1,38 @@
-import { Route, Routes } from "react-router-dom"
-import Navbar from "./Components/Common/Navbar"
-import SignIn from "./Components/SignIn/SignIn"
-import Home from "./Components/SOP/Home"
-import Stores from "./Components/Store/Stores"
-import StoreCalendar from "./Components/Store/Calendar"
-import Camera from "./Components/Camera/Camera"
-import StoreOptions from "./Components/Store/StoreOptions"
-import UploadSales from "./Components/SaleReportUpload/UploadSales"
-import Manager from "./Components/SaleReportUpload/Mannager"
-import AddEditManager from "./Components/SaleReportUpload/AddEditManager"
-import AuthRoute from "./Components/Routes/AuthRoute"
-import UserRoute from "./Components/Routes/UserRoute"
-import UserProvider from "./Components/Provider/UserProvider"
-import Options from "./Components/Store/Options"
-import Ministores from "./Components/Ministores/Ministores"
-import Error from "./Components/Error/404Page"
-import MiniOptions from "./Components/Ministores/Options"
-import ShopProvider from "./Components/Provider/ShopProvider"
-import ShowSalesReport from "./Sales/ShowSalesReport"
-import ManagerProvider from "./Components/Provider/ManagerProvider"
-import Alert from "./Components/UI-Components/Alert"
-import AlertProvider from "./Components/Provider/AlertProvider"
-import SopProvider from "./Components/Provider/SopProvider"
+// import { Route, Routes } from "react-router-dom"
+// import Navbar from "./Components/Common/Navbar"
+// import SignIn from "./Components/SignIn/SignIn"
+// import Home from "./Components/SOP/Home"
+// import Stores from "./Components/Store/Stores"
+// import StoreCalendar from "./Components/Store/Calendar"
+// import Camera from "./Components/Camera/Camera"
+// import StoreOptions from "./Components/Store/StoreOptions"
+// import UploadSales from "./Components/SaleReportUpload/UploadSales"
+// import Manager from "./Components/SaleReportUpload/Mannager"
+// import AddEditManager from "./Components/SaleReportUpload/AddEditManager"
+// import AuthRoute from "./Components/Routes/AuthRoute"
+// import UserRoute from "./Components/Routes/UserRoute"
+// import UserProvider from "./Components/Provider/UserProvider"
+// import Options from "./Components/Store/Options"
+// import Ministores from "./Components/Ministores/Ministores"
+// import Error from "./Components/Error/404Page"
+// import MiniOptions from "./Components/Ministores/Options"
+// import ShopProvider from "./Components/Provider/ShopProvider"
+// import ShowSalesReport from "./Sales/ShowSalesReport"
+// import ManagerProvider from "./Components/Provider/ManagerProvider"
+// import Alert from "./Components/UI-Components/Alert"
+// import AlertProvider from "./Components/Provider/AlertProvider"
+// import SopProvider from "./Components/Provider/SopProvider"
 // import Inventory from "./Components/Inventory/Inventory"
+
+import Inventory from "./Inventory/Inventory"
 
 
 function App() {
 
   return (
     <div className="relative">
-      {/* <Inventory /> */}
-      <AlertProvider>
+      <Inventory />
+      {/* <AlertProvider>
         <UserProvider>
           <ShopProvider>
             <ManagerProvider>
@@ -57,7 +59,7 @@ function App() {
             </ManagerProvider>
           </ShopProvider>
         </UserProvider>
-      </AlertProvider>
+      </AlertProvider> */}
     </div>
   )
 }

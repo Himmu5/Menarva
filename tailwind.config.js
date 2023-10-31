@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       colors : {
-        primary : '#8F5843'
+        primary : '#8F5843',
+        sliderColor : "#313131"
       },
       fontFamily : {
         "Inter" : ['Inter', "sans-serif"]
