@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import Option from './Option'
 import UpdateProductDetails from './UpdateProductDetails'
 
 type P = {}
