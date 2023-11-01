@@ -6,7 +6,6 @@ import {
     Typography
 } from '@mui/material';
 import { BsFillCaretDownFill } from 'react-icons/bs';
-import { LinearProgress } from '@mui/joy';
 import ProgressBar from './ProgressBar';
 
 type P = {

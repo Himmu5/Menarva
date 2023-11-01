@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import Option from './Option'
+import UpdateProductDetails from './UpdateProductDetails'
 
 type P = {}
 
@@ -14,11 +15,12 @@ const Inventory: FC<P> = () => {
 
     return <div className='m-4 text-sm space-y-4'>
 
-        {
+        {/* {
             data.map((options) => {
                 return <Option fruits={options.fruits} title={options.title} />
             })
-        }
+        } */}
+        <UpdateProductDetails />
 
     </div>
 }
