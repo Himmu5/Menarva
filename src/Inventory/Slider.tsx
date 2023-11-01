@@ -17,7 +17,7 @@ const Slider: FC<P> = ({ isVisible, setVisible }) => {
         setVisible(!isVisible);
     }
 
-    return <Drawer onClose={handleClose} anchor="left" className='w-1/5' PaperProps={{ style: { width: '25%', zIndex: 10, backgroundColor: "#313131", color: "white" } }} open={isVisible}>
+    return <Drawer onClose={handleClose} anchor="left" className='w-1/5' PaperProps={{ style: { width: '45%', zIndex: 10, backgroundColor: "#313131", color: "white" } }} open={isVisible}>
 
         <div className='flex items-center justify-between p-4 pt-8'>
             <p></p>
