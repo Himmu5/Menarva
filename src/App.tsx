@@ -24,18 +24,21 @@ import { Route, Routes } from "react-router-dom"
 // import SopProvider from "./Components/Provider/SopProvider"
 // import Inventory from "./Components/Inventory/Inventory"
 
-import Inventory from "./Inventory/Inventory"
+// import Sales from "./Inventory/Sales"
 import Billing from "./Inventory/Billing"
+import Inventory from "./Inventory/Inventory"
 
 
 function App() {
 
   return (
     <div className="relative">
+      
       <Routes>
         <Route path="/" element={<Inventory />} />
         <Route path="/billing" element={<Billing />}/>
       </Routes>
+
       {/* <AlertProvider>
         <UserProvider>
           <ShopProvider>
