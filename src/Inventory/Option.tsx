@@ -6,6 +6,8 @@ import {
     Typography
 } from '@mui/material';
 import { BsFillCaretDownFill } from 'react-icons/bs';
+import { LinearProgress } from '@mui/joy';
+import ProgressBar from './ProgressBar';
 
 type P = {
     fruits: string[];
@@ -18,17 +20,20 @@ const Option: FC<P> = ({ fruits, title }) => {
     const handleExpand = () => {
         setExpanded(!expanded);
     };
-    return <div >
-        <Accordion expanded={expanded} onChange={handleExpand} style={{ borderRadius: 10 }} >
+    return <div>
+        <Accordion expanded={expanded} onChange={handleExpand} style={{ color: "#8F5843", borderRadius: 10 }} >
             <AccordionSummary expandIcon={<BsFillCaretDownFill />}>
-                <Typography variant="subtitle1" >{title}</Typography>
+                <Typography style={{ fontWeight: 'bold' }} variant="h6" >{title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <ul className='flex flex-col gap-2'>
-                    {fruits.map((subOption, index) => (
-                        <Accordion sx={{ padding: 1 }} style={{ borderRadius: 10 }} >
-                            <Typography variant="body1">{subOption}</Typography>
-                        </Accordion>
+                    {fruits.map((subOption) => (
+                        <div className='flex items-center rounded-md shadow-md p-3 gap-1'>
+                            <Typography width={200} variant="inherit" >{subOption}</Typography>
+
+                            <ProgressBar value={5} />
+
+                        </div>
                     ))}
                 </ul>
             </AccordionDetails>
