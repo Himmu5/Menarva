@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom"
 
 
 import Navbar from "./Components/Common/Navbar"
-import SignIn from "./Components/SignIn/SignIn"
 import AuthRoute from "./Components/Routes/AuthRoute"
 import UserRoute from "./Components/Routes/UserRoute"
 import UserProvider from "./Components/Provider/UserProvider"
@@ -16,6 +15,7 @@ import Loading from "./Loader/Loading"
 import WaitWhileLoad from "./LazyLoader/WaitWhileLoad"
 
 // Page for lazy load
+const SignIn = lazy(()=> import("./Components/SignIn/SignIn"))
 const Home = lazy(() => import("./Components/SOP/Home"))
 const Stores = lazy(() => import("./Components/Store/Stores"))
 const StoreCalendar = lazy(() => import("./Components/Store/Calendar"))
