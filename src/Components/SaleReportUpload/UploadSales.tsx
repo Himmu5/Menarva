@@ -16,8 +16,7 @@ import { useNavigate } from 'react-router-dom';
 type P = {
   selectedShop: Shop;
   uploadSales: (shopId: number, data: {
-    shopId: number;
-    shopName: string;
+    miniShopId: number;
     date: number;
     totalSales: number;
   }) => void;
@@ -28,11 +27,11 @@ type P = {
 }
 
 const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert, miniShop }) => {
-  console.log("selected Shop :", selectedShop);
+  // console.log("miniShop :", miniShop);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   // const [ImageUploaded, setImageUploaded] = useState(false)
-  console.log("Config :", shopConfig);
+  // console.log("Config :", shopConfig);
 
 
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -55,13 +54,12 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert, m
     if (selectedDate && salesAmount) {
       const longDate = selectedDate as any * 1
       const data = {
-        shopId: selectedShop.id,
-        shopName: selectedShop.name,
+        miniShopId: miniShop.id,
         date: longDate,
         totalSales: +salesAmount
       }
-      console.log("selectedShop : ", selectedShop.id);
-      uploadSales(selectedShop.id, data)
+      // console.log("selectedShop : ", selectedShop.id);
+      uploadSales(miniShop.id, data)
       setSalesAmount("0.00");
       setSelectedDate(undefined);
       // setImageUploaded(false);
@@ -75,7 +73,7 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert, m
     if (selectedDate) {
 
       const longDate = selectedDate as any * 1
-      axiosInstance.post('/api/v1/accounting/upload_sales_image/' + selectedShop.id + `?date=${longDate}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' } }).then((res) => {
+      axiosInstance.post('/api/v1/accounting/upload_sales_image/' + miniShop.id + `?date=${longDate}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' , dummyhost : "Chroma.Reliance.minerva.com" } }).then((res) => {
         console.log("Image : ", res)
         setSelectedImage(null);
         setAlert({ type: res.data.code === 1029 ? "error" : "success", message: res.data.message });
@@ -124,7 +122,7 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert, m
 
         <Button variant='contained' type='submit' children=" Upload Sales " />
       </form>
-      {shopConfig.ACCOUNTING.IMAGE_UPLOAD && <ImageUpload UploadImage={UploadImage} selectedImage={selectedImage!} setSelectedImage={setSelectedImage} />}
+      {shopConfig.SHOP.IMAGE_UPLOAD && <ImageUpload UploadImage={UploadImage} selectedImage={selectedImage!} setSelectedImage={setSelectedImage} />}
     </div>
   </div >
 }

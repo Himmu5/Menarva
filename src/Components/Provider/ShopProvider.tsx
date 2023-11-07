@@ -31,7 +31,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     const [changeMonth, setChangeMonth] = useState(new Date());
     const [loading, setLoading] = useState(true);
 
-    // console.log("changeMonth  : ", changeMonth);
+    console.log("miniShopsData  : ", miniShopsData);
 
     useEffect(() => {
         if (user?.role === 1) {
@@ -107,8 +107,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     }, [selectedDate])
 
     function uploadSales(shopId: number, data: {
-        shopId: number;
-        storeName: string;
+        miniShopId: number;
         date: number;
         totalSales: number;
     }) {

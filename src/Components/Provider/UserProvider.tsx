@@ -26,6 +26,8 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
             updateConfig();
         }
     }, [])
+    console.log("shopConfig : ",shopConfig);
+    
 
     function updateConfig() {
         if(token){
@@ -34,13 +36,13 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
                 console.log("Resolved config : ", res);
                 
                 setUser(res.result);
-                let sid = Object.keys(res.result.authorities.shopAuthorities)[0];
-                setShopConfig(res.result.authorities.shopAuthorities[sid]);
+                // let sid = Object.keys(res.result.authorities.shopAuthorities)[0];
+                setShopConfig(res.result.authorities);
                 setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
                 setLoading(false);
                 setUserConfig(res.result.authorities.authorities);
             }).catch(() => {
-                localStorage.removeItem("token");
+                // localStorage.removeItem("token");
                 setLoading(false);
               });
         }

@@ -1,3 +1,4 @@
+import { CustomHeader } from "./Headers";
 import axiosInstance from "./axios";
 
 const monthNames = [
@@ -49,21 +50,17 @@ export function getDailySale(id: number, date: number) {
 export function addSales(
   shopId: number,
   data: {
-    shopId: number;
-    storeName: string;
+    miniShopId: number;
     date: number;
     totalSales: number;
   }
 ) {
   return axiosInstance
     .post(
-      `/api/v1/accounting/${shopId}/add_sales`,
+      `/api/v1/accounting/add_sales/${data.miniShopId}`,
       data,
       {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "ngrok-skip-browser-warning": 69420,
-        },
+        headers: CustomHeader,
       }
     )
     .then((res) => {

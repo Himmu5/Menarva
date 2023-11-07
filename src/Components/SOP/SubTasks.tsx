@@ -51,20 +51,20 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
             if (o.imgUrl == null) {
                 statusComponent = shopConfig.SOP.IMAGE_UPLOAD? <Link to={"/camera"} onClick={() => setSelectedSop({ sop: Sops, taskId: +o.id })}> <UploadButton color={'blue'} text={"upload"} /></Link> : <UploadButton color={'red'} text={"unauthorized"} />
             } if (o.imgUrl && o.status === 1) {
-                statusComponent = <div onClick={() => setSopTaskStatus(Sops.id, +o.id)}><UploadButton color='blue' text='mark as Done' /></div>
+                statusComponent = <div onClick={() => setSopTaskStatus(Sops.id, +o.id)}><UploadButton color='blue' text='Mark as Done' /></div>
             }
         }
         if (sopStatus == "COMPLETED") {
-            statusComponent = <UploadButton color='blue' text='Done' />
+            statusComponent = <UploadButton color='blue' disable={true} text='Done' />
         }
         if (sopStatus == "ALL") {
             if (o.imgUrl === null) {
                 statusComponent = shopConfig.SOP.IMAGE_UPLOAD ? <Link to={"/camera"} onClick={() => setSelectedSop({ sop: Sops, taskId: +o.id })}> <UploadButton color={'blue'} text={"upload"} /></Link> : <UploadButton color={'red'} text={"unauthorized"} />
             }
             else if (o.imgUrl && o.status === 2) {
-                statusComponent = <div><UploadButton color='blue' text='Done' /></div>
+                statusComponent = <div><UploadButton color='blue' disable={true} text='Done' /></div>
             } else if (o.imgUrl) {
-                statusComponent = <div onClick={() => setSopTaskStatus(Sops.id, +o.id)}><UploadButton color='blue' text='mark as Done' /></div>
+                statusComponent = <div onClick={() => setSopTaskStatus(Sops.id, +o.id)}><UploadButton color='blue' text='Mark as Done' /></div>
             }
         }
     }

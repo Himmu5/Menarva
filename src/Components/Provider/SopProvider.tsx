@@ -73,7 +73,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
     }
     function setSopTaskStatus(sopId: string, taskId: number) {
-        setTaskStatus(selectedShop.id, sopId, taskId).then(() => {
+        setTaskStatus(sopId, taskId).then(() => {
             setAlert({ type: "success", message: "Task status updated successfully" });
             getSOPs();
         })

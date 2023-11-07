@@ -1,5 +1,6 @@
 import axios from "axios";
 import axiosInstance from "./axios";
+import { CustomHeader } from "./Headers";
 
 export const getSOP = (shopId: number, sopDate?: Date) => {
   //   const token = "Bearer " + localStorage.getItem("token");
@@ -8,17 +9,14 @@ export const getSOP = (shopId: number, sopDate?: Date) => {
   console.log("Date  ", dateLong);
   let url = "";
   if (dateLong) {
-    url = `/api/v1/shops/${shopId}/sops?date=${dateLong}`;
+    url = `/api/v1/sops?date=${dateLong}`;
   } else {
-    url = `/api/v1/shops/${shopId}/sops`;
+    url = `/api/v1/sops/`;
   }
 
   return axiosInstance
     .get(url, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "ngrok-skip-browser-warning": 69420,
-      },
+      headers: CustomHeader
     })
     .then((res) => {
       return res.data.result.sops;
@@ -36,13 +34,10 @@ export function uploadImage(
 ) {
   return axiosInstance
     .post(
-      `/api/v1/shops/${storeId}/sops/${sopId}/tasks/${taskId}/image`,
+      `/api/v1/sops/${sopId}/tasks/${taskId}/image`,
       formData,
       {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "ngrok-skip-browser-warning": 69420,
-        },
+        headers: CustomHeader,
       }
     )
     .then((res) => {
@@ -75,19 +70,15 @@ export const getSopByCalendar = (shopId:number) => {
 };
 
 export const setTaskStatus = (
-  shopId: number,
   sopId: string,
   taskId: number
 ) => {
   return axiosInstance
     .put(
-      `/api/v1/shops/${shopId}/sops/${sopId}/tasks/${taskId}`,
+      `/api/v1/sops/${sopId}/tasks/${taskId}`,
       {},
       {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "ngrok-skip-browser-warning": 69420,
-        },
+        headers: CustomHeader,
       }
     )
     .then(() => {

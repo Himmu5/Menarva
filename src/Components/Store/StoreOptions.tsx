@@ -50,7 +50,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
   if( user.role ==2 && shopConfig  == undefined){
     return <Error hideButton={true} message='You are not attached to any shops' />
   }
-  else if (user.role === 2 && shopConfig.ACCOUNTING.READ === false && shopConfig.SOP.READ === false) {
+  else if (user.role === 2 && shopConfig.SHOP.READ === false && shopConfig.SOP.READ === false) {
     return <Error message='You are not allowed to see any resource please contact admin' />
   }
   
