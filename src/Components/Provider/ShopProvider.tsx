@@ -42,9 +42,9 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     }, [user])
 
     useEffect(() => {
-        if (selectedShop) {
-            getMiniStores(selectedShop.id);
-        }
+        // if (selectedShop) {
+            getMiniStores(1);
+        // }
 
     }, [selectedShop, user])
 

@@ -13,7 +13,7 @@ type P = {
 const UserProvider: FC<P> = ({ children, setAlert }) => {
 
     const [user, setUser] = useState<UserClass>();
-    // console.log("User : ", user);
+    console.log("User : ", user);
     const [shopId, setShopId] = useState<number>();
     const [config, setUserConfig] = useState<UserConfig>();
     const [shopConfig, setShopConfig] = useState<UserConfig>();
@@ -31,12 +31,14 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
         if(token){
             setLoading(true);
             getConfig().then((res) => {
-                setLoading(false);
+                console.log("Resolved config : ", res);
+                
+                setUser(res.result);
                 let sid = Object.keys(res.result.authorities.shopAuthorities)[0];
                 setShopConfig(res.result.authorities.shopAuthorities[sid]);
                 setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
+                setLoading(false);
                 setUserConfig(res.result.authorities.authorities);
-                setUser(res.result.user);
             }).catch(() => {
                 localStorage.removeItem("token");
                 setLoading(false);
@@ -49,13 +51,14 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
 
     function AuthUser(formData: { username: string, password: string }) {
         loginUser(formData).then((res) => {
-
+            console.log("User : ", res.user);
+            
             localStorage.setItem('token', res.user.accessToken);
             setAlert({ type: "success", message: "Logged In Successfully" });
             // console.log("Authority : ",res.config.result.authorities.shopAuthorities);
+            setUser(res.user);
             let sid = Object.keys(res.config.result.authorities.shopAuthorities)[0];
             setShopConfig(res.config.result.authorities.shopAuthorities[sid]);
-            setUser(res.user.user);
             setUserConfig(res.config.result.authorities.authorities);
             setShopId(+Object.keys(res.config.result.authorities.shopAuthorities)[0]);
         }).catch((err) => {

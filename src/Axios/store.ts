@@ -1,5 +1,7 @@
+import axios from "axios";
 import { Manager } from "../Typings/Manager";
 import { Shop } from "../Typings/Shop";
+import { CustomHeader } from "./Headers";
 import axiosInstance from "./axios";
 
 export const getShops = async () => {
@@ -29,11 +31,11 @@ export const getShops = async () => {
 };
 
 export const getminiStore = (id: number) => {
-  return axiosInstance
-    .get(`/shops/${id}/mini_shops`, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "ngrok-skip-browser-warning": 69420,
+  return axios
+    .get(import.meta.env.VITE_BASE_URL+`/api/v1/shops/mini_shops`, {
+      headers:{
+        ...CustomHeader,
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     })
     .then((res) => {

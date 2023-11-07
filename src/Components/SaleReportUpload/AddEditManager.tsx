@@ -14,6 +14,8 @@ import { RxCross2 } from 'react-icons/rx'
 import { withAlert, withManager, withShop, withUser } from '../../HOC/withProvider';
 import { AlertType } from '../../Typings/Alert';
 import Loading from '../../Loader/Loading';
+import CustomInput from '../../Inventory/CustomInput';
+import Dialog from '@mui/material/Dialog';
 
 type P = {
     shops: shopObject;
@@ -65,7 +67,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
             if (Object.keys(selectedShop).length > 0) {
                 if (selectedShop) {
                     UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.userDO.id)
-                } if ( changeShop && (changeShop?.id !== Object.keys(selectedShop)[0])) {
+                } if (changeShop && (changeShop?.id !== Object.keys(selectedShop)[0])) {
                     console.log("changeShop : ", changeShop);
 
                     attachToShopManager(Object.keys(selectedShop)[0], singleManager?.userDO?.id, editConfig);
@@ -87,7 +89,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
 
     let filteredShop = [] as Shop[]
     // console.log("singleManager : ", singleManager);
-    
+
     const oldSelection = singleManager && Object.keys(singleManager?.shopAuthorities).length > 0 ? { [Object.keys(singleManager?.shopAuthorities)[0][0]]: shops[Object.keys(singleManager?.shopAuthorities)[0][0]].store } : null
     const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(FormType == "ADD" ? {} : oldSelection ? oldSelection : {});
     const [changeShop, setChangeShop] = useState<Shop>();
@@ -96,34 +98,44 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     // console.log("editConfig  : ", editConfig, singleManager);
 
 
-    if (values.search.length > 0) {
-        const stores = Object.keys(shops).map((key) => {
-            return shops[key].store
-        })
-        filteredShop = stores.filter((shop) => {
-            // console.log("Shop :",shops);
+    // if (values.search.length > 0) {
+    //     const stores = Object.keys(shops).map((key) => {
+    //         return shops[key].store
+    //     })
+    //     filteredShop = stores.filter((shop) => {
+    //         // console.log("Shop :",shops);
 
-            return (Object.keys(selectedShop).length > 0 ? !selectedShop[shop.id] : true) && shop.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1;
-        });
+    //         return (Object.keys(selectedShop).length > 0 ? !selectedShop[shop.id] : true) && shop.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1;
+    //     });
+    // }
+    // // console.log("Filter : ",filteredShop);
+
+
+    // function change(e, option, o) {
+    //     values.config[option][o] = e.target.value
+    // }
+    // useEffect(() => {
+    //     if (FormType === "Add") {
+    //         setSelectedShop({})
+    //     }
+    //     return () => {
+    //         resetForm();
+    //     }
+    // }, [])
+
+
+    const dummy = [
+        "Show Manager",
+        "Warehouse Manager",
+        "Waiter"
+    ]
+
+    const [open , setOpen] = useState(true);
+    function handleClose(){
+        setOpen(!open);
     }
-    // console.log("Filter : ",filteredShop);
 
-
-    function change(e, option, o) {
-        values.config[option][o] = e.target.value
-    }
-    useEffect(() => {
-        if (FormType === "Add") {
-            setSelectedShop({})
-        }
-        return () => {
-            resetForm();
-        }
-    }, [])
-
-    
-
-    return <div className='min-h-[80vh] flex justify-center items-center '>
+    return <div className='min-h-[80vh] flex justify-center items-center relative'>
         {/* {FormType?.toUpperCase()} */}
         <div >
             <h1 className=' my-5 text-center '>{FormType?.toUpperCase()} MANAGER</h1>
@@ -131,8 +143,9 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
             <form className='flex flex-col gap-5 ' onSubmit={handleSubmit}>
                 <div className='flex items-center relative'>
                     <BsFillPersonFill size={20} className="absolute left-2 " />
-                    <Input type='' name='name' placeholder='Manager Name' value={values.name} onChange={handleChange} />
+                    <Input type='text' name='name' placeholder='Manager Name' value={values.name} onChange={handleChange} />
                 </div>
+                {/* <CustomInput type='text' name='name' placeholder="Manager Name" Icon={BsFillPersonFill} value={values.name} onChange={handleChange} /> */}
                 <div className='flex items-center relative'>
                     <BsFillPersonFill size={20} className="absolute left-2 " />
                     <Input type='' name='username' placeholder='User Name' value={values.username} onChange={handleChange} />
@@ -146,7 +159,34 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                     <Input type='password' name='password' placeholder='Password' value={values.password} onChange={handleChange} />
                 </div>
 
-                <select name="type" className='px-3 py-2 border rounded-md' value={"Store Manager"} onChange={handleChange}>
+
+                <select name="type" className='px-3 py-2 border rounded-md  ' value={values.type} onChange={handleChange}>
+                    <option className='flex items-center relative' >
+                        <BsFillPersonFill size={20} className="absolute left-2 " />
+                        <p className='px-10'>Role Type</p>
+                    </option>
+                    {
+                        dummy.map((d, index) => {
+                            return <option key={index} className='p-2 border ' value={d}>{d}</option>
+                        })
+                    }
+                    <option >Add New Manager</option>
+                    
+
+                </select>
+
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    maxWidth='lg'
+                    sx={{ padding : 2 }}
+                >
+                    <p>Add a new role</p>
+                    
+
+                </Dialog>
+
+                {/* <select name="type" className='px-3 py-2 border rounded-md' value={"Store Manager"} onChange={handleChange}>
                     <option className='flex items-center relative' >
                         <BsFillPersonFill size={20} className="absolute left-2 " />
                         <p className='px-10'>Manager Type</p>
@@ -163,7 +203,7 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                         <Input type='text' name='search' placeholder={`Search ${values.type.split(" ")[0]}`} value={values.search} onChange={handleChange} />
                     </div>
 
-                }
+                } */}
 
                 <div className='space-y-1'>
                     {

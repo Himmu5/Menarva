@@ -27,8 +27,6 @@ type P = {
 
 
 const SignIn: FC<P> = ({ values, handleChange, handleSubmit }) => {
-    console.log("values ", values);
-
 
     return <div className="min-h-[80vh] flex items-center justify-center ">
         <div className="w-full p-3 text-center max-w-md mx-auto flex flex-col items-center ">
@@ -75,7 +73,6 @@ type FormValues = typeof initialValues;
 
 function submit(values: FormValues, bag: FormikBag<P, FormValues>) {
     if (values.checkbox) {
-        console.log(values, "  ", bag);
         bag.props.AuthUser(values);
     } else {
         bag.props.setAlert({ type: "error", message: "Please accept term and conditions" })
