@@ -58,7 +58,7 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
             localStorage.setItem('token', res.user.accessToken);
             setAlert({ type: "success", message: "Logged In Successfully" });
             // console.log("Authority : ",res.config.result.authorities.shopAuthorities);
-            setUser(res.user);
+            setUser(res.user.user);
             let sid = Object.keys(res.config.result.authorities.shopAuthorities)[0];
             setShopConfig(res.config.result.authorities.shopAuthorities[sid]);
             setUserConfig(res.config.result.authorities.authorities);

@@ -5,6 +5,8 @@ import { Sops, Task } from '../../Typings/sops';
 import { withSops, withUser } from '../../HOC/withProvider';
 import { UserClass } from '../../Typings/User';
 import SubTasks from './SubTasks';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import ProgressBar from '../../Inventory/ProgressBar';
 
 type P = {
     Sops: Sops;
@@ -32,26 +34,26 @@ const TaskComp: FC<P> = ({ Sops, sopStatus, user , setSelectedSop }) => {
     if(sopStatus === "COMPLETED"){
         filterTask = Sops.tasks.filter((o)=> o.status === 2)
     }
+    const [expanded , setExpanded] = useState(false);
+    function handleExpand() {
+        setExpanded(!expanded)
+    }
    
 
    
-    return  filterTask.length !==0 && <div key={Sops.name} className=' shadow-md flex flex-col p-3 py-2 justify-between w-full border rounded-xl'>
-        <div className='flex items-center justify-between'>
-            <p>{Sops.name}</p>
-
-            {showOptions === true ? <BiSolidUpArrow className="cursor-pointer" size={20} onClick={() => setShowOptions(!showOptions)} /> : <BsFillCaretDownFill size={20} onClick={() => setShowOptions(!showOptions)} className="cursor-pointer" />}
-
-        </div>
-       
-
-        {showOptions && <div className=' duration-500 w-full flex flex-col gap-1 text-xs p-2 border rounded-xl shadow-sm my-2 '>
-            {
-              filterTask.length !== 0 && filterTask.map((o) => {
-                    return <SubTasks setSelectedSop={setSelectedSop} o={o} sopStatus={sopStatus} Sops={Sops} user={user} />
-                })
-            }
-        </div>
-        }
-    </div>
+    return  filterTask.length !==0 && <Accordion expanded={expanded} onChange={handleExpand} style={{ color: "#8F5843", borderRadius: 10 }} >
+    <AccordionSummary expandIcon={<BsFillCaretDownFill />}>
+        <Typography style={{ fontWeight: 'bold' }} variant="inherit" >{Sops.name}</Typography>
+    </AccordionSummary>
+    <AccordionDetails>
+        <ul className='flex flex-col gap-1'>
+            {filterTask.length !== 0 && filterTask.map((subOption) => (
+                <div className=' mx-5 flex items-center rounded-md shadow-md p-3 '>
+                    <SubTasks setSelectedSop={setSelectedSop} o={subOption} sopStatus={sopStatus} Sops={Sops} user={user} />
+                </div>
+            ))}
+        </ul>
+    </AccordionDetails>
+</Accordion>
 }
 export default withUser(withSops(TaskComp))

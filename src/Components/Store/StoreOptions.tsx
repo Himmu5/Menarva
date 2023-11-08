@@ -24,6 +24,7 @@ type P = {
 const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
 
   let data = [] as { option: string, logo: IconType, show: boolean }[]
+  console.log("user : " , user);
   
 
   if (user.role === 1) {

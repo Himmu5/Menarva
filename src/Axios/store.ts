@@ -3,19 +3,20 @@ import { Manager } from "../Typings/Manager";
 import { Shop } from "../Typings/Shop";
 import { OwnerHeader , CustomHeader } from "./Headers";
 import axiosInstance from "./axios";
+import { UserClass } from "../Typings/User";
 
-export const getShops = async () => {
+export const getShops = async (user : UserClass) => {
   const stores = await axiosInstance.get("/api/v1/shops/", {
     headers: OwnerHeader
   });
-  // console.log("stores :", stores);
+  console.log("user :", user);
 
   const storeMangers = {} as { [key: number]: { store: Shop; Managers: Manager[] } };
   stores.data.result.forEach(async (store: any) => {
     const Managers = await axiosInstance.get(
       `/api/v1/tenants/employees?entityId=${store.id}`,
       {
-        headers: OwnerHeader
+        headers: { ...OwnerHeader , Authorization : localStorage.getItem('token') || "" }
       }
     );
     storeMangers[store.id] = { store, Managers: Managers.data.result };

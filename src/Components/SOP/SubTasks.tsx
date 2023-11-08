@@ -71,7 +71,7 @@ const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskS
 
     return <>
          <ImageViwer imageUrl={o.imgUrl!} open={open} setOpen={setOpen} />
-        <div key={o.name} className='flex items-center justify-between'>
+        <div key={o.name} className='flex items-center w-full justify-between'>
             <p>{o.name}</p>
             {statusComponent}
         </div>
