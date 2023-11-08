@@ -59,7 +59,7 @@ function App() {
                     <Route path="/shops" element={<UserRoute><WaitWhileLoad><Stores /></WaitWhileLoad></UserRoute>} />
                     <Route path="/shop/options" element={<UserRoute><WaitWhileLoad><Options /></WaitWhileLoad></UserRoute>} />
                     <Route path="/minishops/:id" element={<UserRoute><WaitWhileLoad><Ministores /></WaitWhileLoad></UserRoute>} />
-                    <Route path="/calendar" element={<WaitWhileLoad><StoreCalendar /></WaitWhileLoad>} />
+                    <Route path="/calendar" element={<UserRoute><WaitWhileLoad><StoreCalendar /></WaitWhileLoad></UserRoute>} />
                     <Route path="/Camera" element={<WaitWhileLoad><UserRoute><Camera /></UserRoute></WaitWhileLoad>} />
                     <Route path="/" element={<UserRoute><WaitWhileLoad><StoreOptions /></WaitWhileLoad></UserRoute>} />
                     <Route path="/ministore/uploadsales" element={<UserRoute><WaitWhileLoad><UploadSales /></WaitWhileLoad></UserRoute>} />

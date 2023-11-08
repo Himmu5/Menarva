@@ -28,7 +28,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
     function getManager() {
         getManagers().then((res) => {
             // console.log("res : ", res);
-            setManagers(res.result);
+            setManagers(res.result.employees);
         })
     }
     const navigate = useNavigate()

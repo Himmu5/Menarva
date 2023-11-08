@@ -1,4 +1,4 @@
-import { CustomHeader } from "./Headers";
+import { CustomHeader, OwnerHeader } from "./Headers";
 import axiosInstance from "./axios";
 
 const monthNames = [
@@ -17,14 +17,13 @@ const monthNames = [
 ];
 
 export function getMonthSales(id: number, year: number, month: number) {
+  console.log("Month :", id);
+  
   return axiosInstance
     .get(
       `/api/v1/accounting/sales_calendar/${id}?year=${year}&month=${monthNames[month]}`,
       {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "ngrok-skip-browser-warning": 69420,
-        },
+        headers: {...OwnerHeader , Entity : "Chroma"},
       }
     )
     .then((res) => {
@@ -37,10 +36,7 @@ export function getDailySale(id: number, date: number) {
 
   return axiosInstance
     .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "ngrok-skip-browser-warning": 69420,
-      },
+      headers: { ...OwnerHeader , Entity : "Chroma" },
     })
     .then((res) => {
       return res.data;

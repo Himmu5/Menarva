@@ -31,7 +31,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     const [changeMonth, setChangeMonth] = useState(new Date());
     const [loading, setLoading] = useState(true);
 
-    console.log("miniShopsData  : ", miniShopsData);
+    // console.log("monthSales  : ", monthSales);
 
     useEffect(() => {
         if (user?.role === 1) {
@@ -66,13 +66,18 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
         getMonthSale();
 
-    }, [selectedShop, changeMonth.getMonth()])
+    }, [miniShop, changeMonth.getMonth()])
+    // const [ loading , setLoading ] = useState(false);
 
     function getMonthSale() {
-        if (selectedShop && user?.role === 1) {
-            // console.log("Change Month : ", changeMonth)
-            getMonthSales(selectedShop.id, changeMonth.getFullYear(), changeMonth.getMonth()).then((res) => {
+        if (miniShop && user?.role === 1) {
+            setLoading(true);
+            console.log("miniShop : ", miniShop)
+            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth()).then((res) => {
                 setmonthSales(res);
+                setLoading(false);
+            }).catch(()=>{
+                setLoading(false);
             })
         }
     }
@@ -93,7 +98,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
             // const longDate = selectedDate! * 1
             const longDate = selectedDate! as any * 1
 
-            getDailySale(selectedShop!.id, longDate).then((res) => {
+            getDailySale(miniShop!.id, longDate).then((res) => {
                 setDailySales(res);
                 Navigate('/ministore/sales/report');
                 // console.log("Get Daily sales : ", res);
@@ -118,7 +123,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         })
     }
 
-    return <ShopContext.Provider value={{ setMiniShop, miniShop, changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ setMiniShop, miniShop, changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, setLoading , shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

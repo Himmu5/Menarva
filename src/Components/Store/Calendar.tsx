@@ -7,6 +7,7 @@ import { withAlert, withShop, withSops } from '../../HOC/withProvider';
 import { SopCalendar } from '../../Typings/sops';
 import { AlertType } from '../../Typings/Alert';
 import { MiniShop } from '../../Typings/Shop';
+import Loading from '../../Loader/Loading';
 
 type P = {
   selectedDate: Date;
@@ -19,15 +20,19 @@ type P = {
   setSopDate: (s: Date) => void;
   Navigate: () => void;
   setAlert: (alert: AlertType) => void;
-  miniShop: MiniShop
+  miniShop: MiniShop;
+  loading : boolean;
+  setLoading:(a:boolean)=>void
 }
 
-const CalendarWithHighlights: FC<P> = ({ miniShop, setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar, setAlert }) => {
+const CalendarWithHighlights: FC<P> = ({ loading , setLoading , miniShop, setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar, setAlert }) => {
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
   const Navigate = useNavigate();
-
+  console.log("monthSales ",monthSales);
+  
+  
   if (Sales === true) {
     sopCalendar.completed.forEach((d) => {
       approved.push(new Date(d));
@@ -40,8 +45,6 @@ const CalendarWithHighlights: FC<P> = ({ miniShop, setSopDate, changeMonth, setS
 
   }
   else {
-
-    if (monthSales.id !== 1033) {
       monthSales.result?.pending.forEach((d) => {
         panding.push(new Date(d));
       })
@@ -51,11 +54,11 @@ const CalendarWithHighlights: FC<P> = ({ miniShop, setSopDate, changeMonth, setS
       monthSales.result?.approved.forEach((d) => {
         approved.push(new Date(d));
       })
-    }
+   
   }
 
 
-  console.log("sales  : ", Sales);
+  console.log("panding  : ", panding);
 
 
   const handleDateChange = (date: any) => {
@@ -81,10 +84,12 @@ const CalendarWithHighlights: FC<P> = ({ miniShop, setSopDate, changeMonth, setS
     }
   };
 
-  const isDatePandingHighlighted = (date: Date) =>
-    panding.some((highlightedDate) =>
-      date.toDateString() === highlightedDate.toDateString()
-    );
+  const isDatePandingHighlighted = (date: Date) =>{    
+    return panding.some((highlightedDate) =>{
+      return date.toDateString() === highlightedDate.toDateString()
+    })
+    
+  }
 
   const isDateRejectedHighlighted = (date: Date) =>
     rejected.some((highlightedDate) =>
@@ -106,18 +111,18 @@ const CalendarWithHighlights: FC<P> = ({ miniShop, setSopDate, changeMonth, setS
     <div className='max-w-7xl mx-auto flex flex-col'>
       <div className='flex items-center justify-between px-4'>
         <div className='w-fit px-3' onClick={() => Navigate(-1)}><BackButton /></div>
-        <div className='flex items-center gap-2'> <p className='font-bold '>Mini Shop :</p> <p className='text-blue-800'> {miniShop.name}</p></div>
+        <div className='flex items-center gap-2'> <p className='font-bold '>Mini Shop :</p> <p className='text-blue-800'> {miniShop?.name}</p></div>
 
       </div>
       <div className='flex items-center justify-center min-h-[80vh]'>
 
         <Calendar
           onActiveStartDateChange={onchange}
-          className={"max-w-sm"}
+          className={""}
           value={changeMonth}
           onChange={handleDateChange}
           tileClassName={({ date }) => {
-            return isDatePandingHighlighted(date) ? 'h-12 rounded-full bg-yellow-500' : isDateRejectedHighlighted(date) ? " h-12 rounded-full bg-red-500 " : isDateApprovedHighlighted(date) ? " h-12 rounded-full bg-green-500 " : "  ";
+            return isDatePandingHighlighted(date) ? ' h-12 rounded-full bg-yellow-800   ' : isDateRejectedHighlighted(date) ? " h-12 rounded-full bg-red-500 " : isDateApprovedHighlighted(date) ? " h-12 rounded-full bg-green-500 " : "  ";
           }}
         />
       </div>

@@ -1,14 +1,12 @@
 import axios from "axios";
 import { UserConfig } from "../Typings/User";
 import axiosInstance from "./axios";
+import { OwnerHeader } from "./Headers";
 
 export const getManagers = () => {
   return axiosInstance
-    .get("/shops/managers", {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "ngrok-skip-browser-warning": 69420,
-      },
+    .get("/api/v1/tenants/employees", {
+      headers:OwnerHeader,
     })
     .then((res) => {
       return res.data;

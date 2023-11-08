@@ -3,11 +3,12 @@ import { IoAdd } from 'react-icons/io5';
 import { FC, useEffect } from 'react'
 import ManagerCard from './ManagerCard';
 import { Link } from 'react-router-dom';
-import { Manager } from '../../Typings/Manager';
+// import { Manager } from '../../Typings/Manager';
 import { withManager } from '../../HOC/withProvider';
+import { UserClass } from '../../Typings/User';
 
 type P = {
-    managers: Manager[];
+    managers: {user : UserClass}[];
     getSingleManager: (mId: number) => void;
     getManager: () => void;
 }
@@ -27,7 +28,7 @@ const Mannager: FC<P> = ({ managers, getSingleManager, getManager }) => {
         <div className='flex flex-col gap-3 my-5'>
             {
                 managers.map((Manager) => {
-                    return <ManagerCard key={Math.random()} getSingleManager={getSingleManager} manager={Manager} index={Manager.id} />
+                    return <ManagerCard key={Math.random()} getSingleManager={getSingleManager} manager={Manager.user} index={Manager.user.id} />
                 })
             }
         </div>

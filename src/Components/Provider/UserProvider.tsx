@@ -13,7 +13,7 @@ type P = {
 const UserProvider: FC<P> = ({ children, setAlert }) => {
 
     const [user, setUser] = useState<UserClass>();
-    console.log("User : ", user);
+    // console.log("User : ", user);
     const [shopId, setShopId] = useState<number>();
     const [config, setUserConfig] = useState<UserConfig>();
     const [shopConfig, setShopConfig] = useState<UserConfig>();
@@ -26,14 +26,14 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
             updateConfig();
         }
     }, [])
-    console.log("shopConfig : ",shopConfig);
+    // console.log("shopConfig : ",shopConfig);
     
 
     function updateConfig() {
         if(token){
             setLoading(true);
             getConfig().then((res) => {
-                console.log("Resolved config : ", res);
+                // console.log("Resolved config : ", res);
                 
                 setUser(res.result);
                 // let sid = Object.keys(res.result.authorities.shopAuthorities)[0];

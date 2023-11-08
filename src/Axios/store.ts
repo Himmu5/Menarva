@@ -32,10 +32,7 @@ export const getShops = async () => {
 export const getminiStore = (id: number) => {
   return axios
     .get(import.meta.env.VITE_BASE_URL+`/api/v1/shops/mini_shops`, {
-      headers:{
-        ...CustomHeader,
-        Authorization: "Bearer " + localStorage.getItem("token")
-      },
+      headers: {...OwnerHeader , Entity :  "Chroma"},
     })
     .then((res) => {
       // console.log("Res :", res.data);

@@ -1,22 +1,22 @@
 import axios from "axios";
 import axiosInstance from "./axios";
-import { CustomHeader } from "./Headers";
+import { CustomHeader, OwnerHeader } from "./Headers";
 
 export const getSOP = (shopId: number, sopDate?: Date) => {
   //   const token = "Bearer " + localStorage.getItem("token");
-  console.log("shopId ", shopId);
+  // console.log("shopId ", shopId);
   const dateLong = sopDate && (sopDate as any) * 1;
-  console.log("Date  ", dateLong);
+  // console.log("Date  ", dateLong);
   let url = "";
   if (dateLong) {
-    url = `/api/v1/sops?date=${dateLong}`;
+    url = `/api/v1/sops/?date=${dateLong}`;
   } else {
     url = `/api/v1/sops/`;
   }
 
   return axiosInstance
     .get(url, {
-      headers: CustomHeader
+      headers: { ...OwnerHeader , Entity : "Chroma" },
     })
     .then((res) => {
       return res.data.result.sops;
@@ -52,12 +52,8 @@ export const getSopByCalendar = (shopId:number) => {
   const config = {
     method: "get", // Use the GET method
     url:
-      import.meta.env.VITE_BASE_URL + `/api/v1/shops/${shopId}/sops/calender`, // Replace with your API endpoint
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-      "Content-Type": "application/json",
-      "ngrok-skip-browser-warning": 69420,
-    },
+      import.meta.env.VITE_BASE_URL + `/api/v1/sops/calender`, // Replace with your API endpoint
+    headers: {...OwnerHeader, Entity : "Chroma" },
     data: {},
   };
   return axios(config)
