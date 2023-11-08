@@ -46,7 +46,7 @@ const Home: FC<P> = ({ sops, getSOPs, sopDate, selectedShop , user }) => {
                 </div>
                 <div className='flex items-center gap-2'>
                     <p className='font-bold'>Shop :</p>
-                    <p> {selectedShop?.name}</p>
+                    <p> {selectedShop?.name || "Tea Bear"}</p>
                 </div>
             </div>
         </div>

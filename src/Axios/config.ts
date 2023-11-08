@@ -1,10 +1,10 @@
-import { CustomHeader } from "./Headers";
+import { CustomHeader , OwnerHeader } from "./Headers";
 import axiosInstance from "./axios";
 
 export function getConfig() {
   return axiosInstance
     .get("/users/config", {
-      headers: {...CustomHeader},
+      headers: OwnerHeader,
     })
     .then((res) => {
       console.log("Res : ",res.data);

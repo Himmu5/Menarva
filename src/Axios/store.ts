@@ -1,22 +1,21 @@
 import axios from "axios";
 import { Manager } from "../Typings/Manager";
 import { Shop } from "../Typings/Shop";
-import { CustomHeader } from "./Headers";
+import { OwnerHeader , CustomHeader } from "./Headers";
 import axiosInstance from "./axios";
 
 export const getShops = async () => {
-  const token = "Bearer " + localStorage.getItem("token");
-  const stores = await axiosInstance.get("/shops/", {
-    headers: { Authorization: token, "ngrok-skip-browser-warning": 69420 },
+  const stores = await axiosInstance.get("/api/v1/shops/", {
+    headers: OwnerHeader
   });
   // console.log("stores :", stores);
 
   const storeMangers = {} as { [key: number]: { store: Shop; Managers: Manager[] } };
   stores.data.result.forEach(async (store: any) => {
     const Managers = await axiosInstance.get(
-      `shops/managers?shopId=${store.id}`,
+      `/api/v1/tenants/employees?entityId=${store.id}`,
       {
-        headers: { Authorization: token, "ngrok-skip-browser-warning": 69420 },
+        headers: OwnerHeader
       }
     );
     storeMangers[store.id] = { store, Managers: Managers.data.result };

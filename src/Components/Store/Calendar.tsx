@@ -22,7 +22,7 @@ type P = {
   miniShop: MiniShop
 }
 
-const CalendarWithHighlights: FC<P> = ({miniShop , setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar, setAlert }) => {
+const CalendarWithHighlights: FC<P> = ({ miniShop, setSopDate, changeMonth, setSelectedDate, monthSales, setChangeMonth, Sales, sopCalendar, setAlert }) => {
   const panding = [] as Date[]
   const rejected = [] as Date[]
   const approved = [] as Date[]
