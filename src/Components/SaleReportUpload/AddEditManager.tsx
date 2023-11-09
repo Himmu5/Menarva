@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import { FormikBag, FormikProps, useFormik, withFormik } from 'formik';
 import { Shop, shopObject } from '../../Typings/Shop';
 import { UserClass, UserConfig } from '../../Typings/User';
-import { SingleManager } from '../../Typings/Manager';
+import { Authorities, Role, SingleManager } from '../../Typings/Manager';
 import { useParams } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx'
 import { withAlert, withManager, withShop, withUser } from '../../HOC/withProvider';
@@ -16,9 +16,11 @@ import { AlertType } from '../../Typings/Alert';
 import Loading from '../../Loader/Loading';
 import CustomInput from '../../Inventory/CustomInput';
 import Dialog from '@mui/material/Dialog';
+import CreateRoleForm from './CreateRoleForm';
+import RolesMapper from './RolesMapper';
 
 type P = {
-    shops: shopObject;
+    shops: shopObject[];
     config: UserConfig;
     createManager: { config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string } };
     singleManager: SingleManager;
@@ -33,50 +35,64 @@ type P = {
         }
     ) => void;
     user: UserClass;
-    setAlert: (a: AlertType) => void
+    setAlert: (a: AlertType) => void;
+    role: Role;
+    initialRole: { name: string; authorities: Authorities };
+    addNew: boolean;
+    addRole: (name: string, authorities: Authorities) => void;
+    setSelectedShop: (s: Shop) => void;
+    selectedShop: Shop;
+    attachToShopManager: (shopId: string, userId: string) => void
 }
 
 
-const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, UpdateManager, user, setAlert, attachToShopManager }) => {
+const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop, addRole, initialRole, setInitialRole, addNew, setAddNew, roles, shops, config, createManager, singleManager, UpdateManager, user, setAlert, attachToShopManager , detachToShopManager }) => {
+    console.log("Single Manager : ", singleManager);
 
     const FormType = useParams().Form_Type;
-    // console.log("config : ",config);
 
     const initialValues = FormType !== "ADD" ? {
-        name: singleManager?.userDO.name || "", username: singleManager?.userDO.username || "", email: singleManager?.userDO.email || "", password: singleManager?.userDO.password || "", type: "", search: "", config: singleManager?.shopAuthorities[3] | config,
+        name: singleManager?.user.name || "", username: singleManager?.user.username || "", email: singleManager?.user.email || "", password: singleManager?.user.password || "", type: singleManager?.user.role === 2 && "EMPLOYEE" | "", search: "", config: singleManager?.authorities | config,
         shopId: null
     } : {
         name: "", username: "", email: "", password: "", type: "", search: "", config: config,
         shopId: null
     }
 
+    function getRoleId() {
+        let id = "";
+        roles.forEach((r) => {
+            if (r.name === values.type) {
+                id = r.id
+            }
+        })
+        return id;
+    }
+    console.log("Selected Shop : ", selectedShop);
+
+
+
 
     function submit(values: T, bag: FormikBag<P, T>) {
         if (FormType === "ADD") {
-            if (Object.keys(selectedShop).length > 0) {
-                // console.log("values  : ", values);
-                createManager(editConfig, Object.keys(selectedShop)[0], { name: values.name, username: values.username, email: values.email, password: values.password })
-                bag.resetForm();
-            }
-            else {
-                setAlert({ message: "Please Select Shop", type: "error" })
-            }
+            let id = getRoleId();
+            // console.log("Id ", id);
+            createManager({ name: values.name, username: values.username, email: values.email, password: values.password, roleId: id })
+            bag.resetForm();
         }
         else if (FormType === "Edit") {
 
-            if (Object.keys(selectedShop).length > 0) {
-                if (selectedShop) {
-                    UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.userDO.id)
-                } if (changeShop && (changeShop?.id !== Object.keys(selectedShop)[0])) {
+                UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.user.id)
+                if (changeShop && (changeShop?.id !== Object.keys(selectedShop)[0])) {
                     console.log("changeShop : ", changeShop);
 
-                    attachToShopManager(Object.keys(selectedShop)[0], singleManager?.userDO?.id, editConfig);
-                    UpdateManager(editConfig, Object.keys(singleManager?.shopAuthorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.userDO.id, Object.keys(changeShop)[0])
+                    attachToShopManager(selectedShop.id, singleManager?.user?.id, editConfig);
+                    UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.user.id, Object.keys(changeShop)[0])
                 }
-            }
-            else {
-                setAlert({ message: "Please Select Shop", type: "error" })
-            }
+            
+            // else {
+            //     setAlert({ message: "Please Select Shop", type: "error" })
+            // }
 
         }
     }
@@ -88,52 +104,51 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
     })
 
     let filteredShop = [] as Shop[]
-    // console.log("singleManager : ", singleManager);
+    console.log("Single Manager : ", singleManager?.authorities);
 
-    const oldSelection = singleManager && Object.keys(singleManager?.shopAuthorities).length > 0 ? { [Object.keys(singleManager?.shopAuthorities)[0][0]]: shops[Object.keys(singleManager?.shopAuthorities)[0][0]].store } : null
-    const [selectedShop, setSelectedShop] = useState<{ [id: number]: Shop }>(FormType == "ADD" ? {} : oldSelection ? oldSelection : {});
+
     const [changeShop, setChangeShop] = useState<Shop>();
-    const [editConfig, setEditConfig] = useState(singleManager ? singleManager.shopAuthorities[Object.keys(singleManager.shopAuthorities)[0]] : config);
+    const [editConfig, setEditConfig] = useState(singleManager?.authorities || undefined);
+    const [isConfigVisible, setIsVisileConfig] = useState(false)
 
-    // console.log("editConfig  : ", editConfig, singleManager);
-
-
-    // if (values.search.length > 0) {
-    //     const stores = Object.keys(shops).map((key) => {
-    //         return shops[key].store
-    //     })
-    //     filteredShop = stores.filter((shop) => {
-    //         // console.log("Shop :",shops);
-
-    //         return (Object.keys(selectedShop).length > 0 ? !selectedShop[shop.id] : true) && shop.name.toLowerCase().indexOf(values.search.toLowerCase()) !== -1;
-    //     });
-    // }
-    // // console.log("Filter : ",filteredShop);
-
-
-    // function change(e, option, o) {
-    //     values.config[option][o] = e.target.value
-    // }
-    // useEffect(() => {
-    //     if (FormType === "Add") {
-    //         setSelectedShop({})
-    //     }
-    //     return () => {
-    //         resetForm();
-    //     }
-    // }, [])
-
-
-    const dummy = [
-        "Show Manager",
-        "Warehouse Manager",
-        "Waiter"
-    ]
-
-    const [open , setOpen] = useState(true);
-    function handleClose(){
-        setOpen(!open);
+    if (values.type === "Add") {
+        setAddNew(true);
     }
+
+    if (values.type.length > 0 && editConfig === undefined) {
+        roles.forEach((r) => {
+            if (r.name === values.type) {
+                setEditConfig(r.authorities)
+            }
+        })
+    }
+
+    const [open, setOpen] = useState(true);
+    function handleClose() {
+        setAddNew(!addNew);
+    }
+    function handleRole(e: React.ChangeEvent<HTMLSelectElement>) {
+        console.log("e : ", e.target.value);
+        if (e.target.value === "Add") {
+            setAddNew(!addNew);
+        }
+        else {
+            handleChange(e)
+            setEditConfig(undefined)
+        }
+
+    }
+
+    function shopSelectFunction(e: React.ChangeEvent<HTMLSelectElement>) {
+        let shop = {}
+        Object.keys(shops).forEach((id) => {
+            if (shops[id].store.name === e.target.value) {
+                shop = shops[id].store
+            }
+        })
+        setSelectedShop(shop);
+    }
+
 
     return <div className='min-h-[80vh] flex justify-center items-center relative'>
         {/* {FormType?.toUpperCase()} */}
@@ -141,100 +156,41 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
             <h1 className=' my-5 text-center '>{FormType?.toUpperCase()} MANAGER</h1>
 
             <form className='flex flex-col gap-5 ' onSubmit={handleSubmit}>
-                <div className='flex items-center relative'>
-                    <BsFillPersonFill size={20} className="absolute left-2 " />
-                    <Input type='text' name='name' placeholder='Manager Name' value={values.name} onChange={handleChange} />
-                </div>
-                {/* <CustomInput type='text' name='name' placeholder="Manager Name" Icon={BsFillPersonFill} value={values.name} onChange={handleChange} /> */}
-                <div className='flex items-center relative'>
-                    <BsFillPersonFill size={20} className="absolute left-2 " />
-                    <Input type='' name='username' placeholder='User Name' value={values.username} onChange={handleChange} />
-                </div>
-                <div className='flex items-center relative'>
-                    <MdOutlineEmail size={20} className="absolute left-2 " />
-                    <Input type='' name='email' placeholder='Email Address' value={values.email} onChange={handleChange} />
-                </div>
-                <div className='flex items-center relative'>
-                    <BiSolidLock size={20} className="absolute left-2 " />
-                    <Input type='password' name='password' placeholder='Password' value={values.password} onChange={handleChange} />
-                </div>
+                <CustomInput type='text' name='name' placeholder="Manager Name" Icon={BsFillPersonFill} value={values.name} onChange={handleChange} />
+                <CustomInput type='text' name='username' placeholder='User Name' Icon={BsFillPersonFill} value={values.username} onChange={handleChange} />
+                <CustomInput type='email' name='email' placeholder='Email Address' Icon={MdOutlineEmail} value={values.email} onChange={handleChange} />
+                <CustomInput type='password' name='password' placeholder='Password' Icon={BiSolidLock} value={values.password} onChange={handleChange} />
 
 
-                <select name="type" className='px-3 py-2 border rounded-md  ' value={values.type} onChange={handleChange}>
-                    <option className='flex items-center relative' >
+                <select name="type" className='px-3 py-2 border rounded-md  ' value={values.type} onChange={handleRole}>
+                    <option value={""} className='flex items-center relative' >
                         <BsFillPersonFill size={20} className="absolute left-2 " />
                         <p className='px-10'>Role Type</p>
                     </option>
-                    {
-                        dummy.map((d, index) => {
-                            return <option key={index} className='p-2 border ' value={d}>{d}</option>
-                        })
-                    }
-                    <option >Add New Manager</option>
-                    
 
+                    <RolesMapper roles={roles} />
+                    <option value={"Add"}>Add New Manager</option>
                 </select>
 
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    maxWidth='lg'
-                    sx={{ padding : 2 }}
-                >
-                    <p>Add a new role</p>
-                    
-
-                </Dialog>
-
-                {/* <select name="type" className='px-3 py-2 border rounded-md' value={"Store Manager"} onChange={handleChange}>
-                    <option className='flex items-center relative' >
-                        <BsFillPersonFill size={20} className="absolute left-2 " />
-                        <p className='px-10'>Manager Type</p>
-                    </option>
-                    <option value={"Store Manager"}>Store Manager</option>
-                    <option value="Warehouse Manager">Warehouse Manager</option>
-                </select>
+                <CreateRoleForm addRole={addRole} addNew={addNew} handleClose={handleClose} initialRole={initialRole} setInitialRole={setInitialRole} />
 
 
-                {
-                    Object.keys(selectedShop).length == 0 &&
-                    <div className='flex items-center relative'>
-                        <BsSearch size={20} className="absolute left-2 " />
-                        <Input type='text' name='search' placeholder={`Search ${values.type.split(" ")[0]}`} value={values.search} onChange={handleChange} />
+
+                {editConfig &&
+                    <div className='flex items-center gap-2'>
+                        <input type="checkbox" value={isConfigVisible} onChange={() => setIsVisileConfig(!isConfigVisible)} />
+                        <p className='text-sm'>see config</p>
                     </div>
-
-                } */}
-
-                <div className='space-y-1'>
-                    {
-                        Object.keys(selectedShop).length < 1 && filteredShop.map((shop) => {
-                            return <div key={shop.id} onClick={() => { setSelectedShop({ ...selectedShop, [shop.id]: shop }); values.shopId = shop.id }} className=' px-3 flex items-center gap-4  py-1 border rounded-md shadow-md  '>
-                                <p><BsShop /></p>
-                                <p>{shop.name}</p>
-                            </div>
-                        })
-                    }
-                </div>
-
-                <div>
-                    {
-                        Object.keys(selectedShop).map((id: any) => {
-                            return <div key={id} className='flex flex-col gap-2'> <h1 className='font-bold'>Selected Shops </h1> <div className='flex items-center justify-between'>
-                                <p className='text-sm '> {selectedShop[id].name}</p><RxCross2 className=" cursor-pointer  " onClick={() => { !changeShop && setChangeShop(selectedShop); setSelectedShop({}); }} />
-                            </div> </div>
-                        })
-                    }
-                </div>
-
+                }
                 {
-                    (Object.keys(selectedShop).length > 0 && editConfig) && Object.keys(editConfig).map((option) => {
+                    (isConfigVisible && editConfig && values.type.length > 0) && Object.keys(editConfig).map((option) => {
                         return <div className='gap-2' key={option}>
                             <p className='font-bold text-lg'>{option}</p>
                             {
                                 Object.keys(editConfig[option]).map((o) => {
                                     return <div key={o} className=' px-3 flex flex-col my-2 space-y-1'>
                                         <p>{o}</p>
-                                        <select value={editConfig[option][o]} onChange={(e) => setEditConfig({ ...editConfig, [option]: { ...editConfig[option], [o]: e.target.value } })} className='border p-1 rounded-md' >
+                                        <select value={editConfig[option][o]} className='border p-1 rounded-md' >
                                             <option value={true}>true</option>
                                             <option value={false}>false</option>
                                         </select>
@@ -246,14 +202,43 @@ const AddEditManager: FC<P> = ({ shops, config, createManager, singleManager, Up
                     })
                 }
 
+                {createdEmployee &&
+                    (<> <select className='px-10 py-2 rounded-md border border-gray-400 ' >
+                        <option value="">Select Employee Type</option>
+                        <option value="Store Manager">Store Manager</option>
+                    </select>
 
-                <Button type='submit' variant='contained' children={FormType?.toUpperCase() + " MANAGER"} style={{ color: "white" }} sx={{ borderRadius: 0 }} />
+
+                        <select className='px-10 py-2 rounded-md border border-gray-400 ' value={selectedShop?.name} onChange={(e) => shopSelectFunction(e)} >
+                            <option value="">Select Shop</option>
+                            {
+                                Object.keys(shops)?.map((id) => {
+                                    return <option key={id} value={shops[id].store.name}>{shops[id].store.name}</option>
+                                })
+                            }
+                        </select>
+
+                        <Button variant='contained' children="Attach" color='error' onClick={() => attachToShopManager(selectedShop.entityId, createdEmployee)} />
+                    </>)
+                }
+
+                <Button disabled={createdEmployee} type='submit' variant='contained' children={FormType?.toUpperCase() + " MANAGER"} style={{ color: "white" }} sx={{ borderRadius: 0 }} />
+
+                {
+                    singleManager?.entity && <div>
+                        <p className='font-bold '>Attached Shops</p>
+                        <div className='flex justify-between items-center '>
+                            <p>{singleManager?.entity.name}</p>
+                            <RxCross2 className=" cursor-pointer " onClick={()=>detachToShopManager(singleManager?.entity.id , singleManager?.user.id)} />
+                        </div>
+                    </div>
+                }
 
             </form>
 
         </div>
 
-    </div>
+    </div >
 }
 
 

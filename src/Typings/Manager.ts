@@ -17,9 +17,9 @@ export interface SingleManager {
     shopAuthorities: ShopAuthorities;
 }
 
-export interface Authorities {
-    CONFIG: Config;
-}
+// export interface Authorities {
+//     CONFIG: Config;
+// }
 
 export interface Config {
     READ: boolean;
@@ -54,4 +54,34 @@ export interface UserDO {
     role:      number;
     createdAt: number;
     updatedAt: number;
+}
+export interface Role {
+    id:          string;
+    tenantId:    string;
+    name:        string;
+    role:        string;
+    authorities: Authorities;
+}
+
+export interface Authorities {
+    EMPLOYEE:              Employee;
+    SOP:                   Employee;
+    SHOP:                  Employee;
+    MINI_SHOPS_ACCOUNTING: MiniShopsAccounting;
+}
+
+export interface Employee {
+    UPDATE:        boolean;
+    WRITE:         boolean;
+    READ:          boolean;
+    UPLOAD_PHOTO?: boolean;
+}
+
+export interface MiniShopsAccounting {
+    READ:         boolean;
+    MODIFY:       boolean;
+    RESTOCK:      boolean;
+    UPDATE:       boolean;
+    IMAGE_UPLOAD: boolean;
+    WRITE:        boolean;
 }

@@ -1,11 +1,13 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { ManagerContext } from '../../Context/Manager';
-import { addManager, attachToShop, editManager, getManagers, getSingleManagers } from '../../Axios/manager';
+import { addManager, addNewRole, attachToShop, detachToShop, editManager, getEmployeeRoles, getManagers, getSingleManagers } from '../../Axios/manager';
 import { UserClass, UserConfig } from '../../Typings/User';
 import { useNavigate } from 'react-router-dom';
-import { Manager, SingleManager } from '../../Typings/Manager';
+import { Authorities, Manager, Role, SingleManager } from '../../Typings/Manager';
 import { AlertType } from '../../Typings/Alert';
 import { withAlert, withUser } from '../../HOC/withProvider';
+import { defaultAthorities } from '../../Data/DefaultAthorities';
+import { Shop } from '../../Typings/Shop';
 
 type P = {
     children: ReactNode;
@@ -17,13 +19,32 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
 
     const [managers, setManagers] = useState<Manager[]>();
     const [singleManager, setSingleManager] = useState<SingleManager>();
+    const [ roles , setRoles ] = useState<Role[]>();
+    const [ addNew , setAddNew ] = useState<boolean>(false);
+    const [ initialRole , setInitialRole ] = useState({ name : "" , authorities : defaultAthorities });
+    const [ createdEmployee , setCreatedEmployee ] = useState<number>();
+    const [ selectedShop , setSelectedShop ] = useState<Shop>();
+    
 
     useEffect(() => {
+
         // addSales()
         if (user?.role === 1) {
             getManager();
+            getRoles();
         }
     }, [user])
+
+    function addRole(name :string , authorities :Authorities){
+        addNewRole(name , authorities).then((res)=>{
+            setAddNew(false);
+            setAlert({ message : "Role Added" , type : "success" } );
+            setInitialRole({ name : "" , authorities : defaultAthorities });
+            getRoles();
+        }).catch(()=>{
+            setAlert({ message : "Role Not Added" , type : "error" } );
+        })
+    }
 
     function getManager() {
         getManagers().then((res) => {
@@ -40,10 +61,21 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         })
     }
 
-    function createManager(config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string }) {
-        addManager(config, shopId, user).then((res) => {
-            // console.log("Res : ",res.data.message);
-            navigate("/mannager")
+
+    function getRoles(){
+        getEmployeeRoles().then((res)=>{
+            setRoles(res.result);
+        }).catch(()=>{
+            setAlert({ message : "Error in getting Roles" , type : "error" } );
+        })
+    }
+
+    function createManager(user: { name: string; email: string; password: string; type: string , roleId : string }) {
+        addManager(user).then((res) => {
+            console.log("Res : ",res);
+
+            // navigate("/manager")
+            setCreatedEmployee(res.result.userId)
             setAlert({ message : res.message , type : "success" } );
         }).catch((err) => {
             setAlert({ message : err.message , type : "error" } );
@@ -60,8 +92,20 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         })
     }
 
-    function attachToShopManager(shopId: number, userId: number, config: UserConfig){
-        attachToShop(shopId , userId , config).then((res)=>{
+    function attachToShopManager(shopId: number, userId: number){
+        attachToShop(shopId , userId ).then((res)=>{
+            setCreatedEmployee(undefined);
+            setSelectedShop(undefined);
+            navigate("/manager")
+            setAlert({ message : res.message , type : "success" } );
+        }).catch((err)=>{
+            setAlert({ message : err.message , type : "error" } );
+        }) 
+    }
+    function detachToShopManager(shopId: number, userId: number){
+        detachToShop(shopId , userId ).then((res)=>{
+            setCreatedEmployee(undefined);
+            setSelectedShop(undefined);
             navigate("/manager")
             setAlert({ message : res.message , type : "success" } );
         }).catch((err)=>{
@@ -69,9 +113,13 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         }) 
     }
 
+    // function attachToShop(){
+
+    // }
 
 
-    return <ManagerContext.Provider value={{ UpdateManager,attachToShopManager , getManager, managers, createManager, getSingleManager, singleManager }} >
+
+    return <ManagerContext.Provider value={{ detachToShopManager , createdEmployee , setSelectedShop, selectedShop , addRole , initialRole , setInitialRole , setAddNew ,addNew ,roles ,UpdateManager,attachToShopManager , getManager, managers, createManager, getSingleManager, singleManager }} >
         {children}
     </ManagerContext.Provider>
 }
