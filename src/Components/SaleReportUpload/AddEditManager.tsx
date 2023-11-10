@@ -42,7 +42,7 @@ type P = {
     addRole: (name: string, authorities: Authorities) => void;
     setSelectedShop: (s: Shop) => void;
     selectedShop: Shop;
-    attachToShopManager: (shopId: string, userId: string) => void
+    attachToShopManager: (shopId: string, userId: string) => void;
 }
 
 
@@ -202,7 +202,7 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                     })
                 }
 
-                {(  singleManager?.entity === null ||  createdEmployee  )&&
+                {(  singleManager?.entity === null   )&&
                     (<> <select className='px-10 py-2 rounded-md border border-gray-400 ' >
                         <option value="">Select Employee Type</option>
                         <option value="Store Manager">Store Manager</option>
@@ -218,7 +218,7 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                             }
                         </select>
 
-                        <Button variant='contained' children="Attach" color='error' onClick={() => attachToShopManager(selectedShop.entityId, createdEmployee)} />
+                        <Button variant='contained' children="Attach" disabled={!selectedShop} color='error' onClick={() => attachToShopManager(selectedShop.entityId, createdEmployee)} />
                     </>)
                 }
 

@@ -104,6 +104,8 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert , accessToken }) => 
     function detachToShopManager(shopId: number, userId: number){
         detachToShop(shopId , userId , accessToken).then((res)=>{
             setCreatedEmployee(undefined);
+            setCreatedEmployee(undefined);
+            setSelectedShop(undefined);
             setSelectedShop(undefined);
             navigate("/manager")
             setAlert({ message : res.message , type : "success" } );
