@@ -9,8 +9,7 @@ export function loginUser(formData: { username: string; password: string }) {
       {
         username: formData.username,
         password: formData.password,
-      },
-      { headers: { dummyhost: "minerva.com" } }
+      }
     )
     .then(async (res) => {
       const config = await axios.get(

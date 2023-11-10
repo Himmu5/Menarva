@@ -73,7 +73,7 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert, m
     if (selectedDate) {
 
       const longDate = selectedDate as any * 1
-      axiosInstance.post('/api/v1/accounting/upload_sales_image/' + miniShop.id + `?date=${longDate}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' , dummyhost : "Chroma.Reliance.minerva.com" } }).then((res) => {
+      axiosInstance.post('/api/v1/accounting/upload_sales_image/' + miniShop.id + `?date=${longDate}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' ,} }).then((res) => {
         console.log("Image : ", res)
         setSelectedImage(null);
         setAlert({ type: res.data.code === 1029 ? "error" : "success", message: res.data.message });
