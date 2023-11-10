@@ -18,7 +18,7 @@ type P = {
 
 const ManagerProvider: FC<P> = ({ children, user , setAlert , accessToken }) => {
 
-    const [managers, setManagers] = useState<Manager[]>();
+    const [managers, setManagers] = useState<{ employees : Manager[]} >();
     const [singleManager, setSingleManager] = useState<SingleManager>();
     const [ roles , setRoles ] = useState<Role[]>();
     const [ addNew , setAddNew ] = useState<boolean>(false);
