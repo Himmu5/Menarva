@@ -202,7 +202,7 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                     })
                 }
 
-                {createdEmployee &&
+                {(  singleManager?.entity === null ||  createdEmployee  )&&
                     (<> <select className='px-10 py-2 rounded-md border border-gray-400 ' >
                         <option value="">Select Employee Type</option>
                         <option value="Store Manager">Store Manager</option>
@@ -223,6 +223,8 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                 }
 
                 <Button disabled={createdEmployee} type='submit' variant='contained' children={FormType?.toUpperCase() + " MANAGER"} style={{ color: "white" }} sx={{ borderRadius: 0 }} />
+
+                { singleManager?.entity === null && <div>No shop associated</div>  }
 
                 {
                     singleManager?.entity && <div>

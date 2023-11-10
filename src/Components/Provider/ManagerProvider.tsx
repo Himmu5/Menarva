@@ -56,7 +56,8 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert , accessToken }) => 
     const navigate = useNavigate()
     function getSingleManager(mId: number ) {
         getSingleManagers(mId , accessToken).then((res) => {
-        // console.log("Res : ", res);
+        // console.log("Res : ", res.result.user.id);
+            setCreatedEmployee(res.result.user.id);
             setSingleManager(res.result);
             navigate('/manager/Edit');
         })
