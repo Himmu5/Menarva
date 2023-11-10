@@ -4,7 +4,7 @@ import axiosInstance from "./axios";
 export function getConfig() {
   return axiosInstance
     .get("/users/config", {
-      headers: OwnerHeader,
+      headers: CustomHeader,
     })
     .then((res) => {
       console.log("Res : ",res.data);

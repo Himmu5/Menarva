@@ -9,7 +9,6 @@ export const getShops = async (user : UserClass , accessToken ?: string ) => {
   const stores = await axiosInstance.get("/api/v1/shops/", {
     headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem('token') } 
   });
-  console.log("accessToken :", accessToken);
 
   const storeMangers = {} as { [key: number]: { store: Shop; Managers: Manager[] } };
   stores.data.result.forEach(async (store: any) => {

@@ -17,8 +17,8 @@ const Navbar: FC<P> = ({ removeUser, user }) => {
         setOpen(!open);
     }
     const confirmLogOut = ()=>{
-        toggle();
         removeUser();
+        toggle();
     }
 
     return <>

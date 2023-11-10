@@ -46,11 +46,17 @@ type P = {
 }
 
 
-const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop, addRole, initialRole, setInitialRole, addNew, setAddNew, roles, shops, config, createManager, singleManager, UpdateManager, user, setAlert, attachToShopManager , detachToShopManager }) => {
+const AddEditManager: FC<P> = ({ setSingleManager ,setCreatedEmployee , createdEmployee, setSelectedShop, selectedShop, addRole, initialRole, setInitialRole, addNew, setAddNew, roles, shops, config, createManager, singleManager, UpdateManager, user, setAlert, attachToShopManager , detachToShopManager }) => {
     console.log("Single Manager : ", singleManager);
-
     const FormType = useParams().Form_Type;
+    useEffect(()=>{
+        if(FormType === "ADD"){
+            setSingleManager(undefined);
+            setCreatedEmployee(undefined);
+        }
+    },[])   
 
+    
     const initialValues = FormType !== "ADD" ? {
         name: singleManager?.user.name || "", username: singleManager?.user.username || "", email: singleManager?.user.email || "", password: singleManager?.user.password || "", type: singleManager?.user.role === 2 && "EMPLOYEE" | "", search: "", config: singleManager?.authorities | config,
         shopId: null
@@ -81,13 +87,24 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
             bag.resetForm();
         }
         else if (FormType === "Edit") {
+            console.log("selectedRole = ",selectedRole);
+                let data = {  }
+                if(values.name !== singleManager.user.name){
+                    data.name = values.name
+                }if(values.email !== singleManager.user.email){
+                    data.email = values.email
 
-                UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.user.id)
+                }if(values.username !== singleManager.user.username){
+                    data.username = values.username
+
+                }
+
+                UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], {roleId : selectedRole.id,...data}, singleManager?.user.id)
                 if (changeShop && (changeShop?.id !== Object.keys(selectedShop)[0])) {
                     console.log("changeShop : ", changeShop);
 
                     attachToShopManager(selectedShop.id, singleManager?.user?.id, editConfig);
-                    UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], { name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.user.id, Object.keys(changeShop)[0])
+                    UpdateManager(editConfig, {roleId : selectedRole.id , name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.user.id, Object.keys(changeShop)[0])
                 }
             
             // else {
@@ -104,12 +121,12 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
     })
 
     let filteredShop = [] as Shop[]
-    console.log("Single Manager : ", singleManager?.authorities);
-
-
+    
+    
     const [changeShop, setChangeShop] = useState<Shop>();
     const [editConfig, setEditConfig] = useState(singleManager?.authorities || undefined);
     const [isConfigVisible, setIsVisileConfig] = useState(false)
+    console.log("editConfig : ", editConfig);
 
     if (values.type === "Add") {
         setAddNew(true);
@@ -148,7 +165,12 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
         })
         setSelectedShop(shop);
     }
-
+    let selectedRole = {}
+    if(singleManager){
+        selectedRole = roles.filter((role)=>role.id === singleManager.user.roleId)[0]
+    }
+    console.log("Selected Role ",selectedRole);
+    
 
     return <div className='min-h-[80vh] flex justify-center items-center relative'>
         {/* {FormType?.toUpperCase()} */}
@@ -162,18 +184,18 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                 <CustomInput type='password' name='password' placeholder='Password' Icon={BiSolidLock} value={values.password} onChange={handleChange} />
 
 
-                <select name="type" className='px-3 py-2 border rounded-md  ' value={values.type} onChange={handleRole}>
+                <select name="type" className='px-3 py-2 border rounded-md  '   value={ singleManager ? selectedRole.name : values.type} onChange={handleRole}>
                     <option value={""} className='flex items-center relative' >
                         <BsFillPersonFill size={20} className="absolute left-2 " />
                         <p className='px-10'>Role Type</p>
                     </option>
 
                     <RolesMapper roles={roles} />
-                    <option value={"Add"}>Add New Manager</option>
+                    <option value={"Add"}>Add New Role</option>
                 </select>
 
                 <CreateRoleForm addRole={addRole} addNew={addNew} handleClose={handleClose} initialRole={initialRole} setInitialRole={setInitialRole} />
-
+                <Button type='submit' variant='contained' children={FormType?.toUpperCase() + " MANAGER"} style={{ color: "white" }} sx={{ borderRadius: 0 }} />
 
 
                 {editConfig &&
@@ -183,7 +205,7 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                     </div>
                 }
                 {
-                    (isConfigVisible && editConfig && values.type.length > 0) && Object.keys(editConfig).map((option) => {
+                    (isConfigVisible ) && Object.keys(editConfig).map((option) => {
                         return <div className='gap-2' key={option}>
                             <p className='font-bold text-lg'>{option}</p>
                             {
@@ -202,10 +224,10 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                     })
                 }
 
-                {(  singleManager?.entity === null   )&&
+                { createdEmployee &&
                     (<> <select className='px-10 py-2 rounded-md border border-gray-400 ' >
-                        <option value="">Select Employee Type</option>
-                        <option value="Store Manager">Store Manager</option>
+                        {/* <option value="">Select Employee Type</option> */}
+                        <option value="Store Manager">Shop Manager</option>
                     </select>
 
 
@@ -222,7 +244,7 @@ const AddEditManager: FC<P> = ({ createdEmployee, setSelectedShop, selectedShop,
                     </>)
                 }
 
-                <Button disabled={createdEmployee} type='submit' variant='contained' children={FormType?.toUpperCase() + " MANAGER"} style={{ color: "white" }} sx={{ borderRadius: 0 }} />
+              
 
                 { singleManager?.entity === null && <div>No shop associated</div>  }
 
