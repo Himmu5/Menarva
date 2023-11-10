@@ -10,7 +10,7 @@ export function loginUser(formData: { username: string; password: string }) {
         username: formData.username,
         password: formData.password,
       },
-      { headers: { dummyhost: "Chroma.Reliance.minerva.com" } }
+      { headers: { dummyhost: "minerva.com" } }
     )
     .then(async (res) => {
       const config = await axios.get(
@@ -20,6 +20,6 @@ export function loginUser(formData: { username: string; password: string }) {
         }
       );
       localStorage.setItem("token", res.data.result.accessToken);
-      return { user: res.data.result, config: config.data };
+      return { user: res.data.result, config: config.data.result.authorities };
     });
 }

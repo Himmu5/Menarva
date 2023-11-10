@@ -15,9 +15,10 @@ type P = {
     user: UserClass;
     changeMonth: Date;
     shopId: number;
+    accessToken: string;
 }
 
-const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMonth, shopId }) => {
+const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMonth, shopId , accessToken}) => {
     const Navigate = useNavigate();
 
 
@@ -38,7 +39,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
 
     function getSOPs() {
-        getSOP(shopId ? shopId : selectedShop?.id, sopDate).then((res) => {
+        getSOP(shopId ? shopId : selectedShop?.id, sopDate , accessToken).then((res) => {
             setSOPS(res);
         }).catch((err) => {
             setAlert({ type: 'error', message: err.message })
@@ -46,7 +47,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
     }
 
     function getSopCalendar() {
-        getSopByCalendar(selectedShop?.id).then((res) => {
+        getSopByCalendar(selectedShop?.id , accessToken).then((res) => {
             setSopCalendar(res.result)
         })
     }
@@ -63,7 +64,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         const formData = new FormData();
         formData.append('image', file, "image.jpg");
 
-        uploadImage(formData, sopId, taskId, shopId).then(() => {
+        uploadImage(formData, sopId, taskId, shopId , accessToken).then(() => {
             setAlert({ type: "success", message: "Image Uploaded Successfully" });
             Navigate('/SOP');
             getSOPs();
@@ -73,7 +74,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
     }
     function setSopTaskStatus(sopId: string, taskId: number) {
-        setTaskStatus(sopId, taskId).then(() => {
+        setTaskStatus(sopId, taskId , accessToken).then(() => {
             setAlert({ type: "success", message: "Task status updated successfully" });
             getSOPs();
         })

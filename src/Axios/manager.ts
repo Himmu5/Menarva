@@ -4,10 +4,10 @@ import axiosInstance from "./axios";
 import { OwnerHeader } from "./Headers";
 import { Authorities } from "../Typings/Manager";
 
-export const getManagers = () => {
+export const getManagers = (token ?: string , accessToken ?: string) => {
   return axiosInstance
     .get("/api/v1/tenants/employees", {
-      headers: OwnerHeader,
+      headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem("token") } 
     })
     .then((res) => {
       return res.data;
@@ -20,13 +20,13 @@ export const addManager = (user: {
   password: string;
   type: string;
   roleId: string;
-}) => {
+} , accessToken ?: string) => {
   return axiosInstance
     .post(
       `/api/v1/tenants/employee`,
       { ...user },
       {
-        headers: { ...OwnerHeader, Entity: "Chroma" },
+        headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem("token") ,  Entity: "Chroma" },
       }
     )
     .then((res) => {
@@ -40,7 +40,8 @@ export const editManager = (
   shopId: number,
   user: { name: string; email: string; password: string; type: string },
   mId: number,
-  detacheShopId?: number
+  detacheShopId?: number,
+  accessToken?:string
 ) => {
   const data = {
     user: { ...user, id: mId, role: 2 },
@@ -67,17 +68,17 @@ export const editManager = (
     });
 };
 
-export const getSingleManagers = (id: number) => {
+export const getSingleManagers = (id: number , accessToken:string) => {
   return axiosInstance
     .get("/api/v1/tenants/employee/" + id, {
-      headers: OwnerHeader
+      headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem("token")  },
     })
     .then((res) => {
       return res.data;
     });
 };
 
-export const attachToShop = (shopId: number, userId: number) => {
+export const attachToShop = (shopId: number, userId: number , accessToken : string) => {
   return axios
     .post(
       import.meta.env.VITE_BASE_URL + `/api/v1/tenants/assign_employee`,
@@ -86,7 +87,7 @@ export const attachToShop = (shopId: number, userId: number) => {
         entityId: shopId,
       },
       {
-        headers: OwnerHeader
+        headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem("token") },
       }
     )
     .then((res) => {
@@ -97,7 +98,7 @@ export const attachToShop = (shopId: number, userId: number) => {
     });
 };
 
-export const detachToShop = (shopId: number, userId: number) => {
+export const detachToShop = (shopId: number, userId: number , accessToken:string) => {
   return axios
     .post(
       import.meta.env.VITE_BASE_URL + `/api/v1/tenants/release_employee`,
@@ -106,7 +107,7 @@ export const detachToShop = (shopId: number, userId: number) => {
         entityId: shopId,
       },
       {
-        headers: OwnerHeader
+        headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem("token") },
       }
     )
     .then((res) => {
@@ -117,17 +118,17 @@ export const detachToShop = (shopId: number, userId: number) => {
     });
 };
 
-export const getEmployeeRoles = () => {
+export const getEmployeeRoles = (accessToken : string) => {
   return axiosInstance
     .get("/api/v1/tenants/roles", {
-      headers: OwnerHeader,
+      headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem("token") },
     })
     .then((res) => {
       return res.data;
     });
 };
 
-export const addNewRole = (name: string, authorities: Authorities) => {
+export const addNewRole = (name: string, authorities: Authorities , accessToken:string) => {
   return axiosInstance
     .post(
       "/api/v1/tenants/role",
@@ -137,7 +138,7 @@ export const addNewRole = (name: string, authorities: Authorities) => {
         role: 2,
       },
       {
-        headers: { ...OwnerHeader, "Content-Type": "application/json" },
+        headers:{ ...OwnerHeader , Authorization : accessToken || localStorage.getItem("token") , "Content-Type": "application/json"}
       }
     )
     .then((res) => {

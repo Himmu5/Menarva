@@ -5,18 +5,18 @@ import { OwnerHeader , CustomHeader } from "./Headers";
 import axiosInstance from "./axios";
 import { UserClass } from "../Typings/User";
 
-export const getShops = async (user : UserClass) => {
+export const getShops = async (user : UserClass , accessToken ?: string ) => {
   const stores = await axiosInstance.get("/api/v1/shops/", {
-    headers: OwnerHeader
+    headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem('token') } 
   });
-  console.log("user :", user);
+  console.log("accessToken :", accessToken);
 
   const storeMangers = {} as { [key: number]: { store: Shop; Managers: Manager[] } };
   stores.data.result.forEach(async (store: any) => {
     const Managers = await axiosInstance.get(
       `/api/v1/tenants/employees?entityId=${store.id}`,
       {
-        headers: { ...OwnerHeader , Authorization : localStorage.getItem('token') || "" }
+        headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem('token')}
       }
     );
     storeMangers[store.id] = { store, Managers: Managers.data.result };
@@ -30,10 +30,10 @@ export const getShops = async (user : UserClass) => {
   });
 };
 
-export const getminiStore = (id: number) => {
+export const getminiStore = (id: number ,accessToken:string) => {
   return axios
     .get(import.meta.env.VITE_BASE_URL+`/api/v1/shops/mini_shops`, {
-      headers: {...OwnerHeader , Entity :  "Chroma"},
+      headers: {...OwnerHeader , Entity :  "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
     })
     .then((res) => {
       // console.log("Res :", res.data);

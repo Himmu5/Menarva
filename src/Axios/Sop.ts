@@ -2,7 +2,7 @@ import axios from "axios";
 import axiosInstance from "./axios";
 import { CustomHeader, OwnerHeader } from "./Headers";
 
-export const getSOP = (shopId: number, sopDate?: Date) => {
+export const getSOP = (shopId: number, sopDate?: Date, accessToken ?: string) => {
   //   const token = "Bearer " + localStorage.getItem("token");
   // console.log("shopId ", shopId);
   const dateLong = sopDate && (sopDate as any) * 1;
@@ -16,7 +16,7 @@ export const getSOP = (shopId: number, sopDate?: Date) => {
 
   return axiosInstance
     .get(url, {
-      headers: { ...OwnerHeader , Entity : "Chroma" },
+      headers: { ...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
     })
     .then((res) => {
       return res.data.result.sops;
@@ -30,14 +30,15 @@ export function uploadImage(
   formData: FormData,
   sopId: number,
   taskId: number,
-  storeId: number
+  storeId: number,
+  accessToken : string
 ) {
   return axiosInstance
     .post(
       `/api/v1/sops/${sopId}/tasks/${taskId}/image`,
       formData,
       {
-        headers: CustomHeader,
+        headers: { ...CustomHeader , Authorization : accessToken || localStorage.getItem("token") } ,
       }
     )
     .then((res) => {
@@ -48,12 +49,12 @@ export function uploadImage(
     });
 }
 
-export const getSopByCalendar = (shopId:number) => {
+export const getSopByCalendar = (shopId:number , accessToken : string) => {
   const config = {
     method: "get", // Use the GET method
     url:
       import.meta.env.VITE_BASE_URL + `/api/v1/sops/calender`, // Replace with your API endpoint
-    headers: {...OwnerHeader, Entity : "Chroma" },
+    headers: {...OwnerHeader, Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token")},
     data: {},
   };
   return axios(config)
@@ -67,14 +68,15 @@ export const getSopByCalendar = (shopId:number) => {
 
 export const setTaskStatus = (
   sopId: string,
-  taskId: number
+  taskId: number,
+  accessToken : string
 ) => {
   return axiosInstance
     .put(
       `/api/v1/sops/${sopId}/tasks/${taskId}`,
       {},
       {
-        headers: CustomHeader,
+        headers:{ ...CustomHeader , Authorization : accessToken || localStorage.getItem("token") },
       }
     )
     .then(() => {

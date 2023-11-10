@@ -19,7 +19,7 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     const [shopConfig, setShopConfig] = useState<UserConfig>();
     const token = localStorage.getItem('token')
     const [loading, setLoading] = useState<boolean>(false);
-    
+    const [ accessToken , setAccessToken] = useState<string>();
 
     useEffect(() => {
         if (token) {
@@ -33,10 +33,8 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
         if(token){
             setLoading(true);
             getConfig().then((res) => {
-                // console.log("Resolved config : ", res);
                 
                 setUser(res.result);
-                // let sid = Object.keys(res.result.authorities.shopAuthorities)[0];
                 setShopConfig(res.result.authorities);
                 setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
                 setLoading(false);
@@ -53,17 +51,19 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
 
     function AuthUser(formData: { username: string, password: string }) {
         loginUser(formData).then((res) => {
-            console.log("User : ", res.user);
-            
+            console.log("User : ", res);
+            setAccessToken(res.user.accessToken)
             localStorage.setItem('token', res.user.accessToken);
             setAlert({ type: "success", message: "Logged In Successfully" });
             // console.log("Authority : ",res.config.result.authorities.shopAuthorities);
             setUser(res.user.user);
-            let sid = Object.keys(res.config.result.authorities.shopAuthorities)[0];
-            setShopConfig(res.config.result.authorities.shopAuthorities[sid]);
-            setUserConfig(res.config.result.authorities.authorities);
-            setShopId(+Object.keys(res.config.result.authorities.shopAuthorities)[0]);
+            // let sid = Object.keys(res.config.result.authorities.shopAuthorities)[0];
+            // setShopConfig(res.config.result.authorities.shopAuthorities[sid]);
+            setUserConfig(res.config);
+            
         }).catch((err) => {
+            console.log("Error : ", err);
+            
             setAlert({ type: "error", message: err.message })
         })
     }
@@ -78,7 +78,7 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     return <Loading />;
   }
 
-    return <UserContext.Provider value={{ token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
+    return <UserContext.Provider value={{ accessToken , token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
         {children}
     </UserContext.Provider>
 }

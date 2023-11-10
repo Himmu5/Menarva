@@ -14,8 +14,9 @@ type P = {
     shopId: number,
     user: UserClass;
     setAlert: (s: AlertType) => void
+    accessToken : string;
 }
-const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
+const ShopProvider: FC<P> = ({ children, shopId, user, setAlert , accessToken }) => {
     const Navigate = useNavigate();
     const [shops, setShops] = useState<{
         [key: number]: {
@@ -34,8 +35,10 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
     // console.log("monthSales  : ", monthSales);
 
     useEffect(() => {
+        // console.log("User : ", user);
+        
         if (user?.role === 1) {
-            getShops(user).then((res: any) => {
+            getShops(user , accessToken).then((res: any) => {
                 setShops(res);
             })
         }
@@ -43,7 +46,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
 
     useEffect(() => {
         // if (selectedShop) {
-            getMiniStores(1);
+            getMiniStores(1 ,  accessToken);
         // }
 
     }, [selectedShop, user])
@@ -73,7 +76,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         if (miniShop && user?.role === 1) {
             setLoading(true);
             console.log("miniShop : ", miniShop)
-            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth()).then((res) => {
+            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth() , accessToken).then((res) => {
                 setmonthSales(res);
                 setLoading(false);
             }).catch(()=>{
@@ -82,8 +85,8 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         }
     }
 
-    function getMiniStores(id: number) {
-        getminiStore(id).then((res) => {
+    function getMiniStores(id: number , accessToken : string) {
+        getminiStore(id , accessToken).then((res) => {
             setMiniShops(res)
             setLoading(false);
         }).catch(() => {
@@ -98,7 +101,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
             // const longDate = selectedDate! * 1
             const longDate = selectedDate! as any * 1
 
-            getDailySale(miniShop!.id, longDate).then((res) => {
+            getDailySale(miniShop!.id, longDate , accessToken).then((res) => {
                 setDailySales(res);
                 Navigate('/ministore/sales/report');
                 // console.log("Get Daily sales : ", res);
@@ -116,7 +119,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert }) => {
         date: number;
         totalSales: number;
     }) {
-        addSales(shopId, data).then((res) => {
+        addSales(shopId, data , accessToken).then((res) => {
             setAlert({ message: res.message, type: "success" });
         }).catch((err) => {
             setAlert({ message: err.response.status === 403 ? "You are not allowed to upload sales please contact admin" : err.message, type: "error" });

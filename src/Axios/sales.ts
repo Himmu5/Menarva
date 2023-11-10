@@ -16,14 +16,14 @@ const monthNames = [
   "Dec",
 ];
 
-export function getMonthSales(id: number, year: number, month: number) {
+export function getMonthSales(id: number, year: number, month: number ,accessToken?:string) {
   console.log("Month :", id);
   
   return axiosInstance
     .get(
       `/api/v1/accounting/sales_calendar/${id}?year=${year}&month=${monthNames[month]}`,
       {
-        headers: {...OwnerHeader , Entity : "Chroma"},
+        headers: {...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
       }
     )
     .then((res) => {
@@ -31,12 +31,12 @@ export function getMonthSales(id: number, year: number, month: number) {
     });
 }
 
-export function getDailySale(id: number, date: number) {
+export function getDailySale(id: number, date: number , accessToken : string) {
   console.log("Date :", date);
 
   return axiosInstance
     .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`, {
-      headers: { ...OwnerHeader , Entity : "Chroma" },
+      headers: {...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") }
     })
     .then((res) => {
       return res.data;
@@ -49,14 +49,15 @@ export function addSales(
     miniShopId: number;
     date: number;
     totalSales: number;
-  }
+  },
+  accessToken : string
 ) {
   return axiosInstance
     .post(
       `/api/v1/accounting/add_sales/${data.miniShopId}`,
       data,
       {
-        headers: CustomHeader,
+        headers: {...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
       }
     )
     .then((res) => {

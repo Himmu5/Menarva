@@ -12,10 +12,11 @@ import { Shop } from '../../Typings/Shop';
 type P = {
     children: ReactNode;
     user: UserClass;
-    setAlert : (s:AlertType)=>void
+    setAlert : (s:AlertType)=>void;
+    accessToken : string
 }
 
-const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
+const ManagerProvider: FC<P> = ({ children, user , setAlert , accessToken }) => {
 
     const [managers, setManagers] = useState<Manager[]>();
     const [singleManager, setSingleManager] = useState<SingleManager>();
@@ -30,13 +31,13 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
 
         // addSales()
         if (user?.role === 1) {
-            getManager();
+            getManager(accessToken);
             getRoles();
         }
     }, [user])
 
     function addRole(name :string , authorities :Authorities){
-        addNewRole(name , authorities).then((res)=>{
+        addNewRole(name , authorities ,accessToken ).then((res)=>{
             setAddNew(false);
             setAlert({ message : "Role Added" , type : "success" } );
             setInitialRole({ name : "" , authorities : defaultAthorities });
@@ -46,15 +47,15 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         })
     }
 
-    function getManager() {
-        getManagers().then((res) => {
+    function getManager(accessToken:string) {
+        getManagers(accessToken).then((res) => {
             // console.log("res : ", res);
             setManagers(res.result.employees);
         })
     }
     const navigate = useNavigate()
-    function getSingleManager(mId: number) {
-        getSingleManagers(mId).then((res) => {
+    function getSingleManager(mId: number ) {
+        getSingleManagers(mId , accessToken).then((res) => {
         // console.log("Res : ", res);
             setSingleManager(res.result);
             navigate('/manager/Edit');
@@ -63,7 +64,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
 
 
     function getRoles(){
-        getEmployeeRoles().then((res)=>{
+        getEmployeeRoles(accessToken).then((res)=>{
             setRoles(res.result);
         }).catch(()=>{
             setAlert({ message : "Error in getting Roles" , type : "error" } );
@@ -71,10 +72,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
     }
 
     function createManager(user: { name: string; email: string; password: string; type: string , roleId : string }) {
-        addManager(user).then((res) => {
-            console.log("Res : ",res);
-
-            // navigate("/manager")
+        addManager(user , accessToken).then((res) => {
             setCreatedEmployee(res.result.userId)
             setAlert({ message : res.message , type : "success" } );
         }).catch((err) => {
@@ -93,7 +91,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
     }
 
     function attachToShopManager(shopId: number, userId: number){
-        attachToShop(shopId , userId ).then((res)=>{
+        attachToShop(shopId , userId , accessToken ).then((res)=>{
             setCreatedEmployee(undefined);
             setSelectedShop(undefined);
             navigate("/manager")
@@ -103,7 +101,7 @@ const ManagerProvider: FC<P> = ({ children, user , setAlert }) => {
         }) 
     }
     function detachToShopManager(shopId: number, userId: number){
-        detachToShop(shopId , userId ).then((res)=>{
+        detachToShop(shopId , userId , accessToken).then((res)=>{
             setCreatedEmployee(undefined);
             setSelectedShop(undefined);
             navigate("/manager")
