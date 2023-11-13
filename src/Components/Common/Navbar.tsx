@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { Logo } from '../../../public/index'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
@@ -12,11 +12,12 @@ type P = {
 
 const Navbar: FC<P> = ({ removeUser, user }) => {
     const [open, setOpen] = useState(false);
-
-    function toggle() {
+    
+    const toggle = ()=>{
         setOpen(!open);
     }
-    const confirmLogOut = ()=>{
+
+    const confirmLogOut = () => {
         removeUser();
         toggle();
     }
@@ -26,7 +27,7 @@ const Navbar: FC<P> = ({ removeUser, user }) => {
             <Link to={"/"}><img src={Logo} alt='Logo' className='ml-1 mt-3' /></Link>
             {user && <Button variant='contained' size='small' onClick={toggle} children="Log Out " sx={{ backgroundColor: "red" }} />}
         </div>
-       <LogOut open={open} confirmLogOut={confirmLogOut} toggle={toggle} />
+        <LogOut open={open} confirmLogOut={confirmLogOut} toggle={toggle} />
     </>
 }
 export default withUser(Navbar);

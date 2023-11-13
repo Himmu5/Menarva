@@ -34,8 +34,7 @@ export const addManager = (
       {
         headers: {
           ...OwnerHeader,
-          Authorization: accessToken || localStorage.getItem("token"),
-          Entity: "Chroma",
+          Authorization: accessToken || localStorage.getItem("token")
         },
       }
     )
@@ -59,7 +58,7 @@ export const editManager = (
 
   return axiosInstance
     .patch(
-      `/api/v1/tenants/employee`,
+      `/api/v1/tenants/employee/`+mId,
       { ...data.user },
       {
         headers: {
@@ -176,6 +175,19 @@ export const addNewRole = (
         },
       }
     )
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const getRoleTemplate = (accessToken: string) => {
+  return axiosInstance
+    .get("/api/v1/tenants/role_template", {
+      headers: {
+        ...OwnerHeader,
+        Authorization: accessToken || localStorage.getItem("token"),
+      },
+    })
     .then((res) => {
       return res.data;
     });

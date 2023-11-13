@@ -20,7 +20,7 @@ const ShowSalesReport: FC<P> = ({ dailySales, selectedShop }) => {
     const [open, setOpen] = useState(false);
 
     if (dailySales.result === null) {
-        return <Error message={dailySales.message} />
+        return <Error hideButton={false} message={dailySales.message} />
     }
     const date = new Date(+dailySales?.result?.date);
 
