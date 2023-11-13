@@ -74,7 +74,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
         if (miniShop && user?.role === 1) {
             setLoading(true);
             console.log("miniShop : ", miniShop)
-            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth(), accessToken).then((res) => {
+            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth(),selectedShop?.name! ,  accessToken).then((res) => {
                 setmonthSales(res);
                 setLoading(false);
             }).catch(() => {
@@ -97,7 +97,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
         if (user?.role === 1) {
             const longDate = selectedDate! as any * 1
 
-            getDailySale(miniShop!.id, longDate, accessToken).then((res) => {
+            getDailySale(miniShop!.id, longDate, selectedShop?.name!, accessToken).then((res) => {
                 setDailySales(res);
                 Navigate('/ministore/sales/report');
             })

@@ -32,14 +32,14 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
 
     useEffect(() => {
-        if (user) {
+        if (selectedShop || user?.role === 2) {
             getSOPs();
         }
     }, [sopDate, selectedShop])
 
 
     function getSOPs() {
-        getSOP(shopId ? shopId : selectedShop?.id, sopDate , accessToken).then((res) => {
+        getSOP(shopId ? shopId : selectedShop?.id, sopDate ,selectedShop?.name! , accessToken).then((res) => {
             setSOPS(res);
         }).catch((err) => {
             setAlert({ type: 'error', message: err.message })
@@ -47,7 +47,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
     }
 
     function getSopCalendar() {
-        getSopByCalendar(selectedShop?.id , accessToken).then((res) => {
+        getSopByCalendar(selectedShop?.id ,selectedShop.name! , accessToken).then((res) => {
             setSopCalendar(res.result)
         })
     }

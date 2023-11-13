@@ -16,13 +16,22 @@ const monthNames = [
   "Dec",
 ];
 
-export function getMonthSales(id: number, year: number, month: number ,accessToken?:string) {
-
+export function getMonthSales(
+  id: number,
+  year: number,
+  month: number,
+  shopName : string,
+  accessToken?: string
+) {
   return axiosInstance
     .get(
       `/api/v1/accounting/sales_calendar/${id}?year=${year}&month=${monthNames[month]}`,
       {
-        headers: {...OwnerHeader , Entity : "chroma" , Authorization : accessToken || localStorage.getItem("token") },
+        headers: {
+          ...OwnerHeader,
+          Entity: "chroma",
+          Authorization: accessToken || localStorage.getItem("token"),
+        },
       }
     )
     .then((res) => {
@@ -30,12 +39,21 @@ export function getMonthSales(id: number, year: number, month: number ,accessTok
     });
 }
 
-export function getDailySale(id: number, date: number , accessToken : string) {
+export function getDailySale(
+  id: number,
+  date: number,
+  shopName: string,
+  accessToken: string
+) {
   console.log("Date :", date);
 
   return axiosInstance
     .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`, {
-      headers: {...OwnerHeader , Entity : "chroma" , Authorization : accessToken || localStorage.getItem("token") }
+      headers: {
+        ...OwnerHeader,
+        Entity: shopName,
+        Authorization: accessToken || localStorage.getItem("token"),
+      },
     })
     .then((res) => {
       return res.data;
@@ -49,18 +67,17 @@ export function addSales(
     date: number;
     totalSales: number;
   },
-  accessToken : string
+  accessToken: string
 ) {
   return axiosInstance
-    .post(
-      `/api/v1/accounting/add_sales/${data.miniShopId}`,
-      data,
-      {
-        headers: {...OwnerHeader , Entity : "chroma" , Authorization : accessToken || localStorage.getItem("token") },
-      }
-    )
+    .post(`/api/v1/accounting/add_sales/${data.miniShopId}`, data, {
+      headers: {
+        ...OwnerHeader,
+        Entity: "chroma",
+        Authorization: accessToken || localStorage.getItem("token"),
+      },
+    })
     .then((res) => {
       return res.data;
     });
 }
-

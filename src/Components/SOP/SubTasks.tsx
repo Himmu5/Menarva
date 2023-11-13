@@ -19,7 +19,6 @@ type P = {
 }
 
 const SubTasks: FC<P> = ({ o, sopStatus, user, setSelectedSop, Sops, setSopTaskStatus , shopConfig , setAlert }) => {
-    console.log("shopConfig",shopConfig);
     
     const [ open , setOpen] = useState(false);
     let statusComponent = <div></div>
