@@ -27,7 +27,7 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
     const [selectedShop, setSelectedShop] = useState<Shop>();
     const [selectedRoleName, setSelectedRoleName] = useState<string>();
     const [selectedRoleTemplate, setSelectedRoleTemplate] = useState<Role>();
-    console.log("Role Template : ", selectedRoleTemplate);
+    
     useEffect(() => {
         if (user?.role === 1) {
             getManager(accessToken);

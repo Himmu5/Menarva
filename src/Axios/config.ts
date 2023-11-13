@@ -7,7 +7,6 @@ export function getConfig() {
       headers: OwnerHeader,
     })
     .then((res) => {
-      console.log("Res : ",res.data);
       return res.data;
     });
 }
