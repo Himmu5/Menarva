@@ -57,14 +57,14 @@ export const editManager = (
   };
 
   return axiosInstance
-    .patch(
+    .put(
       `/api/v1/tenants/employee/`+mId,
       { ...data.user },
       {
         headers: {
           ...OwnerHeader,
           Authorization: accessToken || localStorage.getItem("token"),
-          Entity: "Chroma",
+          Entity: "chroma",
         },
       }
     )

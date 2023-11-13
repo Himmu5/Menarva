@@ -10,9 +10,10 @@ import ManagerProvider from "./Components/Provider/ManagerProvider"
 import AlertProvider from "./Components/Provider/AlertProvider"
 import SopProvider from "./Components/Provider/SopProvider"
 import Alert from "./Components/UI-Components/Alert"
-import { Suspense, lazy } from "react"
+import { Suspense, lazy, useEffect } from "react"
 import Loading from "./Loader/Loading"
 import WaitWhileLoad from "./LazyLoader/WaitWhileLoad"
+import { getURLAuthentication } from "./Axios/CheckURL"
 
 // Page for lazy load
 const SignIn = lazy(()=> import("./Components/SignIn/SignIn"))
@@ -36,6 +37,7 @@ const ShowSalesReport = lazy(() => import("./Sales/ShowSalesReport"))
 
 
 function App() {
+
 
   return (
     <Suspense fallback={<Loading />}>

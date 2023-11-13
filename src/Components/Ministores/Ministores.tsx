@@ -20,11 +20,11 @@ const MiniStores: FC<P> = ({setMiniShop  , miniShopsData, getMiniStores, user, s
     // console.log("ministores ",miniShopsData);
     
     const Navigate = useNavigate();
-    useEffect(() => {
+    // useEffect(() => {
 
-        getMiniStores(shopId);
+    //     getMiniStores(shopId);
 
-    }, [shopId])
+    // }, [shopId])
 
     if (!miniShopsData) {
         return <Loading />

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import { Sales, Shop } from '../Typings/Shop'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Error from '../Components/Error/404Page'
 import Dialog from '@mui/material/Dialog';
 import { Button } from '@mui/material'
@@ -18,6 +18,7 @@ const ShowSalesReport: FC<P> = ({ dailySales, selectedShop }) => {
 
 
     const [open, setOpen] = useState(false);
+    const Navigate = useNavigate();
 
     if (dailySales.result === null) {
         return <Error hideButton={false} message={dailySales.message} />
@@ -54,7 +55,7 @@ const ShowSalesReport: FC<P> = ({ dailySales, selectedShop }) => {
             <ApprovalStatus message={"Mini store Owner approval status"} status={dailySales.result.ownerConsentStatus} />
 
 
-            <Link to={"/"} className='px-3 py-1 text-center w-fit self-center bg-indigo-400 rounded-md shadow-md text-white my-3 hover:scale-95 ' >back to Shops</Link>
+            <div onClick={()=>Navigate(-1)} className=' cursor-pointer px-3 py-1 text-center w-fit self-center bg-indigo-400 rounded-md shadow-md text-white my-3 hover:scale-95 ' >back to Shops</div>
         </div>
 
     </div>

@@ -29,10 +29,10 @@ export const getShops = async (user : UserClass , accessToken ?: string ) => {
   });
 };
 
-export const getminiStore = (id: number ,accessToken:string) => {
+export const getminiStore = (id: number ,selectedShop:string ,accessToken:string) => {
   return axios
     .get(import.meta.env.VITE_BASE_URL+`/api/v1/shops/mini_shops`, {
-      headers: {...OwnerHeader , Entity :  "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
+      headers: {...OwnerHeader , Entity :  selectedShop , Authorization : accessToken || localStorage.getItem("token") },
     })
     .then((res) => {
       // console.log("Res :", res.data);

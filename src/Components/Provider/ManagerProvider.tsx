@@ -37,9 +37,11 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
 
 
     useEffect(() => {
-        getRoleTemplate(accessToken).then((res) => {
-            setSelectedRoleTemplate(res.result);
-        })
+        if (user?.role === 1) {
+            getRoleTemplate(accessToken).then((res) => {
+                setSelectedRoleTemplate(res.result);
+            })
+        }
     }, [selectedRoleName])
 
     function addRole(name: string, authorities: Authorities) {
@@ -115,7 +117,7 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
         attachToShop(shopId, userId, accessToken).then((res) => {
             setCreatedEmployee(undefined);
             setSelectedShop(undefined);
-            getSingleManager(userId , false);
+            getSingleManager(userId, false);
             // navigate("/manager")
             setAlert({ message: res.message, type: "success" });
         }).catch((err) => {

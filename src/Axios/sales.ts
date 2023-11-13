@@ -17,13 +17,12 @@ const monthNames = [
 ];
 
 export function getMonthSales(id: number, year: number, month: number ,accessToken?:string) {
-  console.log("Month :", id);
-  
+
   return axiosInstance
     .get(
       `/api/v1/accounting/sales_calendar/${id}?year=${year}&month=${monthNames[month]}`,
       {
-        headers: {...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
+        headers: {...OwnerHeader , Entity : "chroma" , Authorization : accessToken || localStorage.getItem("token") },
       }
     )
     .then((res) => {
@@ -36,7 +35,7 @@ export function getDailySale(id: number, date: number , accessToken : string) {
 
   return axiosInstance
     .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`, {
-      headers: {...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") }
+      headers: {...OwnerHeader , Entity : "chroma" , Authorization : accessToken || localStorage.getItem("token") }
     })
     .then((res) => {
       return res.data;
@@ -57,7 +56,7 @@ export function addSales(
       `/api/v1/accounting/add_sales/${data.miniShopId}`,
       data,
       {
-        headers: {...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
+        headers: {...OwnerHeader , Entity : "chroma" , Authorization : accessToken || localStorage.getItem("token") },
       }
     )
     .then((res) => {
