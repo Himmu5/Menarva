@@ -36,7 +36,7 @@ const CreateRoleForm: FC<P> = ({ addNew, handleClose, initialRole, setInitialRol
                         <div className='gap-2' key={option}>
                             <p className='font-bold text-lg'>{option}</p>
                             {Object.keys(initialRole.authorities[option as keyof Authorities]).map((o) => (
-                                <div key={o} className=' px-3 flex flex-col my-2 space-y-1'>
+                                <div key={o} className=' px-3 flex flex-col text-sm gap-2 my-2 space-y-1'>
                                     <p>{o}</p>
                                     <select
                                         // @ts-ignore
@@ -73,3 +73,16 @@ const CreateRoleForm: FC<P> = ({ addNew, handleClose, initialRole, setInitialRol
 };
 
 export default CreateRoleForm;
+
+{/* <input type="checkbox" checked={initialRole.authorities[option][o]} onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                                        setInitialRole({
+                                            ...initialRole,
+                                            authorities: {
+                                                ...initialRole.authorities,
+                                                [option]: {
+                                                    ...initialRole.authorities[option as keyof Authorities],
+                                                    [o]: e.target.value === true,
+                                                },
+                                            },
+                                        })
+                                    } /> */}
