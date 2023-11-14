@@ -14,9 +14,11 @@ import { Suspense, lazy, useEffect } from "react"
 import Loading from "./Loader/Loading"
 import WaitWhileLoad from "./LazyLoader/WaitWhileLoad"
 import { getURLAuthentication } from "./Axios/CheckURL"
+import Inventory from "./Inventory/Inventory"
+import Billing from "./Inventory/Billing"
 
 // Page for lazy load
-const SignIn = lazy(()=> import("./Components/SignIn/SignIn"))
+const SignIn = lazy(() => import("./Components/SignIn/SignIn"))
 const Home = lazy(() => import("./Components/SOP/Home"))
 const Stores = lazy(() => import("./Components/Store/Stores"))
 const StoreCalendar = lazy(() => import("./Components/Store/Calendar"))
@@ -42,8 +44,8 @@ function App() {
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
-
-        {/* <Routes>
+        {/* 
+        <Routes>
         <Route path="/" element={<Inventory />} />
         <Route path="/billing" element={<Billing />}/>
       </Routes> */}

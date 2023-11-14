@@ -1,5 +1,7 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import UpdateProductDetails from './UpdateProductDetails'
+import Option from './Option'
+import Slider from './Slider'
 
 type P = {}
 
@@ -10,17 +12,26 @@ const data = [{ title: "Vegetable and Fruits", fruits: ["Apple", "Passion Fruit"
 
 const Inventory: FC<P> = () => {
 
+    const [isVisible, setVisible] = useState(false);
 
 
-    return <div className='m-4 text-sm space-y-4'>
+    return <div className='m-4 text-sm space-y-4 '>
+        <div className='w-1/3 h-full'></div>
+        {
+            setVisible && < div className='w-1/3'>
+                <Slider setVisible={setVisible} isVisible={isVisible} />
+            </div>
+        }
 
-        {/* {
-            data.map((options) => {
-                return <Option fruits={options.fruits} title={options.title} />
-            })
-        } */}
-        <UpdateProductDetails />
+        <div className='w-2/3 flex flex-col gap-4'>
+            {
+                data.map((options) => {
+                    return <Option fruits={options.fruits} title={options.title} />
+                })
+            }
+        </div>
+        {/* <UpdateProductDetails /> */}
 
-    </div>
+    </div >
 }
 export default Inventory;

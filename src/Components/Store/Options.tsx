@@ -11,6 +11,8 @@ import { IconType } from 'react-icons'
 import { withShop, withUser } from '../../HOC/withProvider'
 import { UserClass } from '../../Typings/User'
 import Calendar from './Calendar'
+import { Drawer } from '@mui/material'
+import { RxCross2 } from 'react-icons/rx'
 
 type P = {
     selectedShop: Shop;
@@ -51,17 +53,22 @@ const Options: FC<P> = ({ user, getMonthSale }) => {
                     <p>{selectedOption.option}</p>
                 </div>
 
-                <div className={'flex flex-col gap-1 px-5 fixed border-r shadow-md   bg-white z-10 h-[100vh] top-0 ' + (isOpen ? " w-[55vh] ml-0 duration-500 " : " -ml-96  duration-500  ")}>
+                <Drawer onClose={() => setOpen(!open)} anchor="left" PaperProps={{ style: { transition: "width 0.5s", width: '35%', zIndex: 10, backgroundColor: "#313131", color: "white" } }} open={isOpen}>
 
-                    <div className='flex items-center gap-2 py-2 '>
-                        <Hamburger size={25} toggled={isOpen} toggle={setOpen} />
-                        <p className='font-bold'>{selectedOption.option}</p>
+                    <div className='flex items-center justify-between p-4 pt-8'>
+                        <p></p>
+                        <RxCross2 onClick={() => setOpen(!isOpen)} size={25} className="cursor-pointer" />
                     </div>
 
-                    <div className='mt-[50%] p-3'>
+                    <div className='px-4'>
+                        <p>ACCOUNT</p>
+                    </div>
+
+
+                    <div className='mt-[40%] p-3'>
                         {
                             data.map((item) => {
-                                return <div key={item.logo} className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} >
+                                return <div className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} key={item.option} >
                                     <item.logo size={25} />
                                     <p className='w-32'>
                                         {item.option}
@@ -71,7 +78,8 @@ const Options: FC<P> = ({ user, getMonthSale }) => {
                             })
                         }
                     </div>
-                </div>
+
+                </Drawer >
 
             </div>
 
