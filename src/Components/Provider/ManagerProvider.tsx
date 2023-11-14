@@ -8,6 +8,7 @@ import { AlertType } from '../../Typings/Alert';
 import { withAlert, withUser } from '../../HOC/withProvider';
 import { defaultAthorities } from '../../Data/DefaultAthorities';
 import { Shop } from '../../Typings/Shop';
+import { checkResponse } from '../../ErrorHandling/ResponseCheck';
 
 type P = {
     children: ReactNode;
@@ -27,7 +28,7 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
     const [selectedShop, setSelectedShop] = useState<Shop>();
     const [selectedRoleName, setSelectedRoleName] = useState<string>();
     const [selectedRoleTemplate, setSelectedRoleTemplate] = useState<Role>();
-    
+
     useEffect(() => {
         if (user?.role === 1) {
             getManager(accessToken);
@@ -48,7 +49,7 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
         if (name.length !== 0 && authorities) {
             addNewRole(name, authorities, accessToken).then((res) => {
                 setAddNew(false);
-                setAlert({ message: "Role Added", type: "success" });
+                checkResponse(res, setAlert);
                 setInitialRole({ name: "", authorities: defaultAthorities });
                 getRoles();
             }).catch(() => {
@@ -96,9 +97,9 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
             var userId = resultObject.userId;
 
             setCreatedEmployee(userId)
-            setAlert({ message: res.message, type: "success" });
+            checkResponse(res, setAlert);
+
         }).catch((err) => {
-            console.log("error : ", err)
             setAlert({ message: err.message, type: "error" });
         })
     }
@@ -107,7 +108,8 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
         editManager(config, shopId, user, mId, detacheShopId).then((res) => {
             // console.log("Res : ",res.data.message);
             navigate("/manager")
-            setAlert({ message: res.message, type: "success" });
+            checkResponse(res, setAlert);
+
         }).catch((err) => {
             setAlert({ message: err.message, type: "error" });
         })
@@ -119,7 +121,8 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
             setSelectedShop(undefined);
             getSingleManager(userId, false);
             // navigate("/manager")
-            setAlert({ message: res.message, type: "success" });
+            checkResponse(res, setAlert);
+
         }).catch((err) => {
             setAlert({ message: err.message, type: "error" });
         })
@@ -132,7 +135,8 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
             setSelectedShop(undefined);
             getSingleManager(userId, false);
             // navigate("/manager")
-            setAlert({ message: res.message, type: "success" });
+            checkResponse(res, setAlert);
+
         }).catch((err) => {
             setAlert({ message: err.message, type: "error" });
         })

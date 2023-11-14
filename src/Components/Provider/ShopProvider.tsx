@@ -9,6 +9,7 @@ import { UserClass } from '../../Typings/User';
 import { AlertType } from '../../Typings/Alert';
 import { Manager } from '../../Typings/Manager';
 import { withAlert, withUser } from '../../HOC/withProvider';
+import { checkResponse } from '../../ErrorHandling/ResponseCheck';
 type P = {
     children: ReactNode;
     shopId: number,
@@ -73,7 +74,6 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
     function getMonthSale() {
         if (miniShop && user?.role === 1) {
             setLoading(true);
-            console.log("miniShop : ", miniShop)
             getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth(),selectedShop?.name! ,  accessToken).then((res) => {
                 setmonthSales(res);
                 setLoading(false);
@@ -115,7 +115,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
         totalSales: number;
     }) {
         addSales(shopId, data, accessToken).then((res) => {
-            setAlert({ message: res.message, type: "success" });
+            checkResponse(res , setAlert);
         }).catch((err) => {
             setAlert({ message: err.response.status === 403 ? "You are not allowed to upload sales please contact admin" : err.message, type: "error" });
         })

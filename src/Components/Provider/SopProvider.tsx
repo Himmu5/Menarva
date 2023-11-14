@@ -7,6 +7,7 @@ import { SopCalendar, Sops } from '../../Typings/sops';
 import { UserClass } from '../../Typings/User';
 import { Shop } from '../../Typings/Shop';
 import { useNavigate } from 'react-router-dom';
+import { checkResponse } from '../../ErrorHandling/ResponseCheck';
 
 type P = {
     children: ReactNode;
@@ -64,8 +65,8 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         const formData = new FormData();
         formData.append('image', file, "image.jpg");
 
-        uploadImage(formData, sopId, taskId, shopId , accessToken).then(() => {
-            setAlert({ type: "success", message: "Image Uploaded Successfully" });
+        uploadImage(formData, sopId, taskId, shopId , accessToken).then((res) => {
+            checkResponse(res , setAlert);
             Navigate('/SOP');
             getSOPs();
         }).catch((err) => {
@@ -74,8 +75,8 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
 
     }
     function setSopTaskStatus(sopId: string, taskId: number) {
-        setTaskStatus(sopId, taskId , accessToken).then(() => {
-            setAlert({ type: "success", message: "Task status updated successfully" });
+        setTaskStatus(sopId, taskId , accessToken).then((res) => {
+            checkResponse(res , setAlert);
             getSOPs();
         })
     }
