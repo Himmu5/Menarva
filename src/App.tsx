@@ -17,6 +17,7 @@ import { getURLAuthentication } from "./Axios/CheckURL"
 import Inventory from "./Inventory/Inventory"
 import Billing from "./Inventory/Billing"
 import { ErrorBoundary } from "react-error-boundary";
+import DefaultPage from "./Components/Error/DefaultPage"
 
 // Page for lazy load
 const SignIn = lazy(() => import("./Components/SignIn/SignIn"))
@@ -54,6 +55,7 @@ function App() {
                     <Navbar />
                     <Alert />
                     <Routes>
+                      <Route path="DefaultPage" element={<DefaultPage />} />
                       <Route path="signin" element={<AuthRoute> <SignIn /></AuthRoute>} />
                       <Route path="/SOP" element={<UserRoute><WaitWhileLoad><Home /></WaitWhileLoad></UserRoute>} />
                       <Route path="/shops" element={<UserRoute><WaitWhileLoad><Stores /></WaitWhileLoad></UserRoute>} />

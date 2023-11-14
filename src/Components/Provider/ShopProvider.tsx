@@ -51,7 +51,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
             getMiniStores(1, selectedShop?.name!, accessToken);
         }
 
-    }, [selectedShop])
+    }, [selectedShop , user])
 
     useEffect(() => {
 

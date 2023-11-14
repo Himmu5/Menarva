@@ -9,19 +9,15 @@ export function loginUser(
   setAlert: (s: AlertType) => void
 ) {
   return axios
-    .post(
-      import.meta.env.VITE_BASE_URL + "/users/sign_in",
-      {
-        username: formData.username,
-        password: formData.password,
-      }
-    )
+    .post(import.meta.env.VITE_BASE_URL + "/users/sign_in", {
+      username: formData.username,
+      password: formData.password,
+    })
     .then(async (res) => {
       if (res.data.code !== 200) {
         checkResponse(res.data, setAlert);
-        return new Promise(()=>{})
-      }
-      else{
+        return new Promise(() => {});
+      } else {
         const config = await axios.get(
           import.meta.env.VITE_BASE_URL + "/users/config",
           {
@@ -31,12 +27,19 @@ export function loginUser(
             },
           }
         );
+
         localStorage.setItem("token", res.data.result.accessToken);
         return {
-          user: res.data.result,
+          user: {
+            ...res.data.result,
+            user: {
+              ...res.data.result.user,
+              entities: config.data.result.entities,
+            },
+          },
           config: config.data.result.authorities,
           code: config.data.code,
-          message : "Logged in successfully"
+          message: "Logged in successfully",
         };
       }
     });

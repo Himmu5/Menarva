@@ -28,7 +28,6 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
     const [sopStatus, setSopStatus] = useState("ALL");
     const [sopCalendar, setSopCalendar] = useState<SopCalendar>();
     const [sopDate, setSopDate] = useState<Date>();
-    // console.log("SOP status : ", sopStatus);
     const [image] = useState<File>()
 
 
@@ -36,7 +35,7 @@ const SopProvider: FC<P> = ({ children, setAlert, selectedShop, user, changeMont
         if (selectedShop || user?.role === 2) {
             getSOPs();
         }
-    }, [sopDate, selectedShop])
+    }, [sopDate, selectedShop , user])
 
 
     function getSOPs() {

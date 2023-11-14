@@ -8,6 +8,8 @@ import Loading from '../../Loader/Loading';
 import { withAlert } from '../../HOC/withProvider';
 import { checkResponse } from '../../ErrorHandling/ResponseCheck';
 import { Authorities } from '../../Typings/Manager';
+import { getURLAuthentication } from '../../Axios/CheckURL';
+import { Navigate, useNavigate } from 'react-router-dom';
 type P = {
     children: ReactNode,
     setAlert: (s: AlertType) => void,
@@ -22,13 +24,26 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     const token = localStorage.getItem('token')
     const [loading, setLoading] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>();
+    const [ pageFallback , setPageFallback ] = useState<boolean>(false);
+    const Navigate = useNavigate();
+
+    useEffect(() => {
+        getURLAuthentication().then((res) => {
+            if(res.fallbackToDefault === true){
+                setPageFallback(true);
+                Navigate("DefaultPage")
+            }
+            if(res.fallbackToDefault === false){
+                Navigate("/")
+            }
+        })
+    }, [])
 
     useEffect(() => {
         if (token) {
             updateConfig();
         }
     }, [])
-    // console.log("shopConfig : ",shopConfig);
 
 
     function updateConfig() {
@@ -50,12 +65,14 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     }
 
     function AuthUser(formData: { username: string, password: string }) {
-        loginUser(formData , checkResponse , setAlert).then((res:any) => {
-            checkResponse(res , setAlert);
+        loginUser(formData, checkResponse, setAlert).then((res: any) => {
+
+            checkResponse(res, setAlert);
             setAccessToken(res.user.accessToken)
             localStorage.setItem('token', res.user.accessToken);
             setUser(res.user.user);
             setUserConfig(res.config);
+            setShopConfig(res.config);
 
         }).catch((err) => {
             setAlert({ type: "error", message: err.message })
@@ -72,7 +89,7 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
         return <Loading />;
     }
 
-    return <UserContext.Provider value={{ accessToken, token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
+    return <UserContext.Provider value={{ pageFallback , accessToken, token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
         {children}
     </UserContext.Provider>
 }
