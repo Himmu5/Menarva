@@ -82,18 +82,18 @@ const AddEditManager: FC<P> = ({ selectedRoleTemplate, setSelectedRoleName, setS
         else if (FormType === "Edit") {
             console.log("selectedRole = ", selectedRole);
             let id = getRoleId();
-            // let data = {}
-            // if (values.name !== singleManager.user.name) {
-            //     data.name = values.name
-            // } if (values.email !== singleManager.user.email) {
-            //     data.email = values.email
+            let data = {}
+            if (values.name !== singleManager.user.name) {
+                data.name = values.name
+            } if (values.email !== singleManager.user.email) {
+                data.email = values.email
+            } if (values.username !== singleManager.user.username) {
+                data.username = values.username
+            }if (values.password.length !== 0) {
+                data.username = values.username
+            }
 
-            // } if (values.username !== singleManager.user.username) {
-            //     data.username = values.username
-
-            // }
-
-            UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], { roleId: id, ...values }, singleManager?.user.id)
+            UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], { roleId: id, ...data }, singleManager?.user.id)
             // if (changeShop && (changeShop?.id !== Object.keys(selectedShop)[0])) {
             //     console.log("changeShop : ", changeShop);
 
@@ -158,7 +158,6 @@ const AddEditManager: FC<P> = ({ selectedRoleTemplate, setSelectedRoleName, setS
     if (singleManager) {
         selectedRole = roles.filter((role) => role.id === singleManager.user.roleId)[0]
     }
-    console.log("createdEmployee ", createdEmployee);
     const Navigate = useNavigate()
 
 

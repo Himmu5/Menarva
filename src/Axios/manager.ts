@@ -53,7 +53,7 @@ export const editManager = (
   accessToken?: string
 ) => {
   const data = {
-    user: { ...user, role: 2, id: mId },
+    user: { ...user, role: import.meta.env.VITE_USER_ROLE, id: mId },
   };
 
   return axiosInstance
@@ -63,8 +63,7 @@ export const editManager = (
       {
         headers: {
           ...OwnerHeader,
-          Authorization: accessToken || localStorage.getItem("token"),
-          Entity: "teabear",
+          Authorization: accessToken || localStorage.getItem("token")
         },
       }
     )

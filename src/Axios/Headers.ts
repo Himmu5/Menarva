@@ -9,6 +9,3 @@ export const OwnerHeader = {
   // "ngrok-skip-browser-warning": 69420,
   // dummyhost: "minerva.com"
 };
-
-// ,
-// Entity : "Chroma"

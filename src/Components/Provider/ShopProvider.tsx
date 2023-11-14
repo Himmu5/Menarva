@@ -49,20 +49,6 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
 
     }, [selectedShop])
 
-    // useEffect(() => {
-    //     if (user && shopId) {
-    //         axiosInstance.get("/shops/" + shopId, {
-    //             headers: {
-    //                 Authorization: 'Bearer ' + localStorage.getItem('token'),
-    //                 "ngrok-skip-browser-warning": 69420,
-    //             }
-    //         }).then((res) => {
-    //             // console.log("Res : ",res.data.result);
-    //             setSelectedShop(res.data.result);
-    //         })
-    //     }
-    // }, [shopId, user])
-
     useEffect(() => {
 
         getMonthSale();

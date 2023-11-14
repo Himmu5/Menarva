@@ -88,14 +88,16 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
 
     function createManager(user: { name: string; email: string; password: string; type: string, roleId: string }) {
         addManager(user, accessToken).then((res) => {
+            // console.log("res : ",res.result.id);
+            
             // JSON.parse(res);
-            const result = res.result;
+            // const result = res.result;
             // Parse the JSON string into a JavaScript object
-            var resultObject = JSON.parse(result);
+            // var resultObject = JSON.parse(result);
             // Access the userId property
-            var userId = resultObject.userId;
+            // var userId = resultObject.userId;
 
-            setCreatedEmployee(userId)
+            setCreatedEmployee(res.result.id)
             setAlert({ message: res.message, type: "success" });
         }).catch((err) => {
             console.log("error : ", err)

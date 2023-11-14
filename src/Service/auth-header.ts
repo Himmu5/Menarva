@@ -4,10 +4,7 @@ export default function authHeader() {
 
   if (token) {
     return {
-      Authorization: `Bearer ${token}`,
-      "Access-Control-Allow-Origin": true,
-      "Access-Control-Allow-Headers": "X-Requested-With",
-      "ngrok-skip-browser-warning": 69420,
+      Authorization: `Bearer ${token}`
     };
   }
   return {};
