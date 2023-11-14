@@ -13,7 +13,7 @@ export const getShops = async (user : UserClass , accessToken ?: string ) => {
   const storeMangers = {} as { [key: number]: { store: Shop; Managers: Manager[] } };
   stores.data.result.forEach(async (store: any) => {
     const Managers = await axiosInstance.get(
-      `/api/v1/tenants/employees?entityId=${store.id}`,
+      `/api/v1/tenants/employees?entityId=${store.entityId}`,
       {
         headers: { ...OwnerHeader , Authorization : accessToken || localStorage.getItem('token')}
       }

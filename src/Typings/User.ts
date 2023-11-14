@@ -1,5 +1,6 @@
 
 export interface UserClass {
+    entities: Entity[]
     isActive:  boolean;
     id:        number;
     name:      string;
@@ -11,6 +12,13 @@ export interface UserClass {
     updatedAt: number;
 }
 
+export interface Entity {
+    isActive: boolean;
+    tenantId: string;
+    id:       string;
+    name:     string;
+    type:     number;
+}
 
 export type UserConfig =  {
     ACCOUNTING: Accounting;

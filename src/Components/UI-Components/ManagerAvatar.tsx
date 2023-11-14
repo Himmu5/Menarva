@@ -1,10 +1,10 @@
 import { FC, useState } from 'react'
 import { Manager } from '../../Typings/Manager';
+import { UserClass } from '../../Typings/User';
 type P = {
-    Managers:{ employees : Manager[]} 
+    Managers:{ employees : { user:UserClass  }[]} 
 }
 const Avatar: FC<P> = ({ Managers }) => {
-    // console.log("Avatar : ", Managers);
     
 
     const [show, setShow] = useState(false);
@@ -15,7 +15,7 @@ const Avatar: FC<P> = ({ Managers }) => {
             {
                 Managers.employees.map((Person, index) => {
                     return index < 3 && <div key={Math.random()}>
-                        <p className={COMMON_CLASS}>{Person.name.charAt(0)}</p>
+                        <p className={COMMON_CLASS}>{Person.user.name?.charAt(0)}</p>
                     </div>
                 })
             }
@@ -27,7 +27,7 @@ const Avatar: FC<P> = ({ Managers }) => {
                 show && <div className='flex flex-col gap-3 w-40 h-56 overflow-auto  scrollbar  absolute bg-black bg-opacity-90 text-white p-4 rounded-md -ml-10 mt-10 '>
                     {
                         Managers.employees.map((Person) => {
-                            return <div key={Person.id} onClick={() => setShow(!show)} className="text-xs flex gap-4 items-center ">  <p className={COMMON_CLASS}>{Person.name.charAt(0)}</p><p>{Person.name}</p></div>
+                            return <div key={Person.user.id} onClick={() => setShow(!show)} className="text-xs flex gap-4 items-center ">  <p className={COMMON_CLASS}>{Person.user.name?.charAt(0)}</p><p>{Person.user.name}</p></div>
                         })
                     }
                 </div>

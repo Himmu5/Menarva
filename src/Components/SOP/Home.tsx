@@ -19,6 +19,8 @@ type P = {
 }
 
 const Home: FC<P> = ({ sops, getSOPs, sopDate, selectedShop , user }) => {
+    console.log("user : ",user);
+    
     useEffect(() => {
         getSOPs();
     }, [])
@@ -45,8 +47,8 @@ const Home: FC<P> = ({ sops, getSOPs, sopDate, selectedShop , user }) => {
                     <p> {date}</p>
                 </div>
                 <div className='flex items-center gap-2'>
-                    <p className='font-bold'>Shop :</p>
-                    <p> {selectedShop?.name || "Tea Bear"}</p>
+                    <p className='font-bold'>{user?.entities[0]?.type === 1 ? "Shop :" : "Warehouse :"  }</p>
+                    <p> {user?.entities[0]?.name }</p>
                 </div>
             </div>
         </div>

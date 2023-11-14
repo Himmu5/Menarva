@@ -26,7 +26,8 @@ type P = {
 
 
 const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
-
+  // console.log("Shop config : ",shopConfig);
+  
   let data = [] as { option: string, logo: IconType, show: boolean }[]
 
 
@@ -69,7 +70,7 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
       </div>
 
     </div>
-    <Drawer transitionDuration={400} onClose={() => setOpen(!open)} anchor="left" PaperProps={{ style: { transition: "width 0.5s", width: '35%', zIndex: 10, backgroundColor: "#313131", color: "white" } }} open={isOpen}>
+    <Drawer transitionDuration={400} onClose={() => setOpen(!open)} anchor="left" PaperProps={{ style: { transition: "width 0.5s", width: '40%', zIndex: 10, backgroundColor: "#313131", color: "white" } }} open={isOpen}>
 
       <div className='flex items-center justify-between p-4 pt-8'>
         <p></p>
