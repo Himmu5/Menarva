@@ -14,8 +14,7 @@ export function loginUser(
       {
         username: formData.username,
         password: formData.password,
-      },
-      { headers: { dummyhost: "minerva.com" } }
+      }
     )
     .then(async (res) => {
       if (res.data.code !== 200) {
