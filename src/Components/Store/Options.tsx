@@ -53,7 +53,7 @@ const Options: FC<P> = ({ user, getMonthSale }) => {
                     <p>{selectedOption.option}</p>
                 </div>
 
-                <Drawer onClose={() => setOpen(!open)} anchor="left" PaperProps={{ style: { transition: "width 0.5s", width: '35%', zIndex: 10, backgroundColor: "#313131", color: "white" } }} open={isOpen}>
+                <Drawer transitionDuration={400} onClose={() => setOpen(!open)} anchor="left" PaperProps={{ style: { transition: "width 0.5s", width: '35%', zIndex: 10, backgroundColor: "#313131", color: "white" } }} open={isOpen}>
 
                     <div className='flex items-center justify-between p-4 pt-8'>
                         <p></p>
