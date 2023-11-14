@@ -6,6 +6,7 @@ import { getConfig } from '../../Axios/config';
 import { AlertType } from '../../Typings/Alert';
 import Loading from '../../Loader/Loading';
 import { withAlert } from '../../HOC/withProvider';
+import { checkResponse } from '../../ErrorHandling/ResponseCheck';
 type P = {
     children: ReactNode,
     setAlert: (s: AlertType) => void,
@@ -19,7 +20,7 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     const [shopConfig, setShopConfig] = useState<UserConfig>();
     const token = localStorage.getItem('token')
     const [loading, setLoading] = useState<boolean>(false);
-    const [ accessToken , setAccessToken] = useState<string>();
+    const [accessToken, setAccessToken] = useState<string>();
 
     useEffect(() => {
         if (token) {
@@ -27,43 +28,36 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
         }
     }, [])
     // console.log("shopConfig : ",shopConfig);
-    
+
 
     function updateConfig() {
-        if(token){
+        if (token) {
             setLoading(true);
             getConfig().then((res) => {
-                
                 setUser(res.result);
                 setShopConfig(res.result.authorities);
-                setShopId(+Object.keys(res.result.authorities.shopAuthorities)[0]);
                 setLoading(false);
-                setUserConfig(res.result.authorities.authorities);
+                setUserConfig(res.result.authorities);
             }).catch(() => {
                 // localStorage.removeItem("token");
                 setLoading(false);
-              });
+            });
         }
-        else{
-            setLoading(false);            
+        else {
+            setLoading(false);
         }
     }
 
     function AuthUser(formData: { username: string, password: string }) {
         loginUser(formData).then((res) => {
-            console.log("User : ", res);
+            checkResponse(res , setAlert);
             setAccessToken(res.user.accessToken)
             localStorage.setItem('token', res.user.accessToken);
             setAlert({ type: "success", message: "Logged In Successfully" });
-            // console.log("Authority : ",res.config.result.authorities.shopAuthorities);
             setUser(res.user.user);
-            // let sid = Object.keys(res.config.result.authorities.shopAuthorities)[0];
-            // setShopConfig(res.config.result.authorities.shopAuthorities[sid]);
             setUserConfig(res.config);
-            
+
         }).catch((err) => {
-            console.log("Error : ", err);
-            
             setAlert({ type: "error", message: err.message })
         })
     }
@@ -73,12 +67,12 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
         setAlert({ type: "success", message: "Logged Out Successfully" })
         setUser(undefined);
     }
-    
-  if (loading) {
-    return <Loading />;
-  }
 
-    return <UserContext.Provider value={{ accessToken , token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
+    if (loading) {
+        return <Loading />;
+    }
+
+    return <UserContext.Provider value={{ accessToken, token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
         {children}
     </UserContext.Provider>
 }

@@ -20,6 +20,7 @@ export function loginUser(formData: { username: string; password: string }) {
         }
       );
       localStorage.setItem("token", res.data.result.accessToken);
-      return { user: res.data.result, config: config.data.result.authorities };
+      
+      return { user: res.data.result, config: config.data.result.authorities , code : config.data.code };
     });
 }
