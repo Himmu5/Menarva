@@ -34,7 +34,7 @@ export const addManager = (
       {
         headers: {
           ...OwnerHeader,
-          Authorization: accessToken || localStorage.getItem("token")
+          Authorization: accessToken || localStorage.getItem("token"),
         },
       }
     )
@@ -53,18 +53,18 @@ export const editManager = (
   accessToken?: string
 ) => {
   const data = {
-    user: { ...user, role: 2 },
+    user: { ...user, role: 2, id: mId },
   };
 
   return axiosInstance
-    .put(
-      `/api/v1/tenants/employee/`+mId,
+    .patch(
+      `/api/v1/tenants/employee`,
       { ...data.user },
       {
         headers: {
           ...OwnerHeader,
           Authorization: accessToken || localStorage.getItem("token"),
-          Entity: "chroma",
+          Entity: "teabear",
         },
       }
     )
