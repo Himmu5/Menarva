@@ -49,7 +49,7 @@ const Alert:FC<AlertProp>=({ alert, RemoveAlert })=>{
           role="alert"
           id="alert"
           className={
-            "transition duration-150 ease-in-out w-full lg:w-11/12 mx-auto bg-white dark:bg-gray-800 shadow-xl rounded flex flex-col py-4 md:py-0 items-center md:flex-row justify-between max-w-5xl "
+            "transition duration-150 ease-in-out w-full lg:w-11/12 mx-auto bg-white dark:bg-broun-200 shadow-xl rounded flex flex-col py-4 md:py-0 items-center md:flex-row justify-between max-w-5xl "
           }
         >
           <div className="flex flex-col items-center md:flex-row">
@@ -61,7 +61,7 @@ const Alert:FC<AlertProp>=({ alert, RemoveAlert })=>{
             >
               {<Icon />}
             </div>
-            <p className="mr-2 text-base font-bold text-gray-800 dark:text-gray-100 mt-2 md:my-0">
+            <p className="mr-2 text-base font-bold text-gray-800 dark:text-gray-500 mt-2 md:my-0">
               {type}
             </p>
             <div className="h-1 w-1 bg-gray-300 dark:bg-gray-700 rounded-full mr-2 hidden xl:block"></div>

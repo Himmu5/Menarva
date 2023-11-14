@@ -47,7 +47,7 @@ export function uploadImage(
       },
     })
     .then((res) => {
-      console.log("res ", res);
+      return res.data;
     })
     .catch((err) => {
       console.log("Error ", err);
@@ -90,7 +90,7 @@ export const setTaskStatus = (
         },
       }
     )
-    .then(() => {
-      console.log("Task status updated");
+    .then((res) => {
+      return res.data;
     });
 };

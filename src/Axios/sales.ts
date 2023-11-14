@@ -29,7 +29,7 @@ export function getMonthSales(
       {
         headers: {
           ...OwnerHeader,
-          Entity: "chroma",
+          Entity: shopName,
           Authorization: accessToken || localStorage.getItem("token"),
         },
       }

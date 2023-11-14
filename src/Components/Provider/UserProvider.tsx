@@ -7,6 +7,7 @@ import { AlertType } from '../../Typings/Alert';
 import Loading from '../../Loader/Loading';
 import { withAlert } from '../../HOC/withProvider';
 import { checkResponse } from '../../ErrorHandling/ResponseCheck';
+import { Authorities } from '../../Typings/Manager';
 type P = {
     children: ReactNode,
     setAlert: (s: AlertType) => void,
@@ -49,11 +50,10 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     }
 
     function AuthUser(formData: { username: string, password: string }) {
-        loginUser(formData).then((res) => {
+        loginUser(formData , checkResponse , setAlert).then((res:any) => {
             checkResponse(res , setAlert);
             setAccessToken(res.user.accessToken)
             localStorage.setItem('token', res.user.accessToken);
-            setAlert({ type: "success", message: "Logged In Successfully" });
             setUser(res.user.user);
             setUserConfig(res.config);
 
