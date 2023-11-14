@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import { Button, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material'
 import Dialog from '@mui/material/Dialog';
 
@@ -9,10 +9,10 @@ type P = {
 }
 
 const LogOut: FC<P> = ({ open, toggle, confirmLogOut }) => {
-
+    
     return <div>
         <Dialog open={open} onClose={toggle} maxWidth="sm">
-            <DialogTitle sx={{ mt: 2, mx: 2 }}>
+            <DialogTitle variant='caption' sx={{ mt: 2, mx: 2 }}>
                 {open ? (
                     <IconButton
                         aria-label="close"
@@ -49,4 +49,4 @@ const LogOut: FC<P> = ({ open, toggle, confirmLogOut }) => {
         </Dialog>
     </div>
 }
-export default LogOut;
+export default memo(LogOut);

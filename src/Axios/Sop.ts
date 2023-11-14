@@ -2,11 +2,13 @@ import axios from "axios";
 import axiosInstance from "./axios";
 import { CustomHeader, OwnerHeader } from "./Headers";
 
-export const getSOP = (shopId: number, sopDate?: Date, accessToken ?: string) => {
-  //   const token = "Bearer " + localStorage.getItem("token");
-  // console.log("shopId ", shopId);
+export const getSOP = (
+  shopId: number,
+  sopDate?: Date,
+  shopName?: string,
+  accessToken?: string
+) => {
   const dateLong = sopDate && (sopDate as any) * 1;
-  // console.log("Date  ", dateLong);
   let url = "";
   if (dateLong) {
     url = `/api/v1/sops/?date=${dateLong}`;
@@ -16,7 +18,11 @@ export const getSOP = (shopId: number, sopDate?: Date, accessToken ?: string) =>
 
   return axiosInstance
     .get(url, {
-      headers: { ...OwnerHeader , Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token") },
+      headers: {
+        ...OwnerHeader,
+        Entity: shopName,
+        Authorization: accessToken || localStorage.getItem("token"),
+      },
     })
     .then((res) => {
       return res.data.result.sops;
@@ -31,16 +37,15 @@ export function uploadImage(
   sopId: number,
   taskId: number,
   storeId: number,
-  accessToken : string
+  accessToken: string
 ) {
   return axiosInstance
-    .post(
-      `/api/v1/sops/${sopId}/tasks/${taskId}/image`,
-      formData,
-      {
-        headers: { ...CustomHeader , Authorization : accessToken || localStorage.getItem("token") } ,
-      }
-    )
+    .post(`/api/v1/sops/${sopId}/tasks/${taskId}/image`, formData, {
+      headers: {
+        ...CustomHeader,
+        Authorization: accessToken || localStorage.getItem("token"),
+      },
+    })
     .then((res) => {
       console.log("res ", res);
     })
@@ -49,12 +54,15 @@ export function uploadImage(
     });
 }
 
-export const getSopByCalendar = (shopId:number , accessToken : string) => {
+export const getSopByCalendar = (shopId: number,shopName : string, accessToken: string) => {
   const config = {
     method: "get", // Use the GET method
-    url:
-      import.meta.env.VITE_BASE_URL + `/api/v1/sops/calender`, // Replace with your API endpoint
-    headers: {...OwnerHeader, Entity : "Chroma" , Authorization : accessToken || localStorage.getItem("token")},
+    url: import.meta.env.VITE_BASE_URL + `/api/v1/sops/calender`, // Replace with your API endpoint
+    headers: {
+      ...OwnerHeader,
+      Entity: shopName,
+      Authorization: accessToken || localStorage.getItem("token"),
+    },
     data: {},
   };
   return axios(config)
@@ -69,14 +77,17 @@ export const getSopByCalendar = (shopId:number , accessToken : string) => {
 export const setTaskStatus = (
   sopId: string,
   taskId: number,
-  accessToken : string
+  accessToken: string
 ) => {
   return axiosInstance
     .put(
       `/api/v1/sops/${sopId}/tasks/${taskId}`,
       {},
       {
-        headers:{ ...CustomHeader , Authorization : accessToken || localStorage.getItem("token") },
+        headers: {
+          ...CustomHeader,
+          Authorization: accessToken || localStorage.getItem("token"),
+        },
       }
     )
     .then(() => {

@@ -10,12 +10,15 @@ import ManagerProvider from "./Components/Provider/ManagerProvider"
 import AlertProvider from "./Components/Provider/AlertProvider"
 import SopProvider from "./Components/Provider/SopProvider"
 import Alert from "./Components/UI-Components/Alert"
-import { Suspense, lazy } from "react"
+import { Suspense, lazy, useEffect } from "react"
 import Loading from "./Loader/Loading"
 import WaitWhileLoad from "./LazyLoader/WaitWhileLoad"
+import { getURLAuthentication } from "./Axios/CheckURL"
+import Inventory from "./Inventory/Inventory"
+import Billing from "./Inventory/Billing"
 
 // Page for lazy load
-const SignIn = lazy(()=> import("./Components/SignIn/SignIn"))
+const SignIn = lazy(() => import("./Components/SignIn/SignIn"))
 const Home = lazy(() => import("./Components/SOP/Home"))
 const Stores = lazy(() => import("./Components/Store/Stores"))
 const StoreCalendar = lazy(() => import("./Components/Store/Calendar"))
@@ -37,11 +40,12 @@ const ShowSalesReport = lazy(() => import("./Sales/ShowSalesReport"))
 
 function App() {
 
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
-
-        {/* <Routes>
+        {/* 
+        <Routes>
         <Route path="/" element={<Inventory />} />
         <Route path="/billing" element={<Billing />}/>
       </Routes> */}

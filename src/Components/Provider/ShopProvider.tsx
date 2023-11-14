@@ -14,9 +14,9 @@ type P = {
     shopId: number,
     user: UserClass;
     setAlert: (s: AlertType) => void
-    accessToken : string;
+    accessToken: string;
 }
-const ShopProvider: FC<P> = ({ children, shopId, user, setAlert , accessToken }) => {
+const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) => {
     const Navigate = useNavigate();
     const [shops, setShops] = useState<{
         [key: number]: {
@@ -32,38 +32,36 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert , accessToken })
     const [changeMonth, setChangeMonth] = useState(new Date());
     const [loading, setLoading] = useState(true);
 
-    // console.log("monthSales  : ", monthSales);
 
     useEffect(() => {
-        // console.log("User : ", user);
-        
+
         if (user?.role === 1) {
-            getShops(user , accessToken).then((res: any) => {
+            getShops(user, accessToken).then((res: any) => {
                 setShops(res);
             })
         }
     }, [user])
 
     useEffect(() => {
-        // if (selectedShop) {
-            getMiniStores(1 ,  accessToken);
-        // }
-
-    }, [selectedShop, user])
-
-    useEffect(() => {
-        if (user && shopId) {
-            axiosInstance.get("/shops/" + shopId, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token'),
-                    "ngrok-skip-browser-warning": 69420,
-                }
-            }).then((res) => {
-                // console.log("Res : ",res.data.result);
-                setSelectedShop(res.data.result);
-            })
+        if (selectedShop || user?.role === 2) {
+            getMiniStores(1, selectedShop?.name!, accessToken);
         }
-    }, [shopId, user])
+
+    }, [selectedShop])
+
+    // useEffect(() => {
+    //     if (user && shopId) {
+    //         axiosInstance.get("/shops/" + shopId, {
+    //             headers: {
+    //                 Authorization: 'Bearer ' + localStorage.getItem('token'),
+    //                 "ngrok-skip-browser-warning": 69420,
+    //             }
+    //         }).then((res) => {
+    //             // console.log("Res : ",res.data.result);
+    //             setSelectedShop(res.data.result);
+    //         })
+    //     }
+    // }, [shopId, user])
 
     useEffect(() => {
 
@@ -76,17 +74,17 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert , accessToken })
         if (miniShop && user?.role === 1) {
             setLoading(true);
             console.log("miniShop : ", miniShop)
-            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth() , accessToken).then((res) => {
+            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth(),selectedShop?.name! ,  accessToken).then((res) => {
                 setmonthSales(res);
                 setLoading(false);
-            }).catch(()=>{
+            }).catch(() => {
                 setLoading(false);
             })
         }
     }
 
-    function getMiniStores(id: number , accessToken : string) {
-        getminiStore(id , accessToken).then((res) => {
+    function getMiniStores(id: number, selectedShop: string, accessToken: string) {
+        getminiStore(id, selectedShop, accessToken).then((res) => {
             setMiniShops(res)
             setLoading(false);
         }).catch(() => {
@@ -96,15 +94,12 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert , accessToken })
 
     const [dailySales, setDailySales] = useState();
     function getDailySales() {
-        // const date = formatDateToYYYYMMDD(selectedDate!);
         if (user?.role === 1) {
-            // const longDate = selectedDate! * 1
             const longDate = selectedDate! as any * 1
 
-            getDailySale(miniShop!.id, longDate , accessToken).then((res) => {
+            getDailySale(miniShop!.id, longDate, selectedShop?.name!, accessToken).then((res) => {
                 setDailySales(res);
                 Navigate('/ministore/sales/report');
-                // console.log("Get Daily sales : ", res);
             })
         }
     }
@@ -119,14 +114,14 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert , accessToken })
         date: number;
         totalSales: number;
     }) {
-        addSales(shopId, data , accessToken).then((res) => {
+        addSales(shopId, data, accessToken).then((res) => {
             setAlert({ message: res.message, type: "success" });
         }).catch((err) => {
             setAlert({ message: err.response.status === 403 ? "You are not allowed to upload sales please contact admin" : err.message, type: "error" });
         })
     }
 
-    return <ShopContext.Provider value={{ setMiniShop, miniShop, changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, setLoading , shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ setMiniShop, miniShop, changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, setLoading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }

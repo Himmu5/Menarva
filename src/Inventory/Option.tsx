@@ -22,15 +22,15 @@ const Option: FC<P> = ({ fruits, title }) => {
     return <div>
         <Accordion expanded={expanded} onChange={handleExpand} style={{ color: "#8F5843", borderRadius: 10 }} >
             <AccordionSummary expandIcon={<BsFillCaretDownFill />}>
-                <Typography style={{ fontWeight: 'bold' }} variant="h6" >{title}</Typography>
+                <Typography style={{ fontWeight: 'bold', fontSize : 15 }} variant="h6" >{title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <ul className='flex flex-col gap-2'>
                     {fruits.map((subOption) => (
-                        <div className='flex items-center rounded-md shadow-md p-3 gap-1'>
+                        <div className='flex items-center rounded-md shadow-md p-2 gap-1'>
                             <Typography width={200} variant="inherit" >{subOption}</Typography>
 
-                            <ProgressBar value={5} />
+                            <ProgressBar value={12} />
 
                         </div>
                     ))}

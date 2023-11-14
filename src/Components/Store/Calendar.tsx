@@ -30,7 +30,6 @@ const CalendarWithHighlights: FC<P> = ({ loading , setLoading , miniShop, setSop
   const rejected = [] as Date[]
   const approved = [] as Date[]
   const Navigate = useNavigate();
-  console.log("monthSales ",monthSales);
   
   
   if (Sales === true) {
@@ -57,14 +56,9 @@ const CalendarWithHighlights: FC<P> = ({ loading , setLoading , miniShop, setSop
    
   }
 
-
-  console.log("panding  : ", panding);
-
-
   const handleDateChange = (date: any) => {
     // console.log("Change calendar");
     if (Sales === true) {
-      console.log("Hello Bro");
 
       const currentDate = new Date();
       if ((+currentDate.getDate() < +date.getDate()) || (+currentDate.getMonth() < +date.getMonth())) {
@@ -103,7 +97,6 @@ const CalendarWithHighlights: FC<P> = ({ loading , setLoading , miniShop, setSop
 
 
   function onchange(e: any) {
-    // console.log("change",e.activeStartDate)
     setChangeMonth(e.activeStartDate);
   }
 
