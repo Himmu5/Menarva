@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { Shop } from '../../Typings/Shop'
 import { Link } from 'react-router-dom';
 import Loading from '../../Loader/Loading';
@@ -15,9 +15,14 @@ type P = {
         };
     };
     setSelectedShop: (s: Shop) => void;
+    updateShop:()=>void
 }
 
-const stores: FC<P> = ({ shops, setSelectedShop }) => {
+const Stores: FC<P> = ({ shops, setSelectedShop , updateShop }) => {
+   
+    useEffect(()=>{
+        updateShop();
+    },[])
 
     if (!shops) {
         return <Loading />
@@ -42,4 +47,4 @@ const stores: FC<P> = ({ shops, setSelectedShop }) => {
         }
     </div>
 }
-export default withShop(stores);
+export default withShop(Stores);

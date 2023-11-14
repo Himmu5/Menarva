@@ -37,11 +37,14 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
     useEffect(() => {
 
         if (user?.role === 1) {
-            getShops(user, accessToken).then((res: any) => {
-                setShops(res);
-            })
+            updateShop();
         }
     }, [user])
+    function updateShop() {
+        getShops(user, accessToken).then((res: any) => {
+            setShops(res);
+        })
+    }
 
     useEffect(() => {
         if (selectedShop || user?.role === 2) {
@@ -60,7 +63,7 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
     function getMonthSale() {
         if (miniShop && user?.role === 1) {
             setLoading(true);
-            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth(),selectedShop?.name! ,  accessToken).then((res) => {
+            getMonthSales(miniShop?.id!, changeMonth.getFullYear(), changeMonth.getMonth(), selectedShop?.name!, accessToken).then((res) => {
                 setmonthSales(res);
                 setLoading(false);
             }).catch(() => {
@@ -101,13 +104,13 @@ const ShopProvider: FC<P> = ({ children, shopId, user, setAlert, accessToken }) 
         totalSales: number;
     }) {
         addSales(shopId, data, accessToken).then((res) => {
-            checkResponse(res , setAlert);
+            checkResponse(res, setAlert);
         }).catch((err) => {
             setAlert({ message: err.response.status === 403 ? "You are not allowed to upload sales please contact admin" : err.message, type: "error" });
         })
     }
 
-    return <ShopContext.Provider value={{ setMiniShop, miniShop, changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, setLoading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
+    return <ShopContext.Provider value={{ updateShop, setMiniShop, miniShop, changeMonth, getMonthSale, setChangeMonth, uploadSales, getMiniStores, loading, setLoading, shops, selectedShop, setSelectedShop, miniShopsData, selectedDate, setSelectedDate, monthSales, dailySales }} >
         {children}
     </ShopContext.Provider>
 }
