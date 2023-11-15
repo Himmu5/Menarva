@@ -37,7 +37,6 @@ const CalendarWithHighlights: FC<P> = ({ loading , setLoading , miniShop, setSop
       approved.push(new Date(d));
     })
     sopCalendar.inComplete.forEach((d) => {
-      // console.log(new Date(d));
 
       panding.push(new Date(d))
     })

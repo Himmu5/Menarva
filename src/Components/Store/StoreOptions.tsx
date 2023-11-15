@@ -51,7 +51,6 @@ const StoreOptions: FC<P> = ({ user, shopId, shopConfig }) => {
     setSelectedOption(item.option);
     setOpen(!open);
   }
-  console.log("shop config : ", shopConfig);
 
   if (user.role == 2 && shopConfig == undefined) {
     return <Error hideButton={true} message='You are not attached to any shops' />

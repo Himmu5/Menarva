@@ -1,11 +1,10 @@
 import { AlertType } from "../Typings/Alert";
 
 export const checkResponse = (res : any , setAlert : (s:AlertType)=>void)=>{
-    console.log("res : ",res);
-    if(res.code === 200){
-        setAlert({type : "success" , message : res.message});
+    if(res?.code === 200){
+        setAlert({type : "success" , message : res?.message});
     }
-    else{
+    else if(res?.code !== 200){
         setAlert({ type: "error", message: res.message });
     }
 }

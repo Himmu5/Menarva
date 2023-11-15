@@ -24,11 +24,11 @@ const MiniOptions: FC<P> = ({ user, miniShop }) => {
 
         <div className=' h-[80vh] w-full flex justify-center items-center flex-col '>
 
-            {data.map((obj) => {
-                return <Link to={user.role === 1 ? "/calendar" : "/ministore/uploadsales"} className='w-full px-3 py-2 flex items-center justify-between max-w-xs rounded-md border shadow-lg hover:scale-105'>
+            {data.map((option) => {
+                return <Link key={option} to={user.role === 1 ? "/calendar" : "/ministore/uploadsales"} className='w-full px-3 py-2 flex items-center justify-between max-w-xs rounded-md border shadow-lg hover:scale-105'>
                     <AiOutlineLineChart size={25} />
                     <p>
-                        {obj}
+                        {option}
                     </p>
                     <AiOutlineRight size={25} />
                 </Link>
@@ -37,4 +37,4 @@ const MiniOptions: FC<P> = ({ user, miniShop }) => {
         </div>
     </div>
 }
-export default withShop(withUser(MiniOptions));
+export default  withShop(withUser(MiniOptions));

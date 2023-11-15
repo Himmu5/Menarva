@@ -21,7 +21,6 @@ const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
     const [picture, setPicture] = useState<string>();
     const [facingMode, setFacingMode] = useState("user");
 
-    console.log("dataURItoBlob ", picture && dataURItoBlob(picture!));
 
     function dataURItoBlob(dataURI: string) {
         const byteString = atob(dataURI.split(',')[1]);
@@ -42,10 +41,8 @@ const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
 
     const file = new File([picture!], 'image.jpg');
 
-    console.log("URL.createObjectURL(file) ", URL.createObjectURL(file));
 
     const downloadPicture = () => {
-        console.log("Uploading picture");
 
         uploadSopImage(dataURItoBlob(picture!), selectedSop?.sop.id, selectedSop?.taskId);
         // saveAs(picture! , 'myPicture.jpg'

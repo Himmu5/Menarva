@@ -68,7 +68,6 @@ export const editManager = (
       }
     )
     .then((res) => {
-      // console.log("Res : ",res);
       return res.data;
     });
 };

@@ -62,14 +62,12 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
 
     function getManager(accessToken: string) {
         getManagers(accessToken).then((res) => {
-            // console.log("res : ", res);
             setManagers(res.result.employees);
         })
     }
     const navigate = useNavigate()
     function getSingleManager(mId: number, redirect?: boolean) {
         getSingleManagers(mId, accessToken).then((res) => {
-            // console.log("Res : ", res.result.user.id);
             setCreatedEmployee(res.result.user.id);
             setSingleManager(res.result);
             if (redirect !== false) {
@@ -89,14 +87,6 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
 
     function createManager(user: { name: string; email: string; password: string; type: string, roleId: string }) {
         addManager(user, accessToken).then((res) => {
-            // console.log("res : ",res.result.id);
-            
-            // JSON.parse(res);
-            // const result = res.result;
-            // Parse the JSON string into a JavaScript object
-            // var resultObject = JSON.parse(result);
-            // Access the userId property
-            // var userId = resultObject.userId;
 
             setCreatedEmployee(res.result.id)
             setAlert({ message: res.message, type: "success" });
@@ -107,7 +97,6 @@ const ManagerProvider: FC<P> = ({ children, user, setAlert, accessToken }) => {
 
     function UpdateManager(config: UserConfig, shopId: number, user: { name: string; email: string; password: string; type: string }, mId: number, detacheShopId?: number) {
         editManager(config, shopId, user, mId, detacheShopId).then((res) => {
-            // console.log("Res : ",res.data.message);
             navigate("/manager")
             checkResponse(res, setAlert);
 

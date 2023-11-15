@@ -17,14 +17,8 @@ type P = {
 }
 
 const MiniStores: FC<P> = ({setMiniShop  , miniShopsData, getMiniStores, user, shopId }) => {
-    // console.log("ministores ",miniShopsData);
     
     const Navigate = useNavigate();
-    // useEffect(() => {
-
-    //     getMiniStores(shopId);
-
-    // }, [shopId])
 
     if (!miniShopsData) {
         return <Loading />

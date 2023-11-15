@@ -80,7 +80,6 @@ const AddEditManager: FC<P> = ({ selectedRoleTemplate, setSelectedRoleName, setS
 
         }
         else if (FormType === "Edit") {
-            console.log("selectedRole = ", selectedRole);
             let id = getRoleId();
             let data = {}
             if (values.name !== singleManager.user.name) {
@@ -95,8 +94,6 @@ const AddEditManager: FC<P> = ({ selectedRoleTemplate, setSelectedRoleName, setS
 
             UpdateManager(editConfig, Object.keys(singleManager?.authorities)[0], { roleId: id, ...data }, singleManager?.user.id)
             // if (changeShop && (changeShop?.id !== Object.keys(selectedShop)[0])) {
-            //     console.log("changeShop : ", changeShop);
-
             //     attachToShopManager(selectedShop.id, singleManager?.user?.id, editConfig);
             //     UpdateManager(editConfig, { roleId: selectedRole.id, name: values.name, username: values.username, email: values.email, password: values.password, type: values.type }, singleManager?.user.id, Object.keys(changeShop)[0])
             // }
@@ -203,7 +200,6 @@ const AddEditManager: FC<P> = ({ selectedRoleTemplate, setSelectedRoleName, setS
                                 <p className='font-bold text-lg'>{option}</p>
                                 {
                                     Object.keys(editConfig[option]).map((o) => {
-                                        // console.log("editConfig[option][o] :",editConfig[option][o]);
 
                                         return <div key={o} className=' px-3 flex items-center text-sm gap-2 space-y-1'>
                                             <input type="checkbox" checked={editConfig[option][o]} value={editConfig[option][o]} />

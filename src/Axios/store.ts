@@ -35,7 +35,6 @@ export const getminiStore = (id: number ,selectedShop:string ,accessToken:string
       headers: {...OwnerHeader , Entity :  selectedShop , Authorization : accessToken || localStorage.getItem("token") },
     })
     .then((res) => {
-      // console.log("Res :", res.data);
       return res.data;
     });
 };

@@ -11,7 +11,6 @@ type P = {
 }
 
 const ManagerCard: FC<P> = ({ index, manager, getSingleManager }) => {
-    // console.log("manager :",manager);
     return <div key={index} className='w-full border rounded-md  flex flex-col p-2 gap-4 shadow-md'>
         <div className='flex justify-between gap-3 w-full '>
             <img src='https://static.toiimg.com/photo/68944342.cms' className='w-1/3 rounded-md shadow-md' alt='sarukh' />

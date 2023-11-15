@@ -18,29 +18,32 @@ export function loginUser(
         checkResponse(res.data, setAlert);
         return new Promise(() => {});
       } else {
-        const config = await axios.get(
-          import.meta.env.VITE_BASE_URL + "/users/config",
-          {
+        return axios
+          .get(import.meta.env.VITE_BASE_URL + "/users/config", {
             headers: {
               ...OwnerHeader,
               Authorization: "Bearer " + res.data.result.accessToken,
             },
-          }
-        );
-
-        localStorage.setItem("token", res.data.result.accessToken);
-        return {
-          user: {
-            ...res.data.result,
-            user: {
-              ...res.data.result.user,
-              entities: config.data.result.entities,
-            },
-          },
-          config: config.data.result.authorities,
-          code: config.data.code,
-          message: "Logged in successfully",
-        };
+          })
+          .then((config) => {
+            localStorage.setItem("token", res.data.result.accessToken);
+            if(config.data.code !== 200 ){
+              checkResponse(config.data, setAlert);
+              return new Promise(() => {});
+            }
+            return {
+              user: {
+                ...res.data.result,
+                user: {
+                  ...res.data.result.user,
+                  entities: config.data.result.entities,
+                },
+              },
+              config: config.data.result.authorities,
+              code: config.data.code,
+              message: "Logged in successfully",
+            };
+          });
       }
     });
 }

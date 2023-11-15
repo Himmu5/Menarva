@@ -19,7 +19,6 @@ type P = {
 }
 
 const Home: FC<P> = ({ sops, getSOPs, sopDate, selectedShop , user }) => {
-    console.log("user : ",user);
     
     useEffect(() => {
         getSOPs();

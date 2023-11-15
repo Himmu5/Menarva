@@ -27,11 +27,9 @@ type P = {
 }
 
 const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert, miniShop }) => {
-  // console.log("miniShop :", miniShop);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   // const [ImageUploaded, setImageUploaded] = useState(false)
-  // console.log("Config :", shopConfig);
 
 
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -58,23 +56,19 @@ const UploadSales: FC<P> = ({ selectedShop, uploadSales, shopConfig, setAlert, m
         date: longDate,
         totalSales: +salesAmount
       }
-      // console.log("selectedShop : ", selectedShop.id);
       uploadSales(miniShop.id, data)
       setSalesAmount("0.00");
       setSelectedDate(undefined);
-      // setImageUploaded(false);
     }
   }
 
 
 
   function UploadImage(salesImage: FormData) {
-    console.log("file : ", salesImage);
     if (selectedDate) {
 
       const longDate = selectedDate as any * 1
       axiosInstance.post('/api/v1/accounting/upload_sales_image/' + miniShop.id + `?date=${longDate}`, salesImage, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'multipart/form-data' ,} }).then((res) => {
-        console.log("Image : ", res)
         setSelectedImage(null);
         setAlert({ type: res.data.code === 1029 ? "error" : "success", message: res.data.message });
 

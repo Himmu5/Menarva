@@ -21,7 +21,6 @@ type P = {
 }
 
 const Options: FC<P> = ({ user, getMonthSale }) => {
-    // console.log("Selected Shop : ", selectedShop);
     const data = [
         { option: "Mini Stores", logo: BiStore },
         {
@@ -68,7 +67,7 @@ const Options: FC<P> = ({ user, getMonthSale }) => {
                     <div className='mt-[40%] p-3'>
                         {
                             data.map((item) => {
-                                return <div className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} key={item.option} >
+                                return <div  className=' w-full px-3 border-b-2 border-gray-600 py-3 cursor-pointer flex justify-between  items-center gap-3 ' onClick={() => onSelect(item)} key={item.option} >
                                     <item.logo size={25} />
                                     <p className='w-32'>
                                         {item.option}

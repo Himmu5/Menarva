@@ -24,16 +24,16 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     const token = localStorage.getItem('token')
     const [loading, setLoading] = useState<boolean>(false);
     const [accessToken, setAccessToken] = useState<string>();
-    const [ pageFallback , setPageFallback ] = useState<boolean>(false);
+    const [pageFallback, setPageFallback] = useState<boolean>(false);
     const Navigate = useNavigate();
 
     useEffect(() => {
         getURLAuthentication().then((res) => {
-            if(res.fallbackToDefault === true){
+            if (res.fallbackToDefault === true) {
                 setPageFallback(true);
                 Navigate("DefaultPage")
             }
-            if(res.fallbackToDefault === false){
+            if (res.fallbackToDefault === false) {
                 Navigate("/")
             }
         })
@@ -66,13 +66,15 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
 
     function AuthUser(formData: { username: string, password: string }) {
         loginUser(formData, checkResponse, setAlert).then((res: any) => {
-
-            checkResponse(res, setAlert);
-            setAccessToken(res.user.accessToken)
-            localStorage.setItem('token', res.user.accessToken);
-            setUser(res.user.user);
-            setUserConfig(res.config);
-            setShopConfig(res.config);
+            
+            if (res) {                
+                checkResponse(res, setAlert);
+                setAccessToken(res.user.accessToken)
+                localStorage.setItem('token', res.user.accessToken);
+                setUser(res.user.user);
+                setUserConfig(res.config);
+                setShopConfig(res.config);
+            }
 
         }).catch((err) => {
             setAlert({ type: "error", message: err.message })
@@ -89,7 +91,7 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
         return <Loading />;
     }
 
-    return <UserContext.Provider value={{ pageFallback , accessToken, token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
+    return <UserContext.Provider value={{ pageFallback, accessToken, token, shopConfig, config, user, removeUser, AuthUser, shopId }} >
         {children}
     </UserContext.Provider>
 }

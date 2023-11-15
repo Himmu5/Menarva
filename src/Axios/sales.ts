@@ -45,7 +45,6 @@ export function getDailySale(
   shopName: string,
   accessToken: string
 ) {
-  console.log("Date :", date);
 
   return axiosInstance
     .get(`/api/v1/accounting/get_daily_sales/${id}?date=${date}`, {
