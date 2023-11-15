@@ -45,7 +45,7 @@ function App() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <ErrorBoundary fallback={<Error  message="Something went wrong!!!"  />}>
+      <ErrorBoundary fallback={<Error message="Something went wrong!!!" />}>
         <div className="relative">
           <AlertProvider>
             <UserProvider>
