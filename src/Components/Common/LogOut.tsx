@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC } from 'react'
 import { Button, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material'
 import Dialog from '@mui/material/Dialog';
 
@@ -49,4 +49,4 @@ const LogOut: FC<P> = ({ open, toggle, confirmLogOut }) => {
         </Dialog>
     </div>
 }
-export default memo(LogOut);
+export default LogOut;
