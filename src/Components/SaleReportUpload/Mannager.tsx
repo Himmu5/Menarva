@@ -7,14 +7,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { withManager } from '../../HOC/withProvider';
 import { UserClass } from '../../Typings/User';
 import BackButton from '../UI-Components/BackButton';
+import { Shop } from '../../Typings/Shop';
 
 type P = {
-    managers: { user: UserClass }[];
+    managers: { user: UserClass , entity : Shop }[];
     getSingleManager: (mId: number) => void;
     getManager: () => void;
 }
 
 const Mannager: FC<P> = ({ managers, getSingleManager, getManager }) => {
+    
     useEffect(() => {
         getManager();
     }, [])
@@ -31,7 +33,7 @@ const Mannager: FC<P> = ({ managers, getSingleManager, getManager }) => {
         <div className='flex flex-col gap-3 my-5'>
             {
                 managers.map((Manager) => {
-                    return <ManagerCard key={Math.random()} getSingleManager={getSingleManager} manager={Manager.user} index={Manager.user.id} />
+                    return <ManagerCard key={Math.random()} getSingleManager={getSingleManager} manager={Manager.user} entity={Manager.entity} index={Manager.user.id} />
                 })
             }
         </div>

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Webcam from "react-webcam";
 import { RxCross1 } from 'react-icons/rx'
 import { BsCircle } from 'react-icons/bs'
@@ -21,6 +21,12 @@ const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
     const [picture, setPicture] = useState<string>();
     const [facingMode, setFacingMode] = useState("user");
 
+    useEffect(() => {
+        getAccessToCamera();
+    }, [])
+    async function getAccessToCamera() {
+        await navigator.mediaDevices.getUserMedia({ video: true  });
+    }
 
     function dataURItoBlob(dataURI: string) {
         const byteString = atob(dataURI.split(',')[1]);
@@ -78,9 +84,9 @@ const Camera: FC<P> = ({ uploadSopImage, selectedSop, Navigate }) => {
                     <RxCross1 size={35} className=" hover:scale-95 cursor-pointer " onClick={handleClose} />
                     <BsCircle size={40} className=" hover:scale-95 cursor-pointer " onClick={capture} />
                     <div onClick={() => setFacingMode(facingMode === "user" ? "environment" : "user")} > <MdOutlineFlipCameraIos size={35} /> </div>
+                </div>
             </div>
-            </div>
-}
+        }
 
 
     </div >

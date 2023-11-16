@@ -25,9 +25,9 @@ const ShowSalesReport: FC<P> = ({ dailySales, selectedShop }) => {
     }
     const date = new Date(+dailySales?.result?.date);
 
-    return <div className=' min-h-[80vh] max-w-5xl mx-auto flex justify-center items-center '>
+    return <div className=' min-h-[80vh] max-w-5xl mx-auto flex justify-center items-center p-2'>
 
-        <div className=' w-1/2 min-h-[20vh] space-y-5 py-5 border m-4 shadow-md rounded-md flex flex-col p-2  '>
+        <div className=' sm:w-1/2 min-h-[20vh] space-y-5 py-5 border m-4 shadow-md rounded-md flex flex-col p-2  '>
             <h1 className='text-xl font-bold text-center  '>Sales Datails</h1>
             <div className=' flex flex-col gap-3 text-sm'>
                 <div className='flex items-center gap-3'>

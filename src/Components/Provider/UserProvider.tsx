@@ -27,17 +27,17 @@ const UserProvider: FC<P> = ({ children, setAlert }) => {
     const [pageFallback, setPageFallback] = useState<boolean>(false);
     const Navigate = useNavigate();
 
-    useEffect(() => {
-        getURLAuthentication().then((res) => {
-            if (res.fallbackToDefault === true) {
-                setPageFallback(true);
-                Navigate("DefaultPage")
-            }
-            if (res.fallbackToDefault === false) {
-                Navigate("/")
-            }
-        })
-    }, [])
+    // useEffect(() => {
+    //     getURLAuthentication().then((res) => {
+    //         if (res.fallbackToDefault === true) {
+    //             setPageFallback(true);
+    //             Navigate("DefaultPage")
+    //         }
+    //         if (res.fallbackToDefault === false) {
+    //             Navigate("/")
+    //         }
+    //     })
+    // }, [])
 
     useEffect(() => {
         if (token) {
